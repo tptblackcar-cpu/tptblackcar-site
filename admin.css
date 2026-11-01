@@ -104,6 +104,7 @@
   color: var(--color-depart);
 }
 .res-status[data-status="Declined"] { opacity: .7; }
+.res-status[data-status="Quoted"] { border-color: var(--color-rule-strong); }
 
 .res-trip {
   margin-block-end: var(--space-md);
@@ -158,3 +159,23 @@
   .res-work .row { grid-template-columns: 1fr; }
   .res-actions .btn { flex: 1 1 auto; }
 }
+
+/* Rider-facing cancel page */
+.cancel-main { max-width: 36rem; margin-inline: auto; }
+.cancel-panel h1 { font-size: var(--text-2xl); }
+.cancel-panel .lead { margin-block: var(--space-xs) var(--space-lg); }
+.cancel-card { margin-block-end: var(--space-lg); background: var(--color-paper-2); }
+.cancel-actions { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
+.cancel-actions .btn { flex: 1 1 auto; }
+.cancel-panel .small { font-size: var(--text-sm); color: var(--color-muted); }
+
+/* Countdown in the card header */
+.res-countdown {
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+  white-space: nowrap;
+  text-align: right;
+}
+.res-countdown[data-soon] { color: var(--color-accent); font-weight: 600; }
+.res-countdown[data-past] { opacity: .6; }
+.res-status[data-status="Cancelled"] { opacity: .65; text-decoration: line-through; }

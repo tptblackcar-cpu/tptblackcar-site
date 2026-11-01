@@ -152,6 +152,49 @@ function fmtReceived(v) {
   });
 }
 
+
+/** The trip's pickup as a Date, from the sheet's own date and time strings. */
+function pickupAt(t) {
+  const d = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(t.date || ""));
+  const h = /^(\d{2}):(\d{2})$/.exec(String(t.time || ""));
+  if (!d || !h) return null;
+  // Built in the viewer's own timezone, which for Tab Butler is the fleet's.
+  return new Date(+d[1], +d[2] - 1, +d[3], +h[1], +h[2]);
+}
+
+/** "in 2 days", "in 3 hours", "in 20 minutes", "now", "2 days ago". */
+function countdown(when, now = Date.now()) {
+  if (!when) return "";
+  const mins = Math.round((when.getTime() - now) / 60000);
+  const past = mins < 0;
+  const n = Math.abs(mins);
+  let text;
+  if (n < 1) return "now";
+  else if (n < 60) text = plural(n, "minute");
+  else if (n < 60 * 36) text = plural(Math.round(n / 60), "hour");
+  else text = plural(Math.round(n / (60 * 24)), "day");
+  return past ? `${text} ago` : `in ${text}`;
+}
+
+const plural = (n, word) => `${n} ${word}${n === 1 ? "" : "s"}`;
+
+/** "Thu, Dec 10, 3:00 PM" */
+function whenLabel(when) {
+  if (!when) return "";
+  return when.toLocaleString("en-US", {
+    weekday: "short", month: "short", day: "numeric",
+    hour: "numeric", minute: "2-digit",
+  });
+}
+
+/** Still to happen, and not called off. */
+function isUpcoming(r) {
+  const s = statusOf(r).toLowerCase();
+  if (s === "cancelled" || s === "declined") return false;
+  const when = pickupAt(r.trip);
+  return !!when && when.getTime() > Date.now();
+}
+
 function statusOf(r) {
   const s = (r.status || "New").trim();
   return s || "New";
@@ -160,19 +203,30 @@ function statusOf(r) {
 function render() {
   const filter = $('input[name="filter"]:checked').value;
 
-  const counts = { New: 0, Quoted: 0, Confirmed: 0, All: reservations.length };
+  const counts = { Upcoming: 0, New: 0, Quoted: 0, Confirmed: 0, All: reservations.length };
   reservations.forEach((r) => {
     const s = statusOf(r);
     if (s in counts) counts[s]++;
+    if (isUpcoming(r)) counts.Upcoming++;
   });
   $$("[data-count]").forEach((el) => { el.textContent = counts[el.dataset.count] ?? 0; });
 
-  const shown = filter === "All" ? reservations : reservations.filter((r) => statusOf(r) === filter);
+  // Upcoming is the working view: live trips that have not happened yet,
+  // soonest first, so the top of the list is always what is next.
+  const shown =
+    filter === "All" ? reservations
+    : filter === "Upcoming"
+      ? reservations
+          .filter(isUpcoming)
+          .sort((a, b) => pickupAt(a.trip) - pickupAt(b.trip))
+    : reservations.filter((r) => statusOf(r) === filter);
   list.replaceChildren(...shown.map(card));
   empty.hidden = shown.length > 0;
-  empty.textContent = reservations.length
-    ? `Nothing ${filter.toLowerCase()}.`
-    : "No reservations yet.";
+  empty.textContent = !reservations.length
+    ? "No reservations yet."
+    : filter === "Upcoming"
+      ? "No trips coming up."
+      : `Nothing ${filter.toLowerCase()}.`;
 }
 
 function card(r) {
@@ -184,7 +238,17 @@ function card(r) {
   const pill = $(".res-status", el);
   pill.textContent = status;
   pill.dataset.status = status;
-  $(".res-when", el).textContent = fmtReceived(r.received);
+  const when = pickupAt(t);
+  const cd = $(".res-countdown", el);
+  if (when) {
+    const soon = when.getTime() - Date.now();
+    cd.textContent = `${countdown(when)} · ${whenLabel(when)}`;
+    // Flag anything inside a day so it stands out in a long list.
+    if (soon > 0 && soon < 24 * 3600e3) cd.dataset.soon = "true";
+    if (soon <= 0) cd.dataset.past = "true";
+  } else {
+    cd.textContent = fmtReceived(r.received);
+  }
 
   $(".res-trip", el).textContent = `${t.service} · ${fmtDate(t.date)}, ${fmtTime(t.time)}`;
   $(".res-pickup", el).textContent = t.pickup;
@@ -218,11 +282,24 @@ function card(r) {
   const sent = $(".res-sent", el);
   const resend = $(".res-resend", el);
   const confirm = $(".res-confirm", el);
+  const cancelTrip = $(".res-cancel", el);
   if (r.confirmedSent) {
     sent.textContent = `Rider emailed ${r.confirmedSent}.`;
     sent.hidden = false;
     confirm.hidden = true;
     resend.hidden = false;
+  }
+  if (status.toLowerCase() === "cancelled") {
+    // Nothing left to do on a called-off trip but read it.
+    sent.textContent = r.cancelledAt ? `Cancelled ${r.cancelledAt}.` : "Cancelled.";
+    sent.hidden = false;
+    confirm.hidden = true;
+    resend.hidden = true;
+    cancelTrip.hidden = true;
+    $(".res-decline", el).hidden = true;
+  } else if (!r.confirmedSent && status === "New") {
+    // Nothing promised yet, so "Decline" is the right word, not "Cancel".
+    cancelTrip.hidden = true;
   }
 
   const msg = $(".res-msg", el);
@@ -259,6 +336,10 @@ function card(r) {
   $(".res-decline", el).addEventListener("click", () => {
     if (!window.confirm(`Decline ${r.ref}? The rider is not emailed — you would tell them yourself.`)) return;
     act({ status: "Declined" }, "Saving…");
+  });
+  cancelTrip.addEventListener("click", () => {
+    if (!window.confirm(`Cancel ${r.ref} for ${t.name}? They are emailed that it is called off.`)) return;
+    act({ status: "Cancelled" }, "Cancelling and emailing…");
   });
   resend.addEventListener("click", () => {
     if (!window.confirm(`Send ${t.name} the confirmation email again?`)) return;

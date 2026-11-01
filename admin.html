@@ -48,7 +48,8 @@
   <section class="admin-desk" id="desk" hidden>
     <div class="desk-top">
       <div class="chips" id="filters" role="group" aria-label="Filter reservations">
-        <label><input type="radio" name="filter" value="New" checked><span>New <b data-count="New">0</b></span></label>
+        <label><input type="radio" name="filter" value="Upcoming" checked><span>Upcoming <b data-count="Upcoming">0</b></span></label>
+        <label><input type="radio" name="filter" value="New"><span>New <b data-count="New">0</b></span></label>
         <label><input type="radio" name="filter" value="Quoted"><span>Quoted <b data-count="Quoted">0</b></span></label>
         <label><input type="radio" name="filter" value="Confirmed"><span>Confirmed <b data-count="Confirmed">0</b></span></label>
         <label><input type="radio" name="filter" value="All"><span>All <b data-count="All">0</b></span></label>
@@ -70,7 +71,7 @@
         <span class="res-ref num"></span>
         <span class="res-status"></span>
       </div>
-      <time class="res-when num"></time>
+      <span class="res-countdown num"></span>
     </header>
 
     <p class="res-trip"></p>
@@ -107,6 +108,7 @@
         <button type="button" class="btn btn-action btn-sm res-confirm">Confirm &amp; email rider</button>
         <button type="button" class="btn btn-quiet btn-sm res-quoted">Save quote</button>
         <button type="button" class="btn btn-quiet btn-sm res-decline">Decline</button>
+        <button type="button" class="btn btn-quiet btn-sm res-cancel">Cancel trip</button>
         <button type="button" class="btn btn-quiet btn-sm res-resend" hidden>Resend email</button>
       </div>
       <p class="res-msg" role="alert" hidden></p>

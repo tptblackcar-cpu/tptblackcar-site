@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Cancel a trip &middot; TPT Black Car</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#3B1412">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=6">
+  <link rel="stylesheet" href="admin.css?v=2">
+</head>
+<body class="admin">
+
+<header class="admin-bar">
+  <div class="admin-bar-in">
+    <a class="admin-brand" href="/">
+      <img src="assets/mark-light.svg" alt="TPT" width="44" height="25">
+      <span>Cancel a trip</span>
+    </a>
+    <a class="btn btn-quiet btn-sm" href="tel:+18649016550">Call instead</a>
+  </div>
+</header>
+
+<main class="frame admin-main cancel-main">
+
+  <p class="desk-note" id="loading">Looking up your trip&hellip;</p>
+
+  <!-- Could not read the link, or the trip cannot be cancelled here -->
+  <section class="panel cancel-panel" id="problem" data-tone="light" hidden>
+    <h1 id="problem-title">We could not open that</h1>
+    <p class="lead" id="problem-text"></p>
+    <p><a class="btn btn-action" id="problem-call" href="tel:+18649016550">Call 864-901-6550</a></p>
+  </section>
+
+  <!-- The trip, with one button to call it off -->
+  <section class="panel cancel-panel" id="confirm" data-tone="light" hidden>
+    <h1>Cancel this trip?</h1>
+    <p class="lead" id="confirm-lead"></p>
+
+    <div class="res cancel-card">
+      <header class="res-head">
+        <div class="res-id">
+          <span class="res-ref num" id="c-ref"></span>
+          <span class="res-status" id="c-status"></span>
+        </div>
+      </header>
+      <p class="res-trip" id="c-trip"></p>
+      <div class="route res-route">
+        <div class="route-stop route-start"><span class="label">Pickup</span><p id="c-pickup"></p></div>
+        <div class="route-stop route-end"><span class="label">Drop-off</span><p id="c-dropoff"></p></div>
+      </div>
+    </div>
+
+    <div class="step-nav cancel-actions">
+      <a class="btn btn-quiet" href="/">Keep my trip</a>
+      <button type="button" class="btn btn-action" id="cancel-btn">Yes, cancel it</button>
+    </div>
+    <p class="form-error" id="cancel-error" role="alert" hidden></p>
+  </section>
+
+  <!-- Done -->
+  <section class="panel cancel-panel" id="done" data-tone="light" hidden tabindex="-1">
+    <h1>Your trip is cancelled</h1>
+    <p class="lead">Nothing is owed. We have emailed you a confirmation, and
+      Tab Butler has been told.</p>
+    <p class="small">Booked in error? Call <a href="tel:+18649016550">864-901-6550</a>
+      and we will set it up again.</p>
+    <p><a class="btn btn-quiet" href="/">Back to the site</a></p>
+  </section>
+
+</main>
+
+<script src="config.js?v=1"></script>
+<script src="cancel.js?v=1"></script>
+</body>
+</html>
