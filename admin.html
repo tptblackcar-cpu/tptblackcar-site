@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Reservations &middot; TPT Black Car</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#3B1412">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="admin.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=6">
+  <link rel="stylesheet" href="admin.css?v=1">
+</head>
+<body class="admin">
+
+<header class="admin-bar">
+  <div class="admin-bar-in">
+    <a class="admin-brand" href="/">
+      <img src="assets/mark-light.svg" alt="TPT" width="44" height="25">
+      <span>Reservations</span>
+    </a>
+    <button type="button" class="btn btn-quiet btn-sm" id="signout" hidden>Sign out</button>
+  </div>
+</header>
+
+<main class="frame admin-main">
+
+  <!-- Passcode gate -->
+  <section class="panel admin-gate" id="gate" data-tone="dark" hidden>
+    <h1>Owner sign-in</h1>
+    <p class="lead">Reservations, quotes and confirmations.</p>
+    <form id="gate-form">
+      <div class="field">
+        <label for="passcode">Passcode</label>
+        <input id="passcode" name="passcode" type="password" autocomplete="current-password"
+               inputmode="text" autocapitalize="off" spellcheck="false" required>
+      </div>
+      <button type="submit" class="btn btn-action btn-block" id="gate-btn">Sign in</button>
+      <p class="form-error" id="gate-error" role="alert" hidden></p>
+    </form>
+  </section>
+
+  <!-- The desk -->
+  <section class="admin-desk" id="desk" hidden>
+    <div class="desk-top">
+      <div class="chips" id="filters" role="group" aria-label="Filter reservations">
+        <label><input type="radio" name="filter" value="New" checked><span>New <b data-count="New">0</b></span></label>
+        <label><input type="radio" name="filter" value="Quoted"><span>Quoted <b data-count="Quoted">0</b></span></label>
+        <label><input type="radio" name="filter" value="Confirmed"><span>Confirmed <b data-count="Confirmed">0</b></span></label>
+        <label><input type="radio" name="filter" value="All"><span>All <b data-count="All">0</b></span></label>
+      </div>
+      <button type="button" class="btn btn-quiet btn-sm" id="refresh">Refresh</button>
+    </div>
+
+    <p class="desk-note" id="desk-note" role="status" aria-live="polite" hidden></p>
+    <div id="list" class="res-list"></div>
+    <p class="desk-empty" id="empty" hidden>Nothing here yet.</p>
+  </section>
+
+</main>
+
+<template id="res-tpl">
+  <article class="res" data-tone="light">
+    <header class="res-head">
+      <div class="res-id">
+        <span class="res-ref num"></span>
+        <span class="res-status"></span>
+      </div>
+      <time class="res-when num"></time>
+    </header>
+
+    <p class="res-trip"></p>
+
+    <div class="route res-route">
+      <div class="route-stop route-start"><span class="label">Pickup</span><p class="res-pickup"></p></div>
+      <div class="route-stop route-end"><span class="label">Drop-off</span><p class="res-dropoff"></p></div>
+    </div>
+
+    <dl class="res-facts"></dl>
+
+    <div class="res-contact">
+      <span class="res-name"></span>
+      <a class="res-tel btn btn-quiet btn-sm" href="#">Call</a>
+      <a class="res-sms btn btn-quiet btn-sm" href="#">Text</a>
+      <a class="res-mail btn btn-quiet btn-sm" href="#">Email</a>
+    </div>
+
+    <div class="res-work">
+      <div class="row">
+        <div class="field">
+          <label>Quote <span class="opt">goes in the email</span></label>
+          <input class="res-quote" type="text" inputmode="text" placeholder="e.g. $145 flat" maxlength="200">
+        </div>
+        <div class="field">
+          <label>Note to rider <span class="opt">optional</span></label>
+          <input class="res-note" type="text" placeholder="Car, pickup spot, anything" maxlength="500">
+        </div>
+      </div>
+
+      <p class="res-sent" hidden></p>
+
+      <div class="res-actions">
+        <button type="button" class="btn btn-action btn-sm res-confirm">Confirm &amp; email rider</button>
+        <button type="button" class="btn btn-quiet btn-sm res-quoted">Save quote</button>
+        <button type="button" class="btn btn-quiet btn-sm res-decline">Decline</button>
+        <button type="button" class="btn btn-quiet btn-sm res-resend" hidden>Resend email</button>
+      </div>
+      <p class="res-msg" role="alert" hidden></p>
+    </div>
+  </article>
+</template>
+
+<script src="config.js?v=1"></script>
+<script src="admin.js?v=1"></script>
+</body>
+</html>

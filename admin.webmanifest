@@ -1,0 +1,14 @@
+{
+  "name": "TPT Reservations",
+  "short_name": "Reservations",
+  "description": "Owner's desk for TPT Black Car reservations.",
+  "start_url": "/admin.html",
+  "scope": "/admin.html",
+  "display": "standalone",
+  "background_color": "#FBF7F1",
+  "theme_color": "#3B1412",
+  "icons": [
+    { "src": "assets/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}
