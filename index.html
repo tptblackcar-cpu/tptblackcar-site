@@ -1,429 +1,759 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-XwWdy3h8RLzX10dUs9n/fCAkQc+XFysyIb7c80Ymdkw='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://script.google.com https://script.googleusercontent.com; form-action 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Tab&rsquo;s Professional Transportation | Executive Car Service, Aiken SC</title>
-  <meta name="description" content="Executive black car service from Aiken, SC. Flight-tracked airport transfers, corporate travel and private trips across the CSRA and up to 350 miles, driven by owner Tab Butler.">
-  <meta name="theme-color" content="#3B1412">
+  <title>Black Car Service in Aiken, SC | TPT Black Car &mdash; Airport &amp; Executive Travel</title>
+  <meta name="description" content="Private black car service from Aiken, South Carolina. Airport transfers, corporate travel, weddings, events and funerals across the CSRA and up to 275 miles. Call or text 864-901-6550.">
+  <link rel="canonical" href="https://tptblackcar.com/">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="theme-color" content="#0B0B0C">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-  <meta property="og:title" content="Tab&rsquo;s Professional Transportation">
-  <meta property="og:description" content="Executive black car service from Aiken, SC. Time Well Driven.">
-  <meta property="og:image" content="https://tptblackcar.com/assets/icon-512.png">
+
+  <!-- Social previews. og-image.jpg is 1200x630; replace that one file to change every share card. -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="TPT Black Car">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:url" content="https://tptblackcar.com/">
+  <meta property="og:title" content="Black Car Service in Aiken, SC &mdash; TPT Black Car">
+  <meta property="og:description" content="Airport transfers, corporate travel, weddings and events across the CSRA and up to 275 miles. Time Well Driven.">
+  <meta property="og:image" content="https://tptblackcar.com/assets/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="A passenger opening the door of a black GMC Yukon Denali, with the TPT Black Car mark">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@tabprofessional">
+  <meta name="twitter:title" content="Black Car Service in Aiken, SC &mdash; TPT Black Car">
+  <meta name="twitter:description" content="Airport transfers, corporate travel, weddings and events across the CSRA and up to 275 miles. Time Well Driven.">
+  <meta name="twitter:image" content="https://tptblackcar.com/assets/og-image.jpg">
+
+  <!-- The hero photograph is the largest paint on the page; fetch it with the stylesheet, not after it. -->
+  <link rel="preload" as="image" href="assets/hero-door-960.webp" imagesrcset="assets/hero-door-960.webp 960w, assets/hero-door.webp 1672w" imagesizes="100vw" fetchpriority="high">
+  <!-- Structured data. One graph: the business, the site, and the six services it books.
+       Only facts stated on the page go in here — no ratings, hours or prices we cannot stand behind. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "name": "Tab's Professional Transportation, LLC",
-    "url": "https://tptblackcar.com",
-    "telephone": "+1-864-901-6550",
-    "email": "support@tptblackcar.com",
-    "image": "https://tptblackcar.com/assets/icon-512.png",
-    "address": { "@type": "PostalAddress", "addressLocality": "Aiken", "addressRegion": "SC", "addressCountry": "US" },
-    "areaServed": "Central Savannah River Area (CSRA) and up to 350 miles",
-    "founder": { "@type": "Person", "name": "Tab Butler" }
+    "@graph": [
+      {
+        "@type": ["LocalBusiness", "LimousineService"],
+        "@id": "https://tptblackcar.com/#business",
+        "name": "Tab's Professional Transportation, LLC",
+        "alternateName": "TPT Black Car",
+        "description": "Private black car service from Aiken, South Carolina. Airport transfers, corporate travel, weddings, special events, personal car service and funerals across the CSRA and up to 275 miles.",
+        "slogan": "Time Well Driven",
+        "url": "https://tptblackcar.com/",
+        "telephone": "+1-864-901-6550",
+        "email": "support@tptblackcar.com",
+        "image": "https://tptblackcar.com/assets/og-image.jpg",
+        "logo": {
+          "@type": "ImageObject",
+          "@id": "https://tptblackcar.com/#logo",
+          "url": "https://tptblackcar.com/assets/icon-512.png",
+          "width": 512,
+          "height": 512
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Aiken",
+          "addressRegion": "SC",
+          "addressCountry": "US"
+        },
+        "areaServed": [
+          { "@type": "City", "name": "Aiken", "addressRegion": "SC" },
+          { "@type": "City", "name": "Augusta", "addressRegion": "GA" },
+          { "@type": "City", "name": "North Augusta", "addressRegion": "SC" },
+          { "@type": "City", "name": "Columbia", "addressRegion": "SC" },
+          { "@type": "City", "name": "Charleston", "addressRegion": "SC" },
+          { "@type": "City", "name": "Atlanta", "addressRegion": "GA" },
+          { "@type": "AdministrativeArea", "name": "Central Savannah River Area (CSRA), and up to 275 miles from Aiken" }
+        ],
+        "founder": { "@type": "Person", "name": "Tab Butler" },
+        "currenciesAccepted": "USD",
+        "award": [
+          "Best Airport Shuttle Service, Quality Business Awards",
+          "Women-owned, DBE certified"
+        ],
+        "knowsLanguage": "en-US",
+        "sameAs": [
+          "https://www.facebook.com/ridewithTab/",
+          "https://www.instagram.com/tabsprotransportation",
+          "https://www.tiktok.com/@tabrb",
+          "https://x.com/tabprofessional"
+        ],
+        "potentialAction": {
+          "@type": "ReserveAction",
+          "name": "Reserve your ride",
+          "target": "https://tptblackcar.com/#booking"
+        },
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Car service",
+          "itemListElement": [
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Airport Service", "description": "Transfers to and from Augusta, Charleston, Columbia and Atlanta airports.", "serviceType": "Airport transfer", "provider": { "@id": "https://tptblackcar.com/#business" } } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Corporate Travel", "description": "Executive and business travel across the CSRA and beyond.", "serviceType": "Corporate car service", "provider": { "@id": "https://tptblackcar.com/#business" } } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Weddings", "description": "Wedding transportation for couples, families and guests.", "serviceType": "Wedding transportation", "provider": { "@id": "https://tptblackcar.com/#business" } } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Special Events", "description": "Black car service for events, nights out and group occasions.", "serviceType": "Event transportation", "provider": { "@id": "https://tptblackcar.com/#business" } } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Personal Car Service", "description": "Appointments, errands and personal travel, door to door.", "serviceType": "Personal car service", "provider": { "@id": "https://tptblackcar.com/#business" } } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Funerals", "description": "Quiet, dependable transportation for families and services.", "serviceType": "Funeral transportation", "provider": { "@id": "https://tptblackcar.com/#business" } } }
+          ]
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://tptblackcar.com/#website",
+        "url": "https://tptblackcar.com/",
+        "name": "TPT Black Car",
+        "publisher": { "@id": "https://tptblackcar.com/#business" },
+        "inLanguage": "en-US"
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://tptblackcar.com/#webpage",
+        "url": "https://tptblackcar.com/",
+        "name": "Black Car Service in Aiken, SC | TPT Black Car",
+        "description": "Private black car service from Aiken, South Carolina. Airport transfers, corporate travel, weddings, events and funerals across the CSRA and up to 275 miles.",
+        "isPartOf": { "@id": "https://tptblackcar.com/#website" },
+        "about": { "@id": "https://tptblackcar.com/#business" },
+        "primaryImageOfPage": "https://tptblackcar.com/assets/og-image.jpg",
+        "inLanguage": "en-US"
+      }
+    ]
   }
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&display=swap" rel="stylesheet">
-  <link rel="preload" as="image" href="assets/tab.webp" type="image/webp">
-  <link rel="stylesheet" href="styles.css?v=6">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..700&family=Mrs+Saint+Delafield&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=41">
 </head>
 <body>
 
 <a class="skip" href="#booking">Skip to reservation</a>
 
+<!-- Header: fixed. Clear over the hero, black glass once you scroll; tucks away scrolling down, returns scrolling up.
+     The menu is a route: stops on a hairline from a green departure to a red arrival, with a gold car riding to where you are. -->
+<header class="site-header" id="site-header">
+  <div class="wrap header-bar">
+    <a href="#top" class="brand" aria-label="TPT Black Car, home">
+      <img class="brand-mark" src="assets/mark-tight.svg" alt="" width="204" height="108">
+      <span class="brand-name" aria-hidden="true"><span>Tab&rsquo;s Professional</span><span>Transportation</span></span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <ol class="nav-route" role="list">
+          <li><a href="#about" data-spy="about"><span class="nav-num">01</span>About</a></li>
+          <li><a href="#services" data-spy="services"><span class="nav-num">02</span>Services</a></li>
+          <li><a href="#fleet" data-spy="fleet"><span class="nav-num">03</span>Fleet</a></li>
+          <li><a href="#reviews" data-spy="reviews"><span class="nav-num">04</span>Reviews</a></li>
+          <li><a href="#booking" data-spy="booking"><span class="nav-num">05</span>Reserve</a></li>
+      </ol>
+      <span class="nav-car" aria-hidden="true"></span>
+    </nav>
+    <div class="header-actions">
+      <a class="header-phone" href="tel:+18649016550"><span>Call or text</span>864-901-6550</a>
+      <a class="btn btn-action btn-sm header-reserve" href="#booking"><span>Reserve</span><span class="btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span></a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu"><span class="menu-btn-lines" aria-hidden="true"></span><span class="menu-btn-label">Menu</span></button>
+    </div>
+  </div>
+</header>
+
+<!-- Menu (phones and tablets): a route map. One vertical road, green to red, each section a stop. -->
+<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+  <img class="menu-mark" src="assets/mark.svg" alt="" width="640" height="360" aria-hidden="true">
+  <div class="wrap menu-inner">
+    <ol class="menu-route" role="list">
+        <li style="--i: 0"><a href="#about"><span class="menu-num">01</span><span class="menu-word">About</span><span class="menu-sub">The company, and who drives</span></a></li>
+        <li style="--i: 1"><a href="#services"><span class="menu-num">02</span><span class="menu-word">Services</span><span class="menu-sub">Six ways we drive</span></a></li>
+        <li style="--i: 2"><a href="#fleet"><span class="menu-num">03</span><span class="menu-word">Fleet</span><span class="menu-sub">The black Yukon</span></a></li>
+        <li style="--i: 3"><a href="#reviews"><span class="menu-num">04</span><span class="menu-word">Reviews</span><span class="menu-sub">In their own words</span></a></li>
+        <li style="--i: 4"><a href="#booking"><span class="menu-num">05</span><span class="menu-word">Reserve</span><span class="menu-sub">Request a ride</span></a></li>
+    </ol>
+    <div class="menu-foot">
+      <div class="menu-contact">
+        <a class="btn btn-action" href="tel:+18649016550"><span>Call 864-901-6550</span><span class="btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span></a>
+        <a class="btn btn-quiet" href="sms:+18649016550">Text TPT</a>
+      </div>
+      <p class="menu-social"><a href="https://www.facebook.com/ridewithTab/" target="_blank" rel="noopener">Facebook</a><a href="https://www.instagram.com/tabsprotransportation" target="_blank" rel="noopener">Instagram</a><a href="https://www.tiktok.com/@tabrb" target="_blank" rel="noopener">TikTok</a><a href="https://x.com/tabprofessional" target="_blank" rel="noopener">X</a></p>
+      <p class="menu-place">Aiken, South Carolina &middot; the CSRA and up to 275 miles</p>
+    </div>
+  </div>
+</div>
+
+<script>document.documentElement.classList.remove("no-js");</script>
+
 <main id="top">
 
-  <!-- Hero panel: nav on top, the claim left, Tab at centre, the award and action right, facts along the base. -->
-  <section class="frame panel hero" data-tone="dark">
-    <header class="site-header">
-      <a href="#top" class="brand" aria-label="Tab&rsquo;s Professional Transportation, home">
-        <img class="brand-mark" src="assets/mark-tight.svg" alt="" width="136" height="72">
-        <span class="brand-name" aria-hidden="true"><span>Tab&rsquo;s Professional</span><span>Transportation</span></span>
-      </a>
-      <nav class="nav" aria-label="Main">
-        <a href="#about">About</a>
-        <a href="#services">Services</a>
-        <a href="#accounts">Corporate</a>
-        <a href="#booking">Reserve</a>
-      </nav>
-      <a class="btn btn-quiet btn-sm" href="tel:+18649016550">
-        <span>864-901-6550</span>
-        <span class="btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg></span>
-      </a>
-    </header>
+  <!-- Hero: the claim on the left, the picture on the right, over a full-bleed photo layer. -->
+  <section class="band hero">
+    <div class="hero-media" aria-hidden="true">
+      <!-- Full-bleed photograph. To swap it, replace these three files; the mark below shows when no photo is present. -->
+      <picture>
+        <source type="image/webp" srcset="assets/hero-door-960.webp 960w, assets/hero-door.webp 1672w" sizes="100vw">
+        <img class="hero-photo" src="assets/hero-door.jpg" alt="" width="1672" height="941" fetchpriority="high">
+      </picture>
+      <img class="hero-watermark" src="assets/mark.svg" alt="" width="640" height="360">
+    </div>
 
-    <div class="hero-main">
-      <div class="hero-copy">
-        <p class="badge">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg>
-          Women-owned, DBE certified
-        </p>
-        <h1>Executive car service, <span class="gold">time well driven.</span></h1>
-        <p class="hero-sub">Flight-tracked, confirmed in writing, driven by the owner.</p>
+    <div class="wrap hero-inner">
+
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="hero-place">Aiken, South Carolina</p>
+          <h1>Time Well <span class="gold">Driven</span></h1>
+          <a class="btn btn-action" href="#booking">
+            <span>Reserve your ride</span>
+            <span class="btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
+          </a>
+          <ul class="hero-creds" role="list">
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+              <span><b>Best Airport Shuttle Service</b>Quality Business Awards</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg>
+              <span><b>Women-owned</b>DBE certified</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Glass card on the photograph, after the reference's floating panels. -->
+        <p class="hero-card">Skip the traffic, the airport parking and the drive home. We provide private travel so you arrive rested instead of worn out.</p>
       </div>
+    </div>
+  </section>
 
-      <figure class="hero-portrait">
-        <img class="hero-mark" src="assets/mark.svg" alt="" width="640" height="360">
-        <picture>
-          <source srcset="assets/tab.webp" type="image/webp">
-          <img src="assets/tab.png" alt="Tab Butler, owner and operator of Tab&rsquo;s Professional Transportation" width="399" height="429" fetchpriority="high">
+  <!-- About: Tab sits on the TPT mark. The logo's rails become a gold bench (crossbar at her seat line,
+       legs ending in the green departure and red arrival), with an outlined "Tab" and a gold glow behind her.
+       The stage is a golden rectangle (1 : 1.618) in the 38.2% column. -->
+  <section class="band about" id="about">
+    <div class="wrap about-grid">
+      <figure class="about-stage">
+        <span class="about-word" aria-hidden="true">Tab</span>
+        <span class="about-glow" aria-hidden="true"></span>
+        <span class="about-floor" aria-hidden="true"></span>
+        <span class="about-bench" aria-hidden="true"><span class="about-leg about-leg--depart"></span><span class="about-leg about-leg--arrive"></span></span>
+        <picture class="about-tab">
+          <source srcset="assets/tab-seated.webp" type="image/webp">
+          <img src="assets/tab-seated.png" alt="Tab Butler, owner and operator of Tab&rsquo;s Professional Transportation, seated and smiling" width="700" height="1335" loading="lazy">
         </picture>
+        <figcaption class="about-name"><b>Tab Butler</b><span>Owner</span></figcaption>
+        <span class="about-chip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>DBE certified</span>
       </figure>
-
-      <div class="hero-side">
-        <div class="award">
-          <span class="award-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></span>
-          <p><strong>Best Airport Shuttle Service</strong> Quality Business Awards</p>
-        </div>
-        <a class="btn btn-action" href="#booking">
-          <span>Reserve a car</span>
-          <span class="btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-        </a>
-      </div>
-    </div>
-
-    <dl class="facts">
-      <div>
-        <dt><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span class="num">350 mi</span></dt>
-        <dd>Range from Aiken</dd>
-      </div>
-      <div>
-        <dt><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg><span class="num">6</span></dt>
-        <dd>Services, airport to weddings</dd>
-      </div>
-      <div>
-        <dt><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="num">48 hr</span></dt>
-        <dd>Reminder before every trip</dd>
-      </div>
-      <div>
-        <dt><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="m16 11 2 2 4-4"/></svg><span class="num">1</span></dt>
-        <dd>Owner at the wheel</dd>
-      </div>
-    </dl>
-  </section>
-
-  <!-- About: the heading left, the case right. -->
-  <section class="frame plain about" id="about">
-    <div class="about-head">
-      <p class="tag">About Tab Butler</p>
-      <h2>Prompt. Personal. <span class="gold">Professional.</span></h2>
-    </div>
-    <div class="about-body">
-      <p class="about-lead">Privately owned and run by Tab Butler, the Transportation Lady of Aiken, South Carolina.</p>
-      <p>No app, no marketplace, no call center. Flights tracked by number, every trip confirmed in writing, a reminder two days out, and the name on your confirmation is the name at the wheel.</p>
-      <a class="btn btn-action" href="#booking">
-        <span>Reserve a car</span>
-        <span class="btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-      </a>
-    </div>
-  </section>
-
-  <!-- Services: a dark panel carrying a carousel of service cards. -->
-  <section class="frame panel services" id="services" data-tone="dark">
-    <div class="services-head">
-      <div>
-        <p class="tag">Services</p>
-        <h2>Where can we <span class="gold">take you?</span></h2>
-      </div>
-      <div class="services-side">
-        <p>Each card opens the reservation with that service selected.</p>
-        <div class="carousel-nav">
-          <button type="button" class="round-btn" data-carousel="prev" aria-label="Previous services"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
-          <button type="button" class="round-btn" data-carousel="next" aria-label="Next services"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
-        </div>
-      </div>
-    </div>
-
-    <ul class="svc-track" id="svc-track" role="list" tabindex="0" aria-label="Services">
-      <li>
-        <a href="#booking" class="svc-card" data-tone="light" data-service="Airport Service">
-          <span class="tag">Travel</span>
-          <h3>Airport service</h3>
-          <picture class="svc-img"><source srcset="assets/svc-airport.webp" type="image/webp"><img src="assets/svc-airport.jpg" alt="Airport terminal at dusk" width="720" height="428" loading="lazy"></picture>
-          <p>Pickups planned around your flight number, timed to the gate.</p>
-          <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-        </a>
-      </li>
-      <li>
-        <a href="#booking" class="svc-card is-featured" data-tone="dark" data-service="Corporate Function">
-          <span class="tag">Business</span>
-          <h3>Corporate travel</h3>
-          <picture class="svc-img"><source srcset="assets/svc-corporate.webp" type="image/webp"><img src="assets/svc-corporate.jpg" alt="Glass office building at blue hour" width="720" height="480" loading="lazy"></picture>
-          <p>Executives, visiting clients and teams, to meetings and back.</p>
-          <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-        </a>
-      </li>
-      <li>
-        <a href="#booking" class="svc-card" data-tone="light" data-service="Wedding">
-          <span class="tag">Celebration</span>
-          <h3>Weddings</h3>
-          <picture class="svc-img"><source srcset="assets/svc-wedding.webp" type="image/webp"><img src="assets/svc-wedding.jpg" alt="A wrapped bouquet of lilies and orchids" width="720" height="480" loading="lazy"></picture>
-          <p>A calm, polished arrival on the day it counts.</p>
-          <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-        </a>
-      </li>
-      <li>
-        <a href="#booking" class="svc-card" data-tone="light" data-service="Special Event">
-          <span class="tag">Evenings</span>
-          <h3>Special events</h3>
-          <picture class="svc-img"><source srcset="assets/svc-event.webp" type="image/webp"><img src="assets/svc-event.jpg" alt="Cellar aisle lined with sparkling wine racks" width="720" height="450" loading="lazy"></picture>
-          <p>Galas, concerts and nights out, with no parking to think about.</p>
-          <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-        </a>
-      </li>
-      <li>
-        <a href="#booking" class="svc-card" data-tone="light" data-service="Personal Car Service">
-          <span class="tag">Everyday</span>
-          <h3>Personal car service</h3>
-          <picture class="svc-img"><source srcset="assets/svc-personal.webp" type="image/webp"><img src="assets/svc-personal.jpg" alt="Rain on a car window at night" width="720" height="960" loading="lazy"></picture>
-          <p>Appointments, errands and long-distance trips, door to door.</p>
-          <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-        </a>
-      </li>
-      <li>
-        <a href="#booking" class="svc-card" data-tone="light" data-service="Funeral">
-          <span class="tag">Family</span>
-          <h3>Funerals</h3>
-          <picture class="svc-img"><source srcset="assets/svc-funeral.webp" type="image/webp"><img src="assets/svc-funeral.jpg" alt="A quiet street at dusk under warm lamps" width="720" height="488" loading="lazy"></picture>
-          <p>Quiet, respectful transport for family, every detail handled.</p>
-          <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-        </a>
-      </li>
-    </ul>
-  </section>
-
-  <!-- Accounts: the arrangements as a table, like a case list. -->
-  <section class="frame plain accounts" id="accounts">
-    <div class="accounts-head">
-      <div>
-        <p class="tag">Corporate accounts</p>
-        <h2>Built for <span class="gold">your office.</span></h2>
-      </div>
-      <div class="accounts-side">
-        <p>Opened directly with Tab Butler. Every engagement is quoted before it&rsquo;s confirmed.</p>
-        <a class="btn btn-action" href="mailto:support@tptblackcar.com?subject=Corporate%20account">
-          <span>Open an account</span>
-          <span class="btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-        </a>
-      </div>
-    </div>
-    <div class="table-scroll" role="region" aria-label="Account arrangements" tabindex="0">
-      <table class="tiers">
-        <thead>
-          <tr>
-            <th scope="col">Arrangement</th>
-            <th scope="col">Confirmation</th>
-            <th scope="col">Billing</th>
-            <th scope="col"><span class="visually-hidden">Reserve</span></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">Single trip</th>
-            <td><span class="tag">Written, by email</span></td>
-            <td>Quoted per trip</td>
-            <td><a class="round-btn" href="#booking" aria-label="Reserve a single trip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></td>
-          </tr>
-          <tr>
-            <th scope="row">Corporate account</th>
-            <td><span class="tag">Direct line to Tab Butler</span></td>
-            <td>By agreement with your office</td>
-            <td><a class="round-btn" href="mailto:support@tptblackcar.com?subject=Corporate%20account" aria-label="Open a corporate account"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></td>
-          </tr>
-          <tr>
-            <th scope="row">Group &amp; event</th>
-            <td><span class="tag">Full-day schedule</span></td>
-            <td>Quoted in advance</td>
-            <td><a class="round-btn" href="#booking" aria-label="Plan a group or event"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- Reserve: the direct line left, the reservation desk right. -->
-  <section class="frame panel reserve" data-tone="dark">
-    <div class="reserve-copy">
-      <p class="tag">Reserve</p>
-      <h2>The car&rsquo;s ready <span class="gold">when you are.</span></h2>
-      <p class="reserve-phone"><a href="tel:+18649016550">864-901-6550</a></p>
-      <p class="reserve-sub">Call or text Tab Butler directly, or send your trip here in about a minute.</p>
-    </div>
-
-    <div class="booking" id="booking" data-tone="light">
-      <div class="booking-head">
-        <h3 class="booking-title">Reserve a car</h3>
-        <ol class="steps" aria-label="Reservation steps">
-          <li class="is-current" data-step-dot="1"><span>Trip</span></li>
-          <li data-step-dot="2"><span>Details</span></li>
-          <li data-step-dot="3"><span>Contact</span></li>
+      <div class="about-copy">
+        <p class="over">About</p>
+        <h2 class="about-title"><span>Prompt.</span> <span>Personal.</span> <span class="gold">Professional.</span></h2>
+        <p class="about-lead">No app, no marketplace, no call center.</p>
+        <ol class="about-promise" role="list">
+          <li><span class="about-promise-num">01</span>Flights tracked by number</li>
+          <li><span class="about-promise-num">02</span>Every trip confirmed in writing</li>
+          <li><span class="about-promise-num">03</span>A reminder two days out</li>
+          <li><span class="about-promise-num">04</span>The name on your confirmation is the name at the wheel</li>
         </ol>
+        <p class="about-body">TPT Black Car (Tab&rsquo;s Professional Transportation) is a privately owned black car transportation company located in Aiken, SC servicing the CSRA and surrounding areas (within 275 miles). TPT Black Car provides transportation to: Airport, Corporate Functions, Special Events, Weddings, Funerals &amp; Personal Needs.</p>
+        <div class="about-foot">
+          <p class="about-sign"><span class="about-signature" aria-hidden="true">Tab Butler</span><span>Tab Butler, Owner</span></p>
+          <a class="btn btn-action" href="#booking">
+            <span>Reserve your ride</span>
+            <span class="btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
+          </a>
+        </div>
       </div>
+    </div>
+  </section>
 
-      <form id="quote-form" novalidate>
-        <!-- Step 1: trip -->
-        <div class="step" data-step="1">
-          <fieldset class="field">
-            <legend class="label">Service</legend>
-            <div class="chips" id="service-chips">
-              <label><input type="radio" name="service" value="Airport Service" required><span>Airport</span></label>
-              <label><input type="radio" name="service" value="Corporate Function"><span>Corporate</span></label>
-              <label><input type="radio" name="service" value="Wedding"><span>Wedding</span></label>
-              <label><input type="radio" name="service" value="Special Event"><span>Event</span></label>
-              <label><input type="radio" name="service" value="Personal Car Service"><span>Personal</span></label>
-              <label><input type="radio" name="service" value="Funeral"><span>Funeral</span></label>
-            </div>
-          </fieldset>
-
-          <div class="route">
-            <div class="field route-stop route-start">
-              <label for="pickup">Pickup</label>
-              <input id="pickup" name="pickup" type="text" autocomplete="street-address" placeholder="Address or place" required>
-            </div>
-            <div class="field route-stop route-end">
-              <label for="dropoff">Drop-off</label>
-              <input id="dropoff" name="dropoff" type="text" placeholder="Address, place or airport" required>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="field">
-              <label for="date">Date</label>
-              <input id="date" name="date" type="date" required>
-            </div>
-            <div class="field">
-              <label for="time">Pickup time</label>
-              <input id="time" name="time" type="time" required>
-            </div>
-          </div>
-
-          <button type="button" class="btn btn-action btn-block" data-next>Continue</button>
+  <!-- Services: a bento of six. Airport leads as the tall feature with its departures board; four in a block
+       beside it; Funerals runs quietly across the foot. Every card shows its photo and books its own service. -->
+  <section class="band services" id="services">
+    <div class="wrap">
+      <div class="svc-head">
+        <div>
+          <p class="over">Services</p>
+          <h2 class="stagger"><span>Where can we</span> <span class="dim">take you?</span></h2>
         </div>
+        <p class="svc-intro">Six ways we drive, from Aiken across the CSRA and up to 275 miles out. Pick one and the request opens with it chosen.</p>
+      </div>
+      <ol class="svc-grid" role="list">
+        <li class="svc-card svc-card--feature">
+          <div class="svc-media"><picture><source srcset="assets/svc-airport.webp?v=4" type="image/webp"><img src="assets/svc-airport.jpg?v=4" alt="Black GMC Yukon Denali at an airport, with Augusta, Charleston, Columbia and Atlanta airports listed" width="512" height="586" loading="lazy"></picture></div>
+          <div class="svc-body">
+            <span class="svc-num">01</span>
+            <h3 class="svc-title">Airport Service</h3>
+            <p class="svc-desc">Pickups planned around your flight number, timed to the gate.</p>
+            <ul class="svc-board" aria-label="Airports we serve">
+              <li><b>AGS</b>Augusta Regional</li>
+              <li><b>CHS</b>Charleston International</li>
+              <li><b>CAE</b>Columbia Metropolitan</li>
+              <li><b>ATL</b>Hartsfield&ndash;Jackson Atlanta</li>
+            </ul>
+            <a class="svc-cta" href="#booking" data-service="Airport Service">Book an airport ride<span class="btn-route" aria-hidden="true"></span></a>
+          </div>
+        </li>
+        <li class="svc-card">
+          <div class="svc-media"><picture><source srcset="assets/svc-corporate.webp?v=3" type="image/webp"><img src="assets/svc-corporate.jpg?v=3" alt="A businesswoman with a coffee stepping out of a black SUV" width="526" height="432" loading="lazy"></picture></div>
+          <div class="svc-body">
+            <span class="svc-num">02</span>
+            <h3 class="svc-title">Corporate Travel</h3>
+            <p class="svc-desc">Executives, visiting clients and teams, to meetings and back.</p>
+            <a class="svc-cta" href="#booking" data-service="Corporate Function">Book corporate travel<span class="btn-route" aria-hidden="true"></span></a>
+          </div>
+        </li>
+        <li class="svc-card">
+          <div class="svc-media"><picture><source srcset="assets/svc-wedding.webp?v=2" type="image/webp"><img src="assets/svc-wedding.jpg?v=2" alt="Black GMC Yukon Denali at an evening garden celebration under string lights" width="512" height="468" loading="lazy"></picture></div>
+          <div class="svc-body">
+            <span class="svc-num">03</span>
+            <h3 class="svc-title">Weddings</h3>
+            <p class="svc-desc">A calm, polished arrival on the day it counts.</p>
+            <a class="svc-cta" href="#booking" data-service="Wedding">Plan wedding transport<span class="btn-route" aria-hidden="true"></span></a>
+          </div>
+        </li>
+        <li class="svc-card">
+          <div class="svc-media"><picture><source srcset="assets/svc-event.webp?v=2" type="image/webp"><img src="assets/svc-event.jpg?v=2" alt="Side view of a black GMC Yukon Denali" width="512" height="446" loading="lazy"></picture></div>
+          <div class="svc-body">
+            <span class="svc-num">04</span>
+            <h3 class="svc-title">Special Events</h3>
+            <p class="svc-desc">Galas, concerts and nights out, with no parking to think about.</p>
+            <a class="svc-cta" href="#booking" data-service="Special Event">Book an event ride<span class="btn-route" aria-hidden="true"></span></a>
+          </div>
+        </li>
+        <li class="svc-card">
+          <div class="svc-media"><picture><source srcset="assets/svc-personal.webp?v=2" type="image/webp"><img src="assets/svc-personal.jpg?v=2" alt="A black SUV parked outside a front door, seen from the doorway" width="512" height="488" loading="lazy"></picture></div>
+          <div class="svc-body">
+            <span class="svc-num">05</span>
+            <h3 class="svc-title">Personal Car Service</h3>
+            <p class="svc-desc">Appointments, errands and long-distance trips, door to door.</p>
+            <a class="svc-cta" href="#booking" data-service="Personal Car Service">Book a personal ride<span class="btn-route" aria-hidden="true"></span></a>
+          </div>
+        </li>
+        <li class="svc-card svc-card--quiet">
+          <div class="svc-media"><picture><source srcset="assets/svc-funeral.webp?v=2" type="image/webp"><img src="assets/svc-funeral.jpg?v=2" alt="A black GMC Yukon Denali on a quiet tree-lined street" width="512" height="512" loading="lazy"></picture></div>
+          <div class="svc-body">
+            <span class="svc-num">06</span>
+            <h3 class="svc-title">Funerals</h3>
+            <p class="svc-desc">Quiet, respectful transport for family, every detail handled.</p>
+            <a class="svc-cta" href="#booking" data-service="Funeral">Arrange funeral transport<span class="btn-route" aria-hidden="true"></span></a>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
 
-        <!-- Step 2: details -->
-        <div class="step" data-step="2" hidden>
+  <!-- Fleet: justified rows, each photo at its own aspect ratio so nothing is cropped. -->
+  <section class="band fleet" id="fleet">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="over">The fleet</p>
+        <h2 class="stagger"><span>Black, polished,</span> <span class="dim">and on time.</span></h2>
+      </div>
+      <div class="fleet-grid">
+        <div class="fleet-row">
+          <figure class="fleet-shot" style="--r: 1.6"><picture><source srcset="assets/fleet-home.webp" type="image/webp"><img src="assets/fleet-home.jpg" alt="Black GMC Yukon Denali in a driveway, rear hatch open beside luggage" loading="lazy"></picture></figure>
+          <figure class="fleet-shot" style="--r: 2.438"><picture><source srcset="assets/fleet-airport-sunset.webp" type="image/webp"><img src="assets/fleet-airport-sunset.jpg" alt="Black GMC Yukon Denali at an airport at sunset" loading="lazy"></picture></figure>
+          <figure class="fleet-shot" style="--r: 1.766"><picture><source srcset="assets/fleet-snow.webp" type="image/webp"><img src="assets/fleet-snow.jpg" alt="Black GMC Yukon Denali on a snowy residential street" loading="lazy"></picture></figure>
+        </div>
+        <div class="fleet-row">
+          <figure class="fleet-shot" style="--r: 2.438"><picture><source srcset="assets/fleet-airport-curb.webp" type="image/webp"><img src="assets/fleet-airport-curb.jpg" alt="Black GMC Yukon Denali waiting at an airport curb" loading="lazy"></picture></figure>
+          <figure class="fleet-shot" style="--r: 2.151"><picture><source srcset="assets/fleet-street.webp" type="image/webp"><img src="assets/fleet-street.jpg" alt="Black GMC Yukon Denali parked on a brick downtown sidewalk" loading="lazy"></picture></figure>
+          <figure class="fleet-shot" style="--r: 3.122"><picture><source srcset="assets/fleet-profile.webp" type="image/webp"><img src="assets/fleet-profile.jpg" alt="Side view of a black GMC Yukon Denali in a parking lot" loading="lazy"></picture></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reviews: client words from the TPT feedback posts, set as type. One line of cards drifts right to left; swipe or drag to browse. -->
+  <section class="band reviews" id="reviews">
+    <div class="reviews-media" aria-hidden="true">
+      <picture><source srcset="assets/reviews-night.webp" type="image/webp"><img src="assets/reviews-night.jpg" alt="" width="512" height="242" loading="lazy"></picture>
+    </div>
+    <div class="wrap reviews-head">
+      <div>
+        <p class="over">Reviews</p>
+        <h2 class="stagger"><span>In their</span> <span class="dim">own words.</span></h2>
+      </div>
+      <p class="reviews-note">What clients have shared about riding with TPT, on Google and Facebook.</p>
+    </div>
+    <ol class="quotes" id="quote-track" role="list" tabindex="0" aria-label="Client reviews">
+      <li class="quote-slot">
+        <figure class="quote">
+          <span class="quote-badge" aria-hidden="true">DS</span>
+          <figcaption><b>Dana S.</b><span>Client</span></figcaption>
+          <span class="quote-rule" aria-hidden="true"></span>
+          <blockquote>Respectful, professional, reliable and always on time&hellip; We&rsquo;ve used Tabs for years and we&rsquo;re never disappointed, she has the best car service hands down!!</blockquote>
+          <span class="quote-tab"><span class="quote-stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>Google</span>
+          <span class="quote-verified"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Verified client</span>
+        </figure>
+      </li>
+      <li class="quote-slot">
+        <figure class="quote">
+          <span class="quote-badge" aria-hidden="true">MH</span>
+          <figcaption><b>Matthew Hayes</b><span>Client</span></figcaption>
+          <span class="quote-rule" aria-hidden="true"></span>
+          <blockquote>We needed a ride back from ATL airport after an international flight and based on all the positive reviews we booked with Tab&rsquo;s. She was very communicative, professional, timely and just made the process of a 3 hour drive back to Aiken very smooth. The vehicle was large, clean and very impressive. She has cold bottles of water for everyone and kept checking on us to make sure we were all good. She helped to install a car seat for our toddler as well. Would recommend Tab&rsquo;s Professional Car Svc to everyone and will surely use her services again in the future. Thank you for a great experience!</blockquote>
+          <span class="quote-tab"><span class="quote-stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>5.0</span>
+          <span class="quote-verified"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Verified client</span>
+        </figure>
+      </li>
+      <li class="quote-slot">
+        <figure class="quote">
+          <span class="quote-badge" aria-hidden="true">CE</span>
+          <figcaption><b>C E</b><span>Client</span></figcaption>
+          <span class="quote-rule" aria-hidden="true"></span>
+          <blockquote>Tab is absolutely wonderful. I highly recommend. On time, waited for us even when our flight came in late, wonderful vehicle that is fully stocked, and was very flexible with a last minute change on our end. Tab is a lovely human to speak to. Also, her rates are very good.</blockquote>
+          <span class="quote-tab"><span class="quote-stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>Google</span>
+          <span class="quote-verified"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Verified client</span>
+        </figure>
+      </li>
+      <li class="quote-slot">
+        <figure class="quote">
+          <span class="quote-badge" aria-hidden="true">AC</span>
+          <figcaption><b>Angela Calhoun</b><span>Client</span></figcaption>
+          <span class="quote-rule" aria-hidden="true"></span>
+          <blockquote>&hellip;And you do it very well. Thank you again for the Comfortable, Reliable, Service we received when we traveled to and from the Charlotte Airport for our Frazier Family Annual International Vacation to Europe.</blockquote>
+          <span class="quote-tab"><span class="quote-stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>5.0</span>
+          <span class="quote-verified"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Verified client</span>
+        </figure>
+      </li>
+      <li class="quote-slot">
+        <figure class="quote">
+          <span class="quote-badge" aria-hidden="true">HW</span>
+          <figcaption><b>Harrison Wedgeworth</b><span>Client</span></figcaption>
+          <span class="quote-rule" aria-hidden="true"></span>
+          <blockquote>My partner and I used Tab&rsquo;s Services to get from an airport to a town about an hour away. She was courteous, professional, and a pleasure to speak with. Highly recommend.</blockquote>
+          <span class="quote-verified"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Verified client</span>
+        </figure>
+      </li>
+      <li class="quote-slot">
+        <figure class="quote">
+          <span class="quote-badge" aria-hidden="true">LC</span>
+          <figcaption><b>Leslie Casillas</b><span>Client</span></figcaption>
+          <span class="quote-rule" aria-hidden="true"></span>
+          <blockquote>Yes! 4 times total. Best experience ever, would highly recommend. Just between me and FB, I&rsquo;m looking for reasons to book my next ride!!</blockquote>
+          <span class="quote-verified"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Verified client</span>
+        </figure>
+      </li>
+      <li class="quote-slot">
+        <figure class="quote">
+          <span class="quote-badge" aria-hidden="true">NW</span>
+          <figcaption><b>Nancy White-Wooten</b><span>Client</span></figcaption>
+          <span class="quote-rule" aria-hidden="true"></span>
+          <blockquote>I highly recommend Tab&rsquo;s Professional Transportation. She helped me out picking up a family member and taking them to and from the doctor&rsquo;s office. Thank you Tabitha!!</blockquote>
+          <span class="quote-verified"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Verified client</span>
+        </figure>
+      </li>
+      <li class="quote-slot">
+        <figure class="quote">
+          <span class="quote-badge" aria-hidden="true">JM</span>
+          <figcaption><b>John Michielini</b><span>Client</span></figcaption>
+          <span class="quote-rule" aria-hidden="true"></span>
+          <blockquote>TPT is top notch, consistent and helps traveling to and from the airport seamless. I have shared with several friends who have had similar experiences.</blockquote>
+          <span class="quote-verified"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Verified client</span>
+        </figure>
+      </li>
+      <li class="quote-slot">
+        <figure class="quote">
+          <span class="quote-badge" aria-hidden="true">BT</span>
+          <figcaption><b>Biby Tinajero</b><span>Client</span></figcaption>
+          <span class="quote-rule" aria-hidden="true"></span>
+          <blockquote>This is a First class service. I Highly Recommend it!!</blockquote>
+          <span class="quote-verified"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Verified client</span>
+        </figure>
+      </li>
+      <li class="quote-slot">
+        <figure class="quote">
+          <span class="quote-badge" aria-hidden="true">JM</span>
+          <figcaption><b>John Michielini</b><span>Client</span></figcaption>
+          <span class="quote-rule" aria-hidden="true"></span>
+          <blockquote>Very reliable and easy to communicate with. Give Tab a try you won&rsquo;t be disappointed.</blockquote>
+          <span class="quote-verified"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Verified client</span>
+        </figure>
+      </li>
+    </ol>
+    <div class="wrap">
+      <div class="quote-route" id="quote-route" aria-label="Choose a review"></div>
+    </div>
+
+    <!-- On Google: a small deck of Google's own cards, centred on the black. One is face up;
+         the rest sit behind it. Tap, click or use the arrow keys to go through them. -->
+    <section class="gdeck-wrap" aria-labelledby="gdeck-title">
+      <p class="gdeck-head">
+        <span id="gdeck-title">Reviews on Google</span>
+        <span class="gdeck-score"><b>5.0</b><span class="g-stars" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4L12 17.4 6.2 20.4l1.1-6.4L2.6 9.4l6.5-.9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4L12 17.4 6.2 20.4l1.1-6.4L2.6 9.4l6.5-.9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4L12 17.4 6.2 20.4l1.1-6.4L2.6 9.4l6.5-.9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4L12 17.4 6.2 20.4l1.1-6.4L2.6 9.4l6.5-.9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4L12 17.4 6.2 20.4l1.1-6.4L2.6 9.4l6.5-.9z"/></svg></span><span id="gdeck-total">30 reviews</span></span>
+      </p>
+      <div class="gdeck" id="gdeck">
+      <article class="g-card">
+          <header class="g-head">
+            <span class="g-avatar" data-tone="blue" aria-hidden="true">D</span>
+            <span class="g-who"><b>Dana S.</b><span>a year ago</span></span>
+            <span class="g-source" aria-hidden="true">G</span>
+          </header>
+          <span class="g-stars" aria-label="Rated 5 out of 5"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4L12 17.4 6.2 20.4l1.1-6.4L2.6 9.4l6.5-.9z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4L12 17.4 6.2 20.4l1.1-6.4L2.6 9.4l6.5-.9z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4L12 17.4 6.2 20.4l1.1-6.4L2.6 9.4l6.5-.9z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4L12 17.4 6.2 20.4l1.1-6.4L2.6 9.4l6.5-.9z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4L12 17.4 6.2 20.4l1.1-6.4L2.6 9.4l6.5-.9z"/></svg></span>
+          <p class="g-text">Respectful, professional, reliable and always on time&hellip; We&rsquo;ve used Tabs for years and we&rsquo;re never disappointed, she has the best car service hands down!!</p>
+      </article>
+      <article class="g-card">
+          <header class="g-head">
+            <span class="g-avatar" data-tone="green" aria-hidden="true">C</span>
+            <span class="g-who"><b>C E</b><span>a year ago</span></span>
+            <span class="g-source" aria-hidden="true">G</span>
+          </header>
+          <span class="g-stars" aria-label="Rated 5 out of 5"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4L12 17.4 6.2 20.4l1.1-6.4L2.6 9.4l6.5-.9z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4L12 17.4 6.2 20.4l1.1-6.4L2.6 9.4l6.5-.9z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4L12 17.4 6.2 20.4l1.1-6.4L2.6 9.4l6.5-.9z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4L12 17.4 6.2 20.4l1.1-6.4L2.6 9.4l6.5-.9z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4L12 17.4 6.2 20.4l1.1-6.4L2.6 9.4l6.5-.9z"/></svg></span>
+          <p class="g-text">Tab is absolutely wonderful. I highly recommend. On time, waited for us even when our flight came in late, wonderful vehicle that is fully stocked, and was very flexible with a last minute change on our end. Tab is a lovely human to speak to. Also, her rates are very good.</p>
+      </article>
+      </div>
+      <p class="gdeck-foot">
+        <button type="button" class="gdeck-step" id="gdeck-prev" aria-label="Previous review"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg></button>
+        <span class="gdeck-count" id="gdeck-count" aria-live="polite">1 of 2</span>
+        <button type="button" class="gdeck-step" id="gdeck-next" aria-label="Next review"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 6 6 6-6 6"/></svg></button>
+        <a class="gdeck-link" href="https://search.google.com/local/writereview?placeid=ChIJM4MOAXtT-IgRnFsz1b1kzlA" target="_blank" rel="noopener">Write one<span aria-hidden="true">&rarr;</span></a>
+      </p>
+    </section>
+
+    <div class="wrap write">
+      <div class="write-copy">
+        <h3 class="write-title">Rode with TPT?</h3>
+        <p class="write-note">Tell us how your ride went. Add your reservation number or the email you booked with, and your review carries a verified badge.</p>
+        <a class="write-google" id="google-review" href="https://search.google.com/local/writereview?placeid=ChIJM4MOAXtT-IgRnFsz1b1kzlA" target="_blank" rel="noopener">
+          <span class="write-google-mark" aria-hidden="true">G</span>
+          <span><b>Leave a Google review</b>Opens Google in a new tab</span>
+        </a>
+      </div>
+      <form class="write-form" id="review-form" novalidate>
+        <div class="field">
+          <label for="rv-name">Your name <span class="opt">as it should appear</span></label>
+          <input id="rv-name" name="name" type="text" autocomplete="name" maxlength="60" required>
+        </div>
+        <fieldset class="rating">
+          <legend>Your rating</legend>
+          <div class="rating-stars">
+            <!-- Highest first: the row is drawn row-reverse, so these read 1 to 5 on screen while
+                 "this star and the ones after it" stays a plain sibling selector in CSS. -->
+            <label><input type="radio" name="rating" value="5" required><span aria-hidden="true">&#9733;</span><em>5 stars</em></label>
+            <label><input type="radio" name="rating" value="4"><span aria-hidden="true">&#9733;</span><em>4 stars</em></label>
+            <label><input type="radio" name="rating" value="3"><span aria-hidden="true">&#9733;</span><em>3 stars</em></label>
+            <label><input type="radio" name="rating" value="2"><span aria-hidden="true">&#9733;</span><em>2 stars</em></label>
+            <label><input type="radio" name="rating" value="1"><span aria-hidden="true">&#9733;</span><em>1 star</em></label>
+          </div>
+        </fieldset>
+        <div class="field">
+          <label for="rv-text">Your review</label>
+          <textarea id="rv-text" name="text" rows="4" maxlength="1200" required></textarea>
+        </div>
+        <div class="row">
           <div class="field">
-            <span class="label">Trip</span>
-            <div class="segmented" role="radiogroup" aria-label="Trip type">
-              <label><input type="radio" name="tripType" value="One way" checked><span>One way</span></label>
-              <label><input type="radio" name="tripType" value="Round trip"><span>Round trip</span></label>
-            </div>
+            <label for="rv-email">Email <span class="opt">for the badge, never shown</span></label>
+            <input id="rv-email" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" maxlength="120">
           </div>
-
-          <div class="row" id="return-row" hidden>
-            <div class="field">
-              <label for="returnDate">Return date</label>
-              <input id="returnDate" name="returnDate" type="date">
-            </div>
-            <div class="field">
-              <label for="returnTime">Return time</label>
-              <input id="returnTime" name="returnTime" type="time">
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="field">
-              <label for="passengers">Passengers</label>
-              <div class="stepper">
-                <button type="button" data-dec="passengers" aria-label="Fewer passengers">&minus;</button>
-                <input id="passengers" name="passengers" type="number" inputmode="numeric" min="1" max="14" value="1" required>
-                <button type="button" data-inc="passengers" aria-label="More passengers">+</button>
-              </div>
-            </div>
-            <div class="field">
-              <label for="luggage">Bags</label>
-              <div class="stepper">
-                <button type="button" data-dec="luggage" aria-label="Fewer bags">&minus;</button>
-                <input id="luggage" name="luggage" type="number" inputmode="numeric" min="0" max="20" value="0">
-                <button type="button" data-inc="luggage" aria-label="More bags">+</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="field" id="flight-field" hidden>
-            <label for="flight">Flight number <span class="opt">we plan the pickup around it</span></label>
-            <input id="flight" name="flight" type="text" placeholder="e.g. DL 1234" autocapitalize="characters" autocomplete="off">
-          </div>
-
           <div class="field">
-            <label for="notes">Anything else? <span class="opt">optional</span></label>
-            <textarea id="notes" name="notes" rows="2" placeholder="Extra stops, child seats, special requests"></textarea>
-          </div>
-
-          <div class="step-nav">
-            <button type="button" class="btn btn-quiet" data-back>Back</button>
-            <button type="button" class="btn btn-action" data-next>Continue</button>
+            <label for="rv-ref">Reservation number <span class="opt">optional</span></label>
+            <input id="rv-ref" name="ref" type="text" inputmode="text" autocapitalize="characters" spellcheck="false" placeholder="TPT-1042" maxlength="20">
           </div>
         </div>
-
-        <!-- Step 3: contact -->
-        <div class="step" data-step="3" hidden>
-          <div class="field">
-            <label for="name">Full name</label>
-            <input id="name" name="name" type="text" autocomplete="name" required>
-          </div>
-          <div class="field">
-            <label for="phone">Mobile phone</label>
-            <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required>
-          </div>
-          <div class="field">
-            <label for="email">Email <span class="opt">your confirmation goes here</span></label>
-            <input id="email" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" required>
-          </div>
-          <!-- Spam trap: hidden from people, bots fill it in -->
-          <div class="hp" aria-hidden="true">
-            <label for="company">Company</label>
-            <input id="company" name="company" type="text" tabindex="-1" autocomplete="off">
-          </div>
-          <div class="step-nav">
-            <button type="button" class="btn btn-quiet" data-back>Back</button>
-            <button type="submit" class="btn btn-action">Review request</button>
-          </div>
+        <!-- Spam trap: hidden from people, bots fill it in -->
+        <div class="hp" aria-hidden="true">
+          <label for="rv-company">Company</label>
+          <input id="rv-company" name="company" type="text" tabindex="-1" autocomplete="off">
         </div>
-
-        <p class="form-error" id="form-error" role="alert" hidden></p>
+        <button type="submit" class="btn btn-action" id="rv-send">
+          <span>Send review</span>
+          <span class="btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
+        </button>
+        <p class="form-error" id="rv-error" role="alert" hidden></p>
       </form>
+      <div class="write-done" id="rv-done" hidden>
+        <span class="write-tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>
+        <h3>Thank you</h3>
+        <p id="rv-done-note">Your review has been received. Thank you for riding with TPT.</p>
+      </div>
+    </div>
+  </section>
 
-      <div id="review" class="review" hidden>
-        <h3>Check your trip</h3>
-        <dl id="review-list"></dl>
-        <p class="form-error" id="send-error" role="alert" hidden></p>
-        <div class="step-nav">
-          <button type="button" class="btn btn-quiet" id="edit-btn">Edit</button>
-          <button type="button" class="btn btn-action" id="send-btn">Confirm &amp; send</button>
-        </div>
+  <!-- Reserve: the direct line on the left, the request on frosted glass, over the hero car's window reflections blurred into texture. -->
+  <section class="band reserve">
+    <div class="reserve-media" aria-hidden="true">
+      <img src="assets/reserve-texture.webp" alt="" width="432" height="470" loading="lazy">
+    </div>
+    <div class="wrap reserve-grid">
+      <div class="reserve-head">
+        <p class="over">Reserve</p>
+        <h2 class="visually-hidden">Book black car service from Aiken, SC</h2>
+        <p class="reserve-phone"><a href="tel:+18649016550">864-901-6550</a></p>
+        <p class="reserve-sub">Call or text Tab Butler directly, or send your trip here in about a minute.</p>
       </div>
 
-      <div id="done" class="done" hidden tabindex="-1">
-        <img src="assets/mark-light.svg" alt="" width="96" height="54">
-        <h3>Request received</h3>
-        <p class="done-ref" id="done-ref" hidden></p>
-        <p>Tab Butler will review your trip and you&rsquo;ll get a confirmation email from <strong>bookings@tptblackcar.com</strong> once it&rsquo;s accepted.</p>
-        <p class="small">Nothing in your inbox? Check spam, or call <a href="tel:+18649016550">864-901-6550</a>.</p>
+      <div class="booking" id="booking">
+        <div class="booking-head">
+          <h3 class="booking-title">Reserve your ride</h3>
+          <ol class="steps" aria-label="Reservation steps">
+            <li class="is-current" data-step-dot="1"><span>Trip</span></li>
+            <li data-step-dot="2"><span>Details</span></li>
+            <li data-step-dot="3"><span>Contact</span></li>
+          </ol>
+        </div>
+
+        <form id="quote-form" novalidate>
+          <!-- Step 1: trip -->
+          <div class="step" data-step="1">
+            <fieldset class="field">
+              <legend class="label">Service</legend>
+              <div class="chips" id="service-chips">
+                <label><input type="radio" name="service" value="Airport Service" required><span>Airport</span></label>
+                <label><input type="radio" name="service" value="Corporate Function"><span>Corporate</span></label>
+                <label><input type="radio" name="service" value="Wedding"><span>Wedding</span></label>
+                <label><input type="radio" name="service" value="Special Event"><span>Event</span></label>
+                <label><input type="radio" name="service" value="Personal Car Service"><span>Personal</span></label>
+                <label><input type="radio" name="service" value="Funeral"><span>Funeral</span></label>
+              </div>
+            </fieldset>
+
+            <div class="route">
+              <div class="field route-stop route-start">
+                <label for="pickup">Pickup</label>
+                <input id="pickup" name="pickup" type="text" autocomplete="street-address" placeholder="Address or place" required>
+              </div>
+              <div class="field route-stop route-end">
+                <label for="dropoff">Drop-off</label>
+                <input id="dropoff" name="dropoff" type="text" placeholder="Address, place or airport" required>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="field">
+                <label for="date">Date</label>
+                <input id="date" name="date" type="date" required>
+              </div>
+              <div class="field">
+                <label for="time">Pickup time</label>
+                <input id="time" name="time" type="time" required>
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-action btn-block" data-next>Continue</button>
+            <p class="step-note">Round trip details come next</p>
+          </div>
+
+          <!-- Step 2: details -->
+          <div class="step" data-step="2" hidden>
+            <div class="field">
+              <span class="label">Trip</span>
+              <div class="segmented" role="radiogroup" aria-label="Trip type">
+                <label><input type="radio" name="tripType" value="One way" checked><span>One way</span></label>
+                <label><input type="radio" name="tripType" value="Round trip"><span>Round trip</span></label>
+              </div>
+            </div>
+
+            <div class="row" id="return-row" hidden>
+              <div class="field">
+                <label for="returnDate">Return date</label>
+                <input id="returnDate" name="returnDate" type="date">
+              </div>
+              <div class="field">
+                <label for="returnTime">Return time</label>
+                <input id="returnTime" name="returnTime" type="time">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="field">
+                <label for="passengers">Passengers</label>
+                <div class="stepper">
+                  <button type="button" data-dec="passengers" aria-label="Fewer passengers">&minus;</button>
+                  <input id="passengers" name="passengers" type="number" inputmode="numeric" min="1" max="14" value="1" required>
+                  <button type="button" data-inc="passengers" aria-label="More passengers">+</button>
+                </div>
+              </div>
+              <div class="field">
+                <label for="luggage">Bags</label>
+                <div class="stepper">
+                  <button type="button" data-dec="luggage" aria-label="Fewer bags">&minus;</button>
+                  <input id="luggage" name="luggage" type="number" inputmode="numeric" min="0" max="20" value="0">
+                  <button type="button" data-inc="luggage" aria-label="More bags">+</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="field" id="flight-field" hidden>
+              <label for="flight">Flight number</label>
+              <input id="flight" name="flight" type="text" placeholder="e.g. DL 1234" autocapitalize="characters" autocomplete="off">
+            </div>
+
+            <div class="field">
+              <label for="notes">Anything else</label>
+              <textarea id="notes" name="notes" rows="2" placeholder="Extra stops, child seats, special requests"></textarea>
+            </div>
+
+            <div class="step-nav">
+              <button type="button" class="btn btn-quiet" data-back>Back</button>
+              <button type="button" class="btn btn-action" data-next>Continue</button>
+            </div>
+          </div>
+
+          <!-- Step 3: contact -->
+          <div class="step" data-step="3" hidden>
+            <div class="field">
+              <label for="name">Full name</label>
+              <input id="name" name="name" type="text" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="phone">Mobile phone</label>
+              <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required>
+            </div>
+            <div class="field">
+              <label for="email">Email <span class="opt">your confirmation goes here</span></label>
+              <input id="email" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" required>
+            </div>
+            <!-- Spam trap: hidden from people, bots fill it in -->
+            <div class="hp" aria-hidden="true">
+              <label for="company">Company</label>
+              <input id="company" name="company" type="text" tabindex="-1" autocomplete="off">
+            </div>
+            <div class="step-nav">
+              <button type="button" class="btn btn-quiet" data-back>Back</button>
+              <button type="submit" class="btn btn-action">Review request</button>
+            </div>
+          </div>
+
+          <p class="form-error" id="form-error" role="alert" hidden></p>
+        </form>
+
+        <div id="review" class="review" hidden>
+          <h3>Check your trip</h3>
+          <dl id="review-list"></dl>
+          <p class="form-error" id="send-error" role="alert" hidden></p>
+          <div class="step-nav">
+            <button type="button" class="btn btn-quiet" id="edit-btn">Edit</button>
+            <button type="button" class="btn btn-action" id="send-btn">Confirm &amp; send</button>
+          </div>
+        </div>
+
+        <div id="done" class="done" hidden tabindex="-1">
+          <img src="assets/mark.svg" alt="" width="144" height="81">
+          <h3>Request received</h3>
+          <p class="done-ref" id="done-ref" hidden></p>
+          <p>TPT will review your reservation request. You will receive an email from <strong>bookings@tptblackcar.com</strong>.</p>
+          <p>Thanks for taking the time to request transportation services. We will get back to you shortly.</p>
+          <p class="small">Nothing in your inbox? Check spam, or call <a href="tel:+18649016550">864-901-6550</a>.</p>
+        </div>
       </div>
     </div>
   </section>
 
 </main>
 
-<footer class="frame plain site-footer">
-  <div class="footer-grid">
-    <div class="footer-brand">
-      <img src="assets/logo-stacked-light.svg" alt="Tab&rsquo;s Professional Transportation, Time Well Driven" width="1100" height="640" loading="lazy">
-    </div>
+<footer class="site-footer">
+  <div class="wrap">
     <dl class="footer-dl">
       <div><dt>Call or text</dt><dd><a href="tel:+18649016550">864-901-6550</a></dd><dd><a href="tel:+18039980672">803-998-0672</a></dd></div>
       <div><dt>Email</dt><dd><a href="mailto:support@tptblackcar.com">support@tptblackcar.com</a></dd></div>
       <div><dt>Based in</dt><dd>Aiken, South Carolina</dd></div>
+      <div><dt>Follow TPT</dt><dd><a href="https://www.facebook.com/ridewithTab/" target="_blank" rel="noopener">Facebook</a></dd><dd><a href="https://www.instagram.com/tabsprotransportation" target="_blank" rel="noopener">Instagram</a></dd><dd><a href="https://www.tiktok.com/@tabrb" target="_blank" rel="noopener">TikTok</a></dd><dd><a href="https://x.com/tabprofessional" target="_blank" rel="noopener">X</a></dd></div>
     </dl>
-  </div>
-  <div class="footer-base">
-    <p>&copy; <span id="year">2026</span> Tab&rsquo;s Professional Transportation, LLC</p>
-    <a href="#top">Back to top</a>
+    <div class="footer-brand">
+      <img src="assets/logo-stacked.svg" alt="Tab&rsquo;s Professional Transportation, Time Well Driven" width="1100" height="640" loading="lazy">
+    </div>
+    <div class="footer-base">
+      <p>&copy; <span id="year">2026</span> Tab&rsquo;s Professional Transportation, LLC</p>
+      <a href="#top">Back to top</a>
+    </div>
   </div>
 </footer>
 
@@ -437,10 +767,10 @@
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z"/></svg>
     Text
   </a>
-  <a href="#booking" class="mobile-bar-book">Reserve a car</a>
+  <a href="#booking" class="mobile-bar-book">Reserve your ride<span class="btn-route" aria-hidden="true"></span></a>
 </nav>
 
-<script src="config.js?v=1"></script>
-<script src="app.js?v=4"></script>
+<script src="config.js?v=2" defer></script>
+<script src="app.js?v=14" defer></script>
 </body>
 </html>

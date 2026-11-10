@@ -1,80 +1,88 @@
+/* TPT Black Car · Midnight
+ * One surface: black. The gold does the talking, the space does the rest.
+ * The old light/dark panel pair is gone; every section sits on the same void. */
+
 :root {
-  --space-3xs: 2px; --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xl: 40px; --space-2xl: 64px; --space-3xl: 96px; --space-4xl: 144px;
-  --text-xs: 0.8125rem; --text-sm: 0.875rem; --text-md: 1rem; --text-lg: 1.25rem; --text-xl: 1.5625rem; --text-2xl: 1.953rem; --text-3xl: 2.441rem;
-  --text-display-s: clamp(2.25rem, 3vw + 1rem, 3.5rem); --text-display: clamp(2.5rem, 3.6vw + 1rem, 4.25rem);
-  --text-section: clamp(2rem, 2.2vw + 1rem, 3.25rem); --text-title: clamp(1.125rem, 0.6vw + 0.875rem, 1.375rem); --text-lead: clamp(1.0625rem, 0.3vw + 1rem, 1.25rem);
+  /* Golden ratio throughout. phi = 1.618.
+     Spacing: each step is the last x phi, anchored at 16px (16/phi^3 ... 16*phi^4).
+     Type: half-steps of phi (sqrt phi = 1.272) from the 17px body; headings land on body x phi^n.
+     Layout: two-column sections split 61.8 / 38.2 (--phi-major / --phi-minor).
+     Section padding is one phi step below the inner rhythm, so two neighbours meet in about
+     136px rather than a screenful of empty black. */
+  --phi: 1.618; --phi-major: 1.618fr; --phi-minor: 1fr;
+  --space-3xs: 2px; --space-2xs: 4px; --space-xs: 6px; --space-sm: 10px; --space-md: 16px; --space-lg: 26px; --space-xl: 42px; --space-2xl: 68px; --space-3xl: 110px; --space-4xl: 178px;
+  --text-xs: 0.8359rem; --text-sm: 0.9419rem; --text-md: 1.0625rem; --text-lg: 1.3515rem; --text-xl: 1.7191rem; --text-2xl: 2.1865rem; --text-3xl: 2.7816rem;
+  /* body x phi^2.5 at most, x phi^1.5 at least */
+  --text-display-s: clamp(2.1865rem, 3.4vw + 1rem, 3.5388rem);
+  /* body x phi^2 up to body x phi^4 */
+  --text-display: clamp(2.7816rem, 6vw + 1rem, 7.2817rem);
+  --text-section: clamp(2.1865rem, 2.8vw + 1rem, 3.5388rem);
+  --text-title: clamp(1.3515rem, 0.7vw + 1rem, 1.7191rem);
+  --text-lead: clamp(1.1949rem, 0.5vw + 1rem, 1.3515rem);
+  --leading-body: 1.618; --leading-tight: 1.118; /* 1.618 and 1 + 1/(phi^4.5) */
+
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-in: cubic-bezier(0.7, 0, 0.84, 0); --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-  --dur-micro: 120ms; --dur-short: 220ms; --dur-long: 420ms;
-  --container: 1360px; --gutter: 24px; --gap-columns: 24px; --section-gap-s: 96px; --section-gap: 128px; --section-gap-l: 160px;
+  --dur-micro: 120ms; --dur-short: 260ms; --dur-long: 560ms;
+
+  /* Wide frame for the asymmetric layouts; measure is held per element. The luxury is the empty space. */
+  --container: 1280px; --container-tight: 760px; --gutter: 28px; --gap-columns: 28px;
+  --section-gap-s: clamp(26px, 3.4vw, 42px); --section-gap: clamp(42px, 5.6vw, 68px); --section-gap-l: clamp(68px, 9vw, 110px);
   --frame-pad: 24px; --panel-pad: clamp(24px, 4.5vw, 72px);
   --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-sticky-nav: 300; --z-modal: 400; --z-toast: 500; --z-tooltip: 600;
 
-  /* Panels and pills, after the reference layout. */
-  --radius-panel: 28px; --radius-card: 16px; --radius-inner: 10px; --radius-pill: 999px; --rule-hair: 1px;
-  --tracking-display: -0.025em;
-  --display-weight: 600;
-  --display-stretch: 112%;
+  /* Edges stay quiet: almost square, never a bubble. One radius for every surface and
+     every control, so a button never fights the card it sits in. --radius-round is for
+     things that are actually circles: the icon discs and the route dots. */
+  --radius-panel: 4px; --radius-card: 4px; --radius-inner: 4px; --radius-control: 4px;
+  --radius-round: 999px; --radius-pill: var(--radius-round); --rule-hair: 1px;
+  --tracking-display: -0.022em;
+  --tracking-over: 0.08em;
+  --display-weight: 500;
+  --display-stretch: 100%;
   --rail-w: 1px;
-  --stop: 11px;
+  --stop: 8px;
 
-  /* The TPT mark's journey: a green departure, a red arrival. */
-  --color-depart: oklch(58% 0.14 152);
-  --color-arrive: oklch(50% 0.16 30);
+  /* The TPT mark's journey: a green departure, a red arrival. Dimmed for the black. */
+  --color-depart: oklch(62% 0.12 152);
+  --color-arrive: oklch(58% 0.15 30);
 
-  /* The gold the actions carry. */
-  --color-gold: oklch(78% 0.12 82);
-  --color-gold-lift: oklch(83% 0.11 85);
-  --color-gold-press: oklch(72% 0.12 80);
-  --color-gold-ink: oklch(22% 0.045 25);
-  --color-gold-wash: oklch(78% 0.12 82 / 20%);
-  --color-red: oklch(46% 0.165 27);
-  --color-red-deep: oklch(38% 0.14 25);
+  /* Gold: the only colour that raises its voice. */
+  --color-gold: oklch(80% 0.108 86);
+  --color-gold-lift: oklch(87% 0.095 88);
+  --color-gold-press: oklch(72% 0.11 84);
+  --color-gold-ink: oklch(14% 0.014 70);
+  --color-gold-wash: oklch(80% 0.108 86 / 13%);
+  --color-gold-line: oklch(80% 0.108 86 / 34%);
+  --color-red: oklch(52% 0.16 28);
   --color-white: oklch(99.4% 0.006 80);
-  --color-shadow: oklch(16% 0.05 25 / 40%);
+  --color-shadow: oklch(0% 0 0 / 55%);
 
   --font-display: "Archivo", "Helvetica Neue", Helvetica, Arial, ui-sans-serif, sans-serif;
   --font-body: "Archivo", "Helvetica Neue", Helvetica, Arial, ui-sans-serif, sans-serif;
 }
 
-/* Light tone: champagne cream between the panels, oxblood ink, the brand red as the accent. */
-:root, [data-tone="light"] {
-  --color-paper: oklch(98.4% 0.009 82);
-  --color-paper-2: oklch(95.8% 0.016 78);
-  --color-paper-3: oklch(92.4% 0.022 74);
-  --color-field: oklch(99.6% 0.005 82);
-  --color-ink: oklch(20% 0.035 22);
-  --color-ink-2: oklch(35% 0.04 22);
-  --color-muted: oklch(47% 0.035 26);
-  --color-rule: oklch(88% 0.02 66);
-  --color-rule-strong: oklch(77% 0.03 55);
-  --color-accent: var(--color-red);
-  --color-accent-wash: oklch(46% 0.165 27 / 7%);
-  --color-accent-ink: var(--color-white);
-  --color-focus: var(--color-red);
-  --color-error: oklch(52% 0.19 36);
-  --color-disabled: oklch(92% 0.012 70);
-  --color-disabled-ink: oklch(46% 0.025 30);
-  --color-chrome: oklch(98.4% 0.009 82);
+/* The single tone. Both attributes resolve here so older markup keeps working. */
+:root, [data-tone="dark"], [data-tone="light"] {
+  --color-paper: oklch(12.4% 0.006 62);
+  --color-paper-2: oklch(16.2% 0.008 66);
+  --color-paper-3: oklch(20.5% 0.009 68);
+  --color-field: oklch(17% 0.008 66);
+  --color-ink: oklch(96.5% 0.008 85);
+  --color-ink-2: oklch(81% 0.012 80);
+  --color-muted: oklch(66% 0.014 76);
+  --color-rule: oklch(100% 0 0 / 9%);
+  --color-rule-strong: oklch(100% 0 0 / 20%);
+  --color-accent: var(--color-gold);
+  --color-accent-wash: var(--color-gold-wash);
+  --color-accent-ink: var(--color-gold-ink);
+  --color-focus: var(--color-gold);
+  --color-error: oklch(70% 0.16 30);
+  --color-disabled: oklch(26% 0.008 68);
+  --color-disabled-ink: oklch(58% 0.01 70);
+  --color-chrome: oklch(10% 0.005 62);
+  --color-glass: oklch(100% 0 0 / 6%);
   --color-action: var(--color-gold);
   --color-action-lift: var(--color-gold-lift);
   --color-action-press: var(--color-gold-press);
   --color-action-ink: var(--color-gold-ink);
-}
-
-/* Dark tone: the TPT red panels, taken from the arrival stop on the mark and deepened to oxblood. */
-[data-tone="dark"] {
-  --color-paper: oklch(23% 0.06 22);
-  --color-paper-2: oklch(28% 0.075 23);
-  --color-paper-3: oklch(34% 0.09 24);
-  --color-ink: oklch(97% 0.012 70);
-  --color-ink-2: oklch(87% 0.022 60);
-  --color-muted: oklch(77% 0.03 45);
-  --color-rule: oklch(100% 0 0 / 15%);
-  --color-rule-strong: oklch(100% 0 0 / 30%);
-  --color-accent: var(--color-gold);
-  --color-accent-wash: oklch(78% 0.12 82 / 14%);
-  --color-accent-ink: var(--color-gold-ink);
-  --color-focus: var(--color-gold);
-  --color-glass: oklch(100% 0 0 / 8%);
-  --color-glow: oklch(78% 0.12 82 / 11%);
 }

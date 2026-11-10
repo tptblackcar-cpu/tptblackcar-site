@@ -1,5 +1,10 @@
+# https://tptblackcar.com
+#
+# admin.html and cancel.html carry <meta name="robots" content="noindex, nofollow">.
+# They are deliberately NOT disallowed here: a crawler has to fetch a page to see
+# its noindex. Blocking them in this file would leave them indexable by link alone.
+
 User-agent: *
 Allow: /
-Disallow: /admin.html
 
 Sitemap: https://tptblackcar.com/sitemap.xml

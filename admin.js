@@ -2,6 +2,13 @@
 // Everything goes through the same Apps Script web app the booking form uses.
 // BOOKING_ENDPOINT comes from config.js.
 
+// GitHub Pages cannot send a frame-blocking header, so refuse to run inside
+// someone else's page, where buttons could be overlaid and clicked unseen.
+if (window.top !== window.self) {
+  document.documentElement.hidden = true;
+  throw new Error("framed");
+}
+
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 
@@ -76,6 +83,8 @@ gateForm.addEventListener("submit", async (e) => {
     desk.hidden = false;
     signout.hidden = false;
     await load();
+    // The Reviews tab shows its waiting count without being opened first.
+    loadReviews().catch(() => {});
   } catch (err) {
     gateError.textContent = friendly(err);
     gateError.hidden = false;
@@ -358,4 +367,115 @@ if (token) {
   load();
 } else {
   showGate("");
+}
+
+/* ---------- reviews: the approval queue ----------
+   A rider's words sit here until Tab decides. Nothing on this page can switch
+   the verified badge on or off: the script sets it when the review matched a
+   real trip, and it is shown here only so Tab knows what she is approving. */
+
+const rvList = $("#rv-list");
+const rvNote = $("#rv-note");
+const rvEmpty = $("#rv-empty");
+const rvTpl = $("#rv-tpl");
+const pendingCount = $("#pending-count");
+let reviews = [];
+
+$$('input[name="tab"]').forEach((r) =>
+  r.addEventListener("change", () => {
+    const reviewsOn = r.value === "reviews" && r.checked;
+    $("#pane-trips").hidden = reviewsOn;
+    $("#pane-reviews").hidden = !reviewsOn;
+    if (reviewsOn && !reviews.length) loadReviews();
+  })
+);
+
+async function loadReviews() {
+  rvNote.textContent = "Loading…";
+  rvNote.hidden = false;
+  try {
+    const res = await call("reviewList");
+    reviews = res.reviews || [];
+    renderReviews();
+    rvNote.hidden = true;
+  } catch (err) {
+    if (err.message === "signed out") return;
+    rvNote.textContent = friendly(err);
+    rvNote.hidden = false;
+  }
+}
+
+$("#rv-refresh").addEventListener("click", loadReviews);
+$$('input[name="rvfilter"]').forEach((r) => r.addEventListener("change", renderReviews));
+
+function renderReviews() {
+  const counts = { Pending: 0, Approved: 0, Hidden: 0, All: reviews.length };
+  reviews.forEach((r) => { if (counts[r.status] !== undefined) counts[r.status]++; });
+  $$("[data-rvcount]").forEach((el) => { el.textContent = counts[el.dataset.rvcount] ?? 0; });
+  if (pendingCount) pendingCount.textContent = counts.Pending;
+
+  const want = $('input[name="rvfilter"]:checked').value;
+  const shown = want === "All" ? reviews : reviews.filter((r) => r.status === want);
+
+  rvList.replaceChildren();
+  shown.forEach((r) => rvList.append(reviewCard(r)));
+  rvEmpty.hidden = shown.length > 0;
+}
+
+function reviewCard(r) {
+  const el = rvTpl.content.cloneNode(true);
+  const n = Math.max(0, Math.min(5, Math.round(r.rating)));
+  $(".rv-stars", el).textContent = "★".repeat(n) + "☆".repeat(5 - n);
+  $(".rv-status", el).textContent = r.status;
+  $(".rv-status", el).dataset.status = r.status;
+  $(".rv-received", el).textContent = fmtReceived(r.received);
+  $(".rv-name", el).textContent = r.name;
+  $(".rv-text", el).textContent = r.text;
+
+  const verified = $(".rv-verified", el);
+  verified.hidden = !r.verified;
+  if (r.verified && r.trip) verified.textContent = "Verified ride · " + r.trip;
+
+  const facts = $(".rv-facts", el);
+  [["Email", r.email], ["Reservation", r.ref], ["Decided", fmtReceived(r.decidedAt)]].forEach(([k, v]) => {
+    if (!v) return;
+    const dt = document.createElement("dt");
+    dt.textContent = k;
+    const dd = document.createElement("dd");
+    dd.textContent = v;
+    facts.append(dt, dd);
+  });
+
+  const msg = $(".rv-msg", el);
+  const approve = $(".rv-approve", el);
+  const hide = $(".rv-hide", el);
+  const pend = $(".rv-pend", el);
+
+  approve.hidden = r.status === "Approved";
+  hide.hidden = r.status === "Hidden";
+  pend.hidden = r.status === "Pending";
+
+  const decide = async (status, btn) => {
+    const was = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = "Saving…";
+    msg.hidden = true;
+    try {
+      const res = await call("reviewUpdate", { id: r.id, status });
+      const i = reviews.findIndex((x) => x.id === r.id);
+      if (i > -1) reviews[i] = res.review;
+      renderReviews();
+    } catch (err) {
+      if (err.message === "signed out") return;
+      msg.textContent = friendly(err);
+      msg.hidden = false;
+      btn.disabled = false;
+      btn.textContent = was;
+    }
+  };
+
+  approve.addEventListener("click", () => decide("Approved", approve));
+  hide.addEventListener("click", () => decide("Hidden", hide));
+  pend.addEventListener("click", () => decide("Pending", pend));
+  return el;
 }

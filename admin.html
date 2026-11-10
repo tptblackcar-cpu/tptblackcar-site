@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://script.google.com https://script.googleusercontent.com; form-action 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests">
+  <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Reservations &middot; TPT Black Car</title>
   <meta name="robots" content="noindex, nofollow">
@@ -12,15 +14,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=6">
-  <link rel="stylesheet" href="admin.css?v=1">
+  <link rel="stylesheet" href="styles.css?v=32">
+  <link rel="stylesheet" href="admin.css?v=5">
 </head>
 <body class="admin">
 
 <header class="admin-bar">
   <div class="admin-bar-in">
     <a class="admin-brand" href="/">
-      <img src="assets/mark-light.svg" alt="TPT" width="44" height="25">
+      <img src="assets/mark.svg" alt="TPT" width="44" height="25">
       <span>Reservations</span>
     </a>
     <button type="button" class="btn btn-quiet btn-sm" id="signout" hidden>Sign out</button>
@@ -46,6 +48,12 @@
 
   <!-- The desk -->
   <section class="admin-desk" id="desk" hidden>
+    <div class="chips desk-tabs" id="tabs" role="group" aria-label="What to work on">
+      <label><input type="radio" name="tab" value="trips" checked><span>Reservations</span></label>
+      <label><input type="radio" name="tab" value="reviews"><span>Reviews <b id="pending-count">0</b></span></label>
+    </div>
+
+    <div class="desk-pane" id="pane-trips">
     <div class="desk-top">
       <div class="chips" id="filters" role="group" aria-label="Filter reservations">
         <label><input type="radio" name="filter" value="Upcoming" checked><span>Upcoming <b data-count="Upcoming">0</b></span></label>
@@ -60,6 +68,23 @@
     <p class="desk-note" id="desk-note" role="status" aria-live="polite" hidden></p>
     <div id="list" class="res-list"></div>
     <p class="desk-empty" id="empty" hidden>Nothing here yet.</p>
+    </div>
+
+    <!-- Reviews: nothing a rider writes reaches the website until it is approved here. -->
+    <div class="desk-pane" id="pane-reviews" hidden>
+      <div class="desk-top">
+        <div class="chips" id="rv-filters" role="group" aria-label="Filter reviews">
+          <label><input type="radio" name="rvfilter" value="Pending" checked><span>Waiting <b data-rvcount="Pending">0</b></span></label>
+          <label><input type="radio" name="rvfilter" value="Approved"><span>On the site <b data-rvcount="Approved">0</b></span></label>
+          <label><input type="radio" name="rvfilter" value="Hidden"><span>Hidden <b data-rvcount="Hidden">0</b></span></label>
+          <label><input type="radio" name="rvfilter" value="All"><span>All <b data-rvcount="All">0</b></span></label>
+        </div>
+        <button type="button" class="btn btn-quiet btn-sm" id="rv-refresh">Refresh</button>
+      </div>
+      <p class="desk-note" id="rv-note" role="status" aria-live="polite" hidden></p>
+      <div id="rv-list" class="res-list"></div>
+      <p class="desk-empty" id="rv-empty" hidden>No reviews here yet.</p>
+    </div>
   </section>
 
 </main>
@@ -116,7 +141,29 @@
   </article>
 </template>
 
-<script src="config.js?v=1"></script>
-<script src="admin.js?v=1"></script>
+<template id="rv-tpl">
+  <article class="res rv" data-tone="light">
+    <header class="res-head">
+      <div class="res-id">
+        <span class="rv-stars num"></span>
+        <span class="res-status rv-status"></span>
+        <span class="rv-verified" hidden>Verified ride</span>
+      </div>
+      <span class="rv-received num"></span>
+    </header>
+    <p class="rv-name"></p>
+    <blockquote class="rv-text"></blockquote>
+    <dl class="res-facts rv-facts"></dl>
+    <div class="res-actions">
+      <button type="button" class="btn btn-action btn-sm rv-approve">Show on the website</button>
+      <button type="button" class="btn btn-quiet btn-sm rv-hide">Hide</button>
+      <button type="button" class="btn btn-quiet btn-sm rv-pend" hidden>Back to waiting</button>
+    </div>
+    <p class="res-msg rv-msg" role="alert" hidden></p>
+  </article>
+</template>
+
+<script src="config.js?v=2"></script>
+<script src="admin.js?v=3"></script>
 </body>
 </html>

@@ -6,6 +6,13 @@
 // inboxes, and a cancel that happened on page load would call off trips
 // nobody touched.
 
+// GitHub Pages cannot send a frame-blocking header, so refuse to run inside
+// someone else's page, where buttons could be overlaid and clicked unseen.
+if (window.top !== window.self) {
+  document.documentElement.hidden = true;
+  throw new Error("framed");
+}
+
 const $ = (s) => document.querySelector(s);
 
 const params = new URLSearchParams(location.search);
