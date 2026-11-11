@@ -3,7 +3,7 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://tptblackcar.com/</loc>
-    <lastmod>2026-11-10</lastmod>
+    <lastmod>2026-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -13,10 +13,6 @@
     <image:image>
       <image:loc>https://tptblackcar.com/assets/svc-airport.jpg</image:loc>
       <image:title>Airport service to Augusta, Charleston, Columbia and Atlanta</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://tptblackcar.com/assets/fleet-airport-sunset.jpg</image:loc>
-      <image:title>Black GMC Yukon Denali at an airport at sunset</image:title>
     </image:image>
   </url>
 </urlset>
