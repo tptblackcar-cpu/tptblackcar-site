@@ -80,15 +80,24 @@ body { background: var(--color-paper); color: var(--color-ink); }
 .btn-action:disabled::before { display: none; }
 
 /* The route glyph replaces the circled arrow inside gold buttons. */
-.btn-action .btn-icon, .btn-route { position: relative; flex: none; width: 34px; height: 10px; border-radius: 0; background: none; transform: none; transition: width var(--dur-long) var(--ease-out); }
+/* The route glyph replaces the circled arrow inside gold buttons: green departure and red arrival dots
+   (the element's own background), a hairline between them (::before), and a small SUV (::after) that
+   waits unseen at the green dot and drives to the red one on hover or keyboard focus. The car is a mask
+   filled with currentColor, so it is dark ink on gold buttons and gold in the services list. */
+.btn-action .btn-icon, .btn-route { position: relative; flex: none; width: 34px; height: 10px; border-radius: 0; transform: none; transition: width var(--dur-long) var(--ease-out);
+  background: radial-gradient(circle at 4px 50%, var(--color-depart) 3.2px, transparent 3.8px), radial-gradient(circle at calc(100% - 4px) 50%, var(--color-arrive) 3.2px, transparent 3.8px); }
 .btn-action .btn-icon svg { display: none; }
 .btn-action .btn-icon::before, .btn-route::before { content: ""; position: absolute; inset-inline: 4px; top: 50%; height: 1px; translate: 0 -50%; background: currentColor; opacity: 0.5; }
-.btn-action .btn-icon::after, .btn-route::after { content: ""; position: absolute; inset: 0;
-  background: radial-gradient(circle at 4px 50%, var(--color-depart) 3.2px, transparent 3.8px), radial-gradient(circle at calc(100% - 4px) 50%, var(--color-arrive) 3.2px, transparent 3.8px); }
-.btn-action:hover .btn-icon { transform: none; width: 52px; }
+.btn-action .btn-icon::after, .btn-route::after { content: ""; position: absolute; left: 6px; bottom: calc(50% - 1px); width: 19px; height: 10px; opacity: 0; background: currentColor; pointer-events: none;
+  -webkit-mask: var(--car-mask) center / contain no-repeat; mask: var(--car-mask) center / contain no-repeat;
+  transition: left var(--dur-long) var(--ease-out), opacity var(--dur-short) var(--ease-out); }
+:root { --car-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 18'%3E%3Cpath d='M2 13.2V9.6c0-.8.5-1.5 1.3-1.7L8 6.6l4.2-4.1c.6-.6 1.4-.9 2.2-.9h7.9c.9 0 1.7.4 2.2 1.1l3 4 3.2.6c.9.2 1.5.9 1.5 1.8v4.1c0 .5-.4.9-.9.9h-2.1a3.9 3.9 0 0 0-7.6 0H12.4a3.9 3.9 0 0 0-7.6 0H2.9c-.5 0-.9-.4-.9-.9ZM13.6 7h6.2V3.6h-3.4c-.4 0-.8.2-1.1.5L13.6 7Zm8.2 0h4.6l-2-2.7c-.3-.4-.7-.7-1.2-.7h-1.4V7ZM8.6 17.4a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm17.6 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z'/%3E%3C/svg%3E"); }
+.btn-action:hover .btn-icon, .btn-action:focus-visible .btn-icon { transform: none; width: 52px; }
+.btn-action:hover .btn-icon::after, .btn-action:focus-visible .btn-icon::after,
+.svc-list a:hover .btn-route::after, .svc-list a:focus-visible .btn-route::after { left: calc(100% - 30px); opacity: 1; }
 .btn-action:has(.btn-icon) { padding-inline-end: var(--space-lg); }
 .btn-sm.btn-action .btn-icon { width: 28px; }
-.btn-sm.btn-action:hover .btn-icon { width: 40px; }
+.btn-sm.btn-action:hover .btn-icon, .btn-sm.btn-action:focus-visible .btn-icon { width: 44px; }
 
 /* Quiet buttons: hairline that turns gold, a little glass. */
 .btn-quiet { background: oklch(100% 0 0 / 2%); transition: background-color var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out); }
@@ -97,7 +106,8 @@ body { background: var(--color-paper); color: var(--color-ink); }
 /* ---------- Header: fixed; the menu is a route ----------
    Clear over the hero photo; black glass with a hairline once the page moves; tucks up while you
    scroll down and returns the moment you scroll up. The nav stops sit on a hairline that runs from a
-   green departure to a red arrival, and a small gold car (.nav-car) rides to the section in view. */
+   green departure to a red arrival, and a small gold SUV (.nav-car) drives to the section in view:
+   parked at the green dot above the first section, at the red dot past the last. */
 :root { --header-h: 96px; }
 .site-header { position: fixed; inset: 0 0 auto; z-index: var(--z-sticky-nav); height: var(--header-h); transition: background-color var(--dur-long) var(--ease-out), border-color var(--dur-long) var(--ease-out), translate var(--dur-long) var(--ease-out), height var(--dur-long) var(--ease-out); border-block-end: var(--rule-hair) solid transparent; }
 .site-header.is-scrolled { --header-h: 72px; background: oklch(10% 0.005 62 / 78%); -webkit-backdrop-filter: blur(18px) saturate(1.1); backdrop-filter: blur(18px) saturate(1.1); border-block-end-color: var(--color-rule); }
@@ -107,6 +117,7 @@ body { background: var(--color-paper); color: var(--color-ink); }
 .brand-mark { width: auto; height: 52px; transition: height var(--dur-long) var(--ease-out); }
 .site-header.is-scrolled .brand-mark { height: 40px; }
 .brand-name { display: flex; flex-direction: column; padding-inline-start: var(--space-md); border-inline-start: var(--rule-hair) solid var(--color-rule-strong); font-family: var(--font-display); font-size: var(--text-xs); line-height: 1.35; letter-spacing: 0.02em; color: var(--color-ink-2); }
+.brand-tag { margin-block-start: 2px; font-style: italic; letter-spacing: 0.04em; color: var(--color-gold); }
 
 .nav { position: relative; padding-block: 10px 14px; }
 .nav-route { display: flex; gap: clamp(var(--space-md), 2.2vw, var(--space-xl)); margin: 0; padding: 0 6px; list-style: none; }
@@ -119,7 +130,7 @@ body { background: var(--color-paper); color: var(--color-ink); }
 .nav a:hover .nav-num, .nav a[aria-current="true"] .nav-num { color: var(--color-gold); }
 .nav a:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 4px; border-radius: 2px; }
 /* The car: a gold dot with a short glow, riding the road to the stop in view. */
-.nav-car { position: absolute; bottom: 1px; left: 0; width: 7px; height: 7px; border-radius: var(--radius-round); background: var(--color-gold); box-shadow: 0 0 0 3px var(--color-gold-wash), 0 0 12px var(--color-gold); translate: calc(var(--car-x, -20px) - 3.5px) 0; opacity: var(--car-on, 0); transition: translate var(--dur-long) var(--ease-out), opacity var(--dur-short) var(--ease-out); pointer-events: none; }
+.nav-car { position: absolute; bottom: 4px; left: 0; width: 24px; height: 12px; background: var(--color-gold); -webkit-mask: var(--car-mask) center / contain no-repeat; mask: var(--car-mask) center / contain no-repeat; filter: drop-shadow(0 0 4px oklch(80% 0.108 86 / 70%)); translate: calc(var(--car-x, -40px) - 12px) 0; scale: var(--car-face, 1) 1; opacity: var(--car-on, 0); transition: translate 900ms var(--ease-out), scale var(--dur-short) var(--ease-out), opacity var(--dur-short) var(--ease-out); pointer-events: none; }
 
 .header-actions { display: flex; align-items: center; gap: var(--space-md); flex: none; }
 .header-phone { display: flex; flex-direction: column; align-items: flex-end; font-size: var(--text-sm); font-variant-numeric: tabular-nums; color: var(--color-ink); text-decoration: none; line-height: 1.25; transition: color var(--dur-short) var(--ease-out); }
@@ -185,30 +196,61 @@ html.menu-open { overflow: hidden; }
 
 .hero-inner { display: flex; flex-direction: column; flex: 1; }
 /* The foot of the grid is kept clear for the glass card: its height plus its 64px offset. */
-.hero-grid { flex: 1; display: grid; grid-template-columns: minmax(0, var(--phi-major)) minmax(0, var(--phi-minor)); grid-template-rows: minmax(0, 1fr); column-gap: var(--space-xl); padding-block-end: calc(var(--space-2xl) + 200px); }
+.hero-grid { flex: 1; display: grid; grid-template-columns: minmax(0, var(--phi-major)) minmax(0, var(--phi-minor)); grid-template-rows: minmax(0, 1fr); column-gap: var(--space-xl); padding-block-end: calc(var(--space-2xl) + 240px); }
 .hero-copy { grid-column: 1; grid-row: 1; align-self: center; display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-xl); padding-block: var(--space-2xl); }
 .hero-place { margin: 0; font-size: var(--text-sm); letter-spacing: 0.01em; color: var(--color-muted); }
-.hero h1 { max-width: 9ch; font-size: var(--text-display); font-weight: 300; line-height: 0.94; letter-spacing: -0.035em; }
+.hero h1 { max-width: 13ch; font-size: clamp(2.4rem, 4.4vw + 1rem, 5.4rem); font-weight: 300; line-height: 0.98; letter-spacing: -0.035em; }
 
-/* Credentials: two quiet facts under a hairline. No card, no colour. */
-.hero-creds { display: flex; flex-wrap: wrap; gap: var(--space-lg) var(--space-2xl); margin: var(--space-md) 0 0; padding: var(--space-lg) 0 0; list-style: none; border-block-start: var(--rule-hair) solid var(--color-rule); }
-.hero-creds li { display: flex; align-items: flex-start; gap: var(--space-sm); font-size: var(--text-xs); line-height: 1.5; color: var(--color-muted); }
-.hero-creds svg { flex: none; width: 16px; height: 16px; margin-block-start: 2px; fill: none; stroke: var(--color-muted); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-.hero-creds b { display: block; font-weight: 500; color: var(--color-ink); }
 
 
 /* Glass card at the foot of the picture, after the reference's floating panels.
    Anchored to the photo, not the grid: the hand starts at 75% of the image and the photo is
    framed at 72%, so a right edge at 72% of the hero stays left of the hand at every aspect ratio. */
-.hero-card { position: absolute; right: calc(38.2% + var(--space-lg)); bottom: var(--space-2xl); z-index: 1; max-width: 288px; margin: 0; padding: var(--space-lg); border: var(--rule-hair) solid var(--color-rule); border-radius: var(--radius-card); background: oklch(14% 0.006 62 / 66%); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); font-size: var(--text-sm); line-height: var(--leading-body); color: var(--color-ink-2); }
-.hero-card::before { content: ""; display: block; width: 24px; height: 1px; margin-block-end: var(--space-md); background: var(--color-rule-strong); }
+.hero-card { position: absolute; right: calc(38.2% + var(--space-lg)); bottom: var(--space-2xl); z-index: 1; max-width: 380px; margin: 0; padding: var(--space-lg) var(--space-xl) var(--space-xl); border: var(--rule-hair) solid var(--color-rule-strong); border-radius: var(--radius-card); background: linear-gradient(180deg, oklch(20% 0.009 68 / 78%), oklch(14% 0.006 62 / 84%)); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); box-shadow: 0 30px 60px -24px oklch(0% 0 0 / 80%); }
+/* The route line from the nav, in miniature: green departure, gold hairline, red arrival. */
+.hero-card-route { position: relative; display: block; width: 72px; height: 8px; margin-block-end: var(--space-md); background: radial-gradient(circle at 4px 50%, var(--color-depart) 3px, transparent 3.5px), radial-gradient(circle at calc(100% - 4px) 50%, var(--color-arrive) 3px, transparent 3.5px); }
+.hero-card-route::before { content: ""; position: absolute; inset-inline: 8px; top: 50%; height: 1px; background: var(--color-gold-line); }
+.hero-card-lead { margin: 0; font-family: var(--font-display); font-size: var(--text-xl); font-weight: 600; line-height: 1.2; letter-spacing: -0.012em; color: var(--color-ink); text-wrap: balance; }
+.hero-card-body { margin: var(--space-sm) 0 0; font-size: var(--text-md); line-height: var(--leading-body); color: var(--color-ink-2); }
+
+/* Certifications: cards under the hero. A white plate (matching the logos that ship on white) holds each logo; name and status are set as type. */
+.creds { padding-block: var(--space-2xl); }
+.creds .over { margin-block-end: var(--space-lg); }
+.creds-list { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--space-md); margin: 0; padding: 0; list-style: none; }
+.cred-card { display: flex; flex-direction: column; overflow: hidden; border: var(--rule-hair) solid var(--color-rule-strong); border-radius: var(--radius-card); background: var(--color-paper-2); transition: translate var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out); }
+.cred-card:hover { translate: 0 -3px; border-color: var(--color-gold-line); }
+.cred-plate { --plate-h: 120px; display: flex; align-items: center; justify-content: center; height: var(--plate-h); padding: var(--space-md) var(--space-lg); background: #fff; }
+.cred-plate img { display: block; width: auto; height: auto; max-width: 100%; max-height: calc(var(--plate-h) - 2 * var(--space-md)); object-fit: contain; }
+.cred-text { flex: 1; display: flex; flex-direction: column; gap: 4px; padding: var(--space-md); border-block-start: 2px solid var(--color-gold); }
+.cred-text b { font-family: var(--font-display); font-size: var(--text-sm); font-weight: 500; line-height: 1.3; color: var(--color-ink); }
+.cred-text span { font-size: var(--text-xs); color: var(--color-gold); }
+@media (max-width: 68rem) {
+  .creds-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+/* The copies app.js adds for the phone loop are never shown on wider screens. */
+.cred-card[data-copy] { display: none; }
+/* Phones: one row. Without script, or with reduced motion, it is a swipeable row with no scrollbar.
+   With script the cards are doubled and the row glides left on a loop, half its length per cycle
+   so the copies take over seamlessly; it runs edge to edge and pauses while touched. */
+@media (max-width: 48rem) {
+  .creds-list { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 62%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .creds-list::-webkit-scrollbar { display: none; }
+  .cred-card { scroll-snap-align: start; }
+  .cred-plate { --plate-h: 104px; }
+  .creds .wrap:has(.is-rolling) { overflow: hidden; }
+  .creds-list.is-rolling { display: flex; gap: 0; width: max-content; overflow: visible; animation: creds-roll 32s linear infinite; }
+  .creds-list.is-rolling .cred-card { flex: none; width: 220px; margin-inline-end: var(--space-md); }
+  .creds-list.is-rolling .cred-card[data-copy] { display: flex; }
+  .creds-list.is-rolling:hover, .creds-list.is-rolling.is-held { animation-play-state: paused; }
+}
+@keyframes creds-roll { to { translate: -50% 0; } }
 
 /* ---------- About: Tab sits on the TPT mark ----------
    The stage is a golden rectangle (1 : 1.618). The logo's rails become a bench: a gold crossbar at her
    seat line with two legs ending in the green departure and red arrival dots. Every offset is in cqw
-   of the stage's width, so the pose scales with the column. Her seat line is 66.5% down the photo. */
+   of the stage's width, so the pose scales with the column. Her seat line is 54% down the photo. */
 .about-grid { display: grid; grid-template-columns: minmax(0, var(--phi-minor)) minmax(0, var(--phi-major)); gap: var(--space-3xl); align-items: center; }
-.about-stage { --tab-w: 74cqw; --tab-h: calc(var(--tab-w) * 1335 / 700); --floor: 6cqw; --seat: calc(var(--floor) + var(--tab-h) * 0.335);
+.about-stage { --tab-w: 62cqw; --tab-h: calc(var(--tab-w) * 1679 / 700); --floor: 6cqw; --seat: calc(var(--floor) + var(--tab-h) * 0.46);
   position: relative; isolation: isolate; container-type: inline-size; aspect-ratio: 1 / 1.618; margin: 0; }
 .about-stage > * { container-type: normal; }
 /* The outlined name behind her, a quiet echo of the badge on the reviews. */
@@ -261,7 +303,6 @@ html.menu-open { overflow: hidden; }
    link that books its service; the gold route grows on hover like the other links on the page. */
 .svc-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: var(--space-lg) var(--space-3xl); margin-block-end: var(--space-2xl); }
 .svc-head h2 { font-weight: 300; }
-.svc-intro { max-width: 38ch; margin: 0; padding-inline-start: var(--space-lg); border-inline-start: var(--rule-hair) solid var(--color-gold-line); font-size: var(--text-sm); line-height: var(--leading-body); color: var(--color-muted); }
 
 .svc-layout { display: grid; grid-template-columns: minmax(0, 0.809fr) minmax(0, 1fr); gap: var(--space-2xl); align-items: stretch; }
 .svc-photo { position: relative; margin: 0; overflow: hidden; border: var(--rule-hair) solid var(--color-rule); border-radius: var(--radius-card); background: var(--color-paper-3); }
@@ -379,7 +420,7 @@ textarea { resize: vertical; }
 .footer-dl a { color: var(--color-ink-2); text-decoration: none; transition: color var(--dur-short) var(--ease-out); }
 .footer-dl a:hover { color: var(--color-ink); }
 .footer-brand { display: flex; justify-content: center; margin-block: var(--space-2xl) var(--space-xl); }
-.footer-brand img { width: calc(100% / var(--phi) / var(--phi)); min-width: 280px; max-width: 420px; }
+.footer-brand img { width: calc(100% / var(--phi)); min-width: 300px; max-width: 680px; }
 .footer-base { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: var(--space-lg) var(--space-xl); padding-block-start: var(--space-lg); border-block-start: var(--rule-hair) solid var(--color-rule); font-size: var(--text-xs); letter-spacing: 0; color: var(--color-muted); }
 .footer-base a { color: var(--color-muted); text-decoration: none; }
 .footer-base a:hover { color: var(--color-ink); }
@@ -590,7 +631,6 @@ textarea { resize: vertical; }
 }
 
 @media (max-width: 48rem) {
-  .svc-intro { padding-inline-start: var(--space-md); }
   .svc-layout { grid-template-columns: minmax(0, 1fr); }
   .svc-photo { aspect-ratio: 1.272; }
 
@@ -600,7 +640,6 @@ textarea { resize: vertical; }
   .hero-grid { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto; padding-block-end: 0; }
   .hero-copy { grid-column: 1; grid-row: 1; gap: var(--space-lg); padding-block: var(--space-2xl) var(--space-xl); }
   .hero h1 { max-width: none; }
-  .hero-creds { gap: var(--space-md) var(--space-xl); }
   .hero-card { position: static; grid-column: 1; grid-row: 2; justify-self: stretch; max-width: none; margin: 0 0 var(--space-lg); }
   /* With a photograph, phones get it as a square banner under the header, framed on the hand.
      The headline rests on the banner's lower edge (104px header, 89px place line and headline, 8px air),
@@ -619,6 +658,7 @@ textarea { resize: vertical; }
   .mobile-bar svg { width: 16px; height: 16px; fill: currentColor; }
   .mobile-bar .mobile-bar-book { gap: var(--space-sm); padding-inline: var(--space-sm); background: linear-gradient(176deg, var(--color-gold-lift) 0%, var(--color-gold) 46%, var(--color-gold-press) 100%); box-shadow: inset 0 1px 0 oklch(100% 0 0 / 42%); color: var(--color-action-ink); font-weight: 500; line-height: 1.25; text-align: center; text-wrap: balance; }
   .mobile-bar .mobile-bar-book .btn-route { width: 26px; }
+  .mobile-bar .mobile-bar-book .btn-route::after { display: none; }
   body { padding-block-end: 56px; }
 }
 

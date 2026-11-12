@@ -54,18 +54,46 @@ if (siteHeader) {
   syncHeader();
 }
 
+// ---- Certifications: on phones the row glides by on its own ----
+// The cards are doubled so the loop is seamless; the copies are hidden from screen readers and skipped
+// by the keyboard. Reduced motion keeps the plain swipeable row.
+const credsList = $("#creds-list");
+if (credsList && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  [...credsList.children].forEach((card) => {
+    const copy = card.cloneNode(true);
+    copy.dataset.copy = "";
+    copy.setAttribute("aria-hidden", "true");
+    credsList.append(copy);
+  });
+  credsList.classList.add("is-rolling");
+  const hold = (on) => () => credsList.classList.toggle("is-held", on);
+  credsList.addEventListener("touchstart", hold(true), { passive: true });
+  credsList.addEventListener("touchend", hold(false));
+  credsList.addEventListener("touchcancel", hold(false));
+}
+
 // ---- Nav: the car rides the road to the section in view ----
 const navRoute = $(".nav-route");
 if (navRoute) {
   const links = $$("[data-spy]", navRoute);
   const sections = links.map((a) => $(`#${a.dataset.spy}`)).filter(Boolean);
   const nav = navRoute.closest(".nav");
-  const park = (link) => {
+  // Between sections the car waits at the green departure (above the first) or the red arrival (past
+  // the last). It faces the way it is driving, so it turns round when you scroll back up.
+  let lastX = null;
+  const park = (link, end) => {
     links.forEach((a) => a.setAttribute("aria-current", a === link ? "true" : "false"));
-    if (!link) { nav.style.setProperty("--car-on", 0); return; }
-    const r = link.getBoundingClientRect();
     const n = nav.getBoundingClientRect();
-    nav.style.setProperty("--car-x", `${r.left - n.left + r.width / 2}px`);
+    let x;
+    if (link) {
+      const r = link.getBoundingClientRect();
+      x = r.left - n.left + r.width / 2;
+    } else {
+      x = end ? n.width - 14 : 14;
+    }
+    if (lastX !== null && Math.abs(x - lastX) > 1) nav.style.setProperty("--car-face", x < lastX ? -1 : 1);
+    lastX = x;
+    nav.style.setProperty("--car-x", `${x}px`);
     nav.style.setProperty("--car-on", 1);
   };
   // The section covering the upper third of the screen is the one being read.
@@ -76,7 +104,8 @@ if (navRoute) {
       const r = s.getBoundingClientRect();
       if (r.top <= line && r.bottom > line) here = links[i];
     });
-    park(here);
+    const last = sections[sections.length - 1];
+    park(here, !here && last && last.getBoundingClientRect().bottom <= line);
   };
   addEventListener("scroll", spy, { passive: true });
   addEventListener("resize", spy);
