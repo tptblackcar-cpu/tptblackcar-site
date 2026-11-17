@@ -149,6 +149,15 @@ if (menu && menuBtn) {
   });
 }
 
+// ---- About: Tab's photo is a WebP inside an SVG, which has no <picture> fallback.
+// A browser that cannot decode WebP gets the PNG instead. ----
+const tabPhoto = $(".about-tab image");
+if (tabPhoto) {
+  const probe = new Image();
+  probe.onerror = () => tabPhoto.setAttribute("href", tabPhoto.getAttribute("href").replace(".webp", ".png"));
+  probe.src = "data:image/webp;base64,UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==";
+}
+
 // ---- About: the route draws around Tab's arch and a gold light rides it, once ----
 const about = $("#about");
 if (about) {
