@@ -113,11 +113,12 @@ body { background: var(--color-paper); color: var(--color-ink); }
 .site-header.is-scrolled { --header-h: 72px; background: oklch(10% 0.005 62 / 78%); -webkit-backdrop-filter: blur(18px) saturate(1.1); backdrop-filter: blur(18px) saturate(1.1); border-block-end-color: var(--color-rule); }
 .site-header.is-tucked { translate: 0 -100%; }
 .header-bar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-lg); height: 100%; }
-.brand { display: inline-flex; align-items: center; gap: var(--space-md); flex: none; color: var(--color-ink); text-decoration: none; }
+.brand { display: inline-grid; grid-template-columns: auto auto; align-items: center; column-gap: var(--space-md); row-gap: 4px; flex: none; color: var(--color-ink); text-decoration: none; }
 .brand-mark { width: auto; height: 52px; transition: height var(--dur-long) var(--ease-out); }
 .site-header.is-scrolled .brand-mark { height: 40px; }
 .brand-name { display: flex; flex-direction: column; padding-inline-start: var(--space-md); border-inline-start: var(--rule-hair) solid var(--color-rule-strong); font-family: var(--font-display); font-size: var(--text-xs); line-height: 1.35; letter-spacing: 0.02em; color: var(--color-ink-2); }
-.brand-tag { margin-block-start: 2px; font-style: italic; letter-spacing: 0.04em; color: var(--color-gold); }
+/* The tagline spans the whole lockup, centered under the mark and the name. */
+.brand-tag { grid-column: 1 / -1; justify-self: center; font-family: var(--font-display); font-size: var(--text-xs); font-style: italic; letter-spacing: 0.04em; line-height: 1.2; color: var(--color-gold); }
 
 .nav { position: relative; padding-block: 10px 14px; }
 .nav-route { display: flex; gap: clamp(var(--space-md), 2.2vw, var(--space-xl)); margin: 0; padding: 0 6px; list-style: none; }
@@ -198,7 +199,6 @@ html.menu-open { overflow: hidden; }
 /* The foot of the grid is kept clear for the glass card: its height plus its 64px offset. */
 .hero-grid { flex: 1; display: grid; grid-template-columns: minmax(0, var(--phi-major)) minmax(0, var(--phi-minor)); grid-template-rows: minmax(0, 1fr); column-gap: var(--space-xl); padding-block-end: calc(var(--space-2xl) + 240px); }
 .hero-copy { grid-column: 1; grid-row: 1; align-self: center; display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-xl); padding-block: var(--space-2xl); }
-.hero-place { margin: 0; font-size: var(--text-sm); letter-spacing: 0.01em; color: var(--color-muted); }
 .hero h1 { max-width: 13ch; font-size: clamp(2.4rem, 4.4vw + 1rem, 5.4rem); font-weight: 300; line-height: 0.98; letter-spacing: -0.035em; }
 
 
@@ -206,12 +206,11 @@ html.menu-open { overflow: hidden; }
 /* Glass card at the foot of the picture, after the reference's floating panels.
    Anchored to the photo, not the grid: the hand starts at 75% of the image and the photo is
    framed at 72%, so a right edge at 72% of the hero stays left of the hand at every aspect ratio. */
-.hero-card { position: absolute; right: calc(38.2% + var(--space-lg)); bottom: var(--space-2xl); z-index: 1; max-width: 380px; margin: 0; padding: var(--space-lg) var(--space-xl) var(--space-xl); border: var(--rule-hair) solid var(--color-rule-strong); border-radius: var(--radius-card); background: linear-gradient(180deg, oklch(20% 0.009 68 / 78%), oklch(14% 0.006 62 / 84%)); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); box-shadow: 0 30px 60px -24px oklch(0% 0 0 / 80%); }
+.hero-card { position: absolute; right: calc(38.2% + var(--space-lg)); bottom: var(--space-2xl); z-index: 1; max-width: 760px; margin: 0; padding: var(--space-lg) var(--space-xl) var(--space-xl); border: var(--rule-hair) solid var(--color-rule-strong); border-radius: var(--radius-card); background: linear-gradient(180deg, oklch(20% 0.009 68 / 78%), oklch(14% 0.006 62 / 84%)); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); box-shadow: 0 30px 60px -24px oklch(0% 0 0 / 80%); }
 /* The route line from the nav, in miniature: green departure, gold hairline, red arrival. */
 .hero-card-route { position: relative; display: block; width: 72px; height: 8px; margin-block-end: var(--space-md); background: radial-gradient(circle at 4px 50%, var(--color-depart) 3px, transparent 3.5px), radial-gradient(circle at calc(100% - 4px) 50%, var(--color-arrive) 3px, transparent 3.5px); }
 .hero-card-route::before { content: ""; position: absolute; inset-inline: 8px; top: 50%; height: 1px; background: var(--color-gold-line); }
-.hero-card-lead { margin: 0; font-family: var(--font-display); font-size: var(--text-xl); font-weight: 600; line-height: 1.2; letter-spacing: -0.012em; color: var(--color-ink); text-wrap: balance; }
-.hero-card-body { margin: var(--space-sm) 0 0; font-size: var(--text-md); line-height: var(--leading-body); color: var(--color-ink-2); }
+.hero-card-lead { margin: 0; font-family: var(--font-display); font-size: var(--text-lg); font-weight: 500; line-height: 1.35; letter-spacing: -0.012em; color: var(--color-ink); text-wrap: pretty; }
 
 /* Certifications: cards under the hero. A white plate (matching the logos that ship on white) holds each logo; name and status are set as type. */
 .creds { padding-block: var(--space-2xl); }
@@ -245,50 +244,34 @@ html.menu-open { overflow: hidden; }
 }
 @keyframes creds-roll { to { translate: -50% 0; } }
 
-/* ---------- About: Tab sits on the TPT mark ----------
-   The stage is a golden rectangle (1 : 1.618). The logo's rails become a bench: a gold crossbar at her
-   seat line with two legs ending in the green departure and red arrival dots. Every offset is in cqw
-   of the stage's width, so the pose scales with the column. Her seat line is 54% down the photo. */
+/* ---------- About: Tab steps out of the frame ----------
+   One SVG in user units (100 x 132), so the arch, the route and the photo scale as a piece. The photo is
+   cropped just below her hands and sits on a gold sill across the arch. */
 .about-grid { display: grid; grid-template-columns: minmax(0, var(--phi-minor)) minmax(0, var(--phi-major)); gap: var(--space-3xl); align-items: center; }
-.about-stage { --tab-w: 62cqw; --tab-h: calc(var(--tab-w) * 1679 / 700); --floor: 6cqw; --seat: calc(var(--floor) + var(--tab-h) * 0.46);
-  position: relative; isolation: isolate; container-type: inline-size; aspect-ratio: 1 / 1.618; margin: 0; }
-.about-stage > * { container-type: normal; }
-/* The outlined name behind her, a quiet echo of the badge on the reviews. */
-.about-word { position: absolute; top: 0; left: 50%; z-index: -2; translate: -50% 0; font-family: var(--font-display); font-size: 40cqw; font-weight: 600; line-height: 0.9; letter-spacing: -0.05em; color: transparent; -webkit-text-stroke: 1px var(--color-gold-line); pointer-events: none; user-select: none; }
-.about-glow { position: absolute; left: 50%; top: 34%; z-index: -1; width: 120cqw; height: 120cqw; translate: -50% -50%; border-radius: 50%; background: radial-gradient(closest-side, oklch(80% 0.108 86 / 22%), transparent 72%); pointer-events: none; }
-.about-floor { position: absolute; left: 50%; bottom: calc(var(--floor) - 3cqw); width: 92cqw; height: 6cqw; translate: -50% 0; border-radius: 50%; background: radial-gradient(closest-side, oklch(0% 0 0 / 70%), transparent); filter: blur(4px); }
-/* The bench: crossbar at the seat line, legs down to the floor. */
-.about-bench { position: absolute; left: 6cqw; right: 6cqw; bottom: calc(var(--seat) - 2.4cqw); z-index: 1; height: 2.4cqw; border-radius: 2cqw; background: linear-gradient(180deg, var(--color-gold-lift), var(--color-gold) 50%, var(--color-gold-press)); box-shadow: 0 1.2cqw 3cqw oklch(0% 0 0 / 55%), inset 0 1px 0 oklch(100% 0 0 / 45%); transform-origin: 50% 50%; }
-.about-leg { position: absolute; top: 100%; width: 2.4cqw; height: calc(var(--seat) - var(--floor) - 2.4cqw); background: linear-gradient(90deg, var(--color-gold-press), var(--color-gold) 50%, var(--color-gold-press)); }
-.about-leg--depart { left: 4cqw; }
-.about-leg--arrive { right: 4cqw; }
-.about-leg::after { content: ""; position: absolute; left: 50%; bottom: -2.6cqw; width: 5.2cqw; height: 5.2cqw; translate: -50% 0; border-radius: var(--radius-round); box-shadow: 0 0 0 1.2cqw var(--color-paper), 0 0 3cqw currentColor; background: currentColor; }
-.about-leg--depart::after { color: var(--color-depart); }
-.about-leg--arrive::after { color: var(--color-arrive); }
-.about-tab { position: absolute; left: 50%; bottom: var(--floor); z-index: 2; width: var(--tab-w); translate: -48% 0; }
-.about-tab img { display: block; width: 100%; height: auto; filter: drop-shadow(0 3cqw 5cqw oklch(0% 0 0 / 55%)); }
-/* Glass name card and one chip, floating beside her. */
-.about-name, .about-chip { position: absolute; z-index: 3; border: var(--rule-hair) solid var(--color-rule-strong); border-radius: var(--radius-card); background: oklch(14% 0.006 62 / 70%); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 0 14px 30px -14px oklch(0% 0 0 / 80%); }
-/* The two cards hang off the stage edges, each in a band where the cutout is empty:
-   the name beside her hanging leg, the badge above her shoulder. */
-.about-name { left: -8cqw; bottom: 20%; display: flex; flex-direction: column; gap: 2px; padding: var(--space-sm) var(--space-md); }
-.about-name b { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 400; color: var(--color-ink); }
-.about-name span { font-size: var(--text-xs); color: var(--color-gold); }
-.about-chip { right: -8cqw; top: 8%; display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; font-size: var(--text-xs); white-space: nowrap; color: var(--color-ink-2); }
-.about-chip svg { width: 14px; height: 14px; fill: none; stroke: var(--color-depart); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.about-stage { position: relative; isolation: isolate; margin: 0; }
+.about-glow { position: absolute; left: 50%; top: 55%; z-index: -1; width: 130%; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; background: radial-gradient(closest-side, oklch(80% 0.108 86 / 22%), transparent 72%); pointer-events: none; }
+.about-art { display: block; width: 100%; height: auto; overflow: visible; }
+.about-arch { fill: url(#about-arch-fill); filter: drop-shadow(0 6px 10px oklch(0% 0 0 / 60%)); }
+.about-arch-ring { fill: none; stroke: var(--color-gold-line); stroke-width: 0.35; }
+.about-route { fill: none; stroke: var(--color-gold); stroke-width: 0.6; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
+.about-stop { stroke: var(--color-paper); stroke-width: 0.9; }
+.about-stop--depart { fill: var(--color-depart); }
+.about-stop--arrive { fill: var(--color-arrive); }
+.about-sill { fill: url(#about-sill-fill); filter: drop-shadow(0 1.5px 2px oklch(0% 0 0 / 60%)); }
+.about-car { fill: var(--color-gold-lift); filter: drop-shadow(0 0 1.5px var(--color-gold)); opacity: 0; }
+@keyframes about-ride { 8%, 88% { opacity: 1; } }
 
-/* Arrival: the bench draws out from the middle, Tab settles onto it, the cards drift in. */
-.about-bench { scale: 0 1; transition: scale 900ms var(--ease-out); }
-.about-leg { scale: 1 0; transform-origin: 50% 0; transition: scale 600ms var(--ease-out) 500ms; }
-.about-tab { opacity: 0; translate: -48% 5cqw; transition: opacity 700ms var(--ease-out) 350ms, translate 900ms var(--ease-out) 350ms; }
-.about-name, .about-chip { opacity: 0; translate: 0 3cqw; transition: opacity 600ms var(--ease-out) 800ms, translate 600ms var(--ease-out) 800ms; }
-.about.is-in .about-bench { scale: 1 1; }
-.about.is-in .about-leg { scale: 1 1; }
-.about.is-in .about-tab { opacity: 1; translate: -48% 0; }
-.about.is-in .about-name, .about.is-in .about-chip { opacity: 1; translate: 0 0; }
-.no-js .about-bench, .no-js .about-leg { scale: 1 1; }
-.no-js .about-tab { opacity: 1; translate: -48% 0; }
-.no-js .about-name, .no-js .about-chip { opacity: 1; translate: 0; }
+/* Arrival: the arch rises and the sill draws out, the route draws from departure to arrival with the light riding it, Tab steps up. */
+.about-sill { scale: 0 1; transform-origin: 50% 50%; transform-box: fill-box; transition: scale 700ms var(--ease-out); }
+.about.is-in .about-sill, .no-js .about-sill { scale: 1 1; }
+.about-arch, .about-arch-ring { opacity: 0; transition: opacity 700ms var(--ease-out); }
+.about-route { stroke-dashoffset: 1; transition: stroke-dashoffset 2.4s cubic-bezier(0.45, 0, 0.2, 1) 300ms; }
+.about-stop--arrive { opacity: 0; transition: opacity 300ms var(--ease-out) 2.6s; }
+.about-tab { opacity: 0; translate: 0 6px; transition: opacity 700ms var(--ease-out) 200ms, translate 900ms var(--ease-out) 200ms; }
+.about.is-in .about-arch, .about.is-in .about-arch-ring, .about.is-in .about-stop--arrive, .about.is-in .about-tab,
+.no-js .about-arch, .no-js .about-arch-ring, .no-js .about-stop--arrive, .no-js .about-tab { opacity: 1; translate: 0 0; }
+.about.is-in .about-route, .no-js .about-route { stroke-dashoffset: 0; }
+.about.is-in .about-car { animation: about-ride 2.6s linear 300ms both; }
 
 .about-copy { display: flex; flex-direction: column; align-items: flex-start; }
 .about-title { display: flex; flex-wrap: wrap; column-gap: 0.28em; max-width: none; font-size: var(--text-section); font-weight: 300; line-height: var(--leading-tight); letter-spacing: -0.025em; }
@@ -296,7 +279,7 @@ html.menu-open { overflow: hidden; }
 .about-body { max-width: 58ch; margin: var(--space-xl) 0 0; font-size: var(--text-sm); line-height: var(--leading-body); color: var(--color-muted); }
 .about-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-lg); width: 100%; margin-block-start: var(--space-xl); padding-block-start: var(--space-lg); border-block-start: var(--rule-hair) solid var(--color-rule); }
 .about-sign { display: flex; flex-direction: column; margin: 0; font-size: var(--text-xs); color: var(--color-muted); }
-.about-signature { font-family: "Mrs Saint Delafield", cursive; font-size: 3rem; line-height: 1; color: var(--color-gold); }
+.about-signature { font-family: "Mrs Saint Delafield", cursive; font-size: 4.75rem; line-height: 0.9; letter-spacing: 0.02em; color: var(--color-gold); }
 
 /* ---------- Services: one photo, six names ----------
    A single airport photo sits beside the list so the section shows the car once. Each row is a
@@ -408,7 +391,8 @@ textarea { resize: vertical; }
 .done img { width: 144px; margin: 0 auto var(--space-lg); }
 .done p { max-width: 42ch; margin-inline: auto; color: var(--color-ink-2); }
 .done p + p { margin-block-start: var(--space-md); }
-.done .small { margin-block-start: var(--space-lg); font-size: var(--text-sm); color: var(--color-muted); }
+.done .small { max-width: none; margin-block-start: var(--space-lg); font-size: var(--text-sm); color: var(--color-muted); }
+.done .nowrap { white-space: nowrap; }
 .done .done-ref { margin-block-end: var(--space-sm); font-variant-numeric: tabular-nums; letter-spacing: 0.04em; font-size: var(--text-sm); color: var(--color-muted); }
 
 /* ---------- Footer: contact, then the logo as a signature ---------- */
@@ -437,10 +421,8 @@ textarea { resize: vertical; }
   .site-header.is-scrolled { --header-h: 64px; }
   .brand-mark { height: 40px; }
   .site-header.is-scrolled .brand-mark { height: 34px; }
-  .brand-name, .header-reserve { display: none; }
+  .brand-name, .brand-tag, .header-reserve { display: none; }
   .about-stage { width: min(88%, 380px); }
-  .about-name { left: -4cqw; }
-  .about-chip { right: -4cqw; }
   .about-foot { flex-direction: column; align-items: flex-start; }
 }
 

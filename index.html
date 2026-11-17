@@ -127,7 +127,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..700&family=Mrs+Saint+Delafield&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=52">
+  <link rel="stylesheet" href="styles.css?v=54">
 </head>
 <body>
 
@@ -139,7 +139,8 @@
   <div class="wrap header-bar">
     <a href="#top" class="brand" aria-label="TPT Black Car, home">
       <img class="brand-mark" src="assets/mark-tight.svg" alt="" width="204" height="108">
-      <span class="brand-name" aria-hidden="true"><span>Tab&rsquo;s Professional</span><span>Transportation</span><span class="brand-tag">Time Well Driven</span></span>
+      <span class="brand-name" aria-hidden="true"><span>Tab&rsquo;s Professional</span><span>Transportation</span></span>
+      <span class="brand-tag" aria-hidden="true">Time Well Driven</span>
     </a>
     <nav class="nav" aria-label="Main">
       <ol class="nav-route" role="list">
@@ -198,7 +199,6 @@
 
       <div class="hero-grid">
         <div class="hero-copy">
-          <p class="hero-place">Aiken, South Carolina</p>
           <h1>Your time is worth more than <span class="gold">the drive.</span></h1>
           <a class="btn btn-action" href="#booking">
             <span>Reserve your ride</span>
@@ -206,11 +206,10 @@
           </a>
         </div>
 
-        <!-- Glass card on the photograph: the pain point as a bold lead, the promise beneath it, under a short route line. -->
+        <!-- Glass card on the photograph: the promise, under a short route line. -->
         <div class="hero-card">
           <span class="hero-card-route" aria-hidden="true"></span>
-          <p class="hero-card-lead">Skip the traffic, the airport parking and the drive home.</p>
-          <p class="hero-card-body">We provide private travel so you arrive rested instead of worn out.</p>
+          <p class="hero-card-lead">Answer emails, chat with your traveling partners, or just close your eyes. We handle the road so you arrive rested.</p>
         </div>
       </div>
     </div>
@@ -246,22 +245,55 @@
     </div>
   </section>
 
-  <!-- About: Tab sits on the TPT mark. The logo's rails become a gold bench (crossbar at her seat line,
-       legs ending in the green departure and red arrival), with an outlined "Tab" and a gold glow behind her.
-       The stage is a golden rectangle (1 : 1.618) in the 38.2% column. -->
+  <!-- About: Tab steps out of an arched window. The arch is the backdrop; she sits on its gold sill with her
+       head and shoulders rising over the top and her lap fading into its shadow. Around it runs the TPT route, green departure to red arrival,
+       and a gold light rides it once when the section arrives. The stage sits in the 38.2% column. -->
   <section class="band about" id="about">
     <div class="wrap about-grid">
       <figure class="about-stage">
-        <span class="about-word" aria-hidden="true">Tab</span>
         <span class="about-glow" aria-hidden="true"></span>
-        <span class="about-floor" aria-hidden="true"></span>
-        <span class="about-bench" aria-hidden="true"><span class="about-leg about-leg--depart"></span><span class="about-leg about-leg--arrive"></span></span>
-        <picture class="about-tab">
-          <source srcset="assets/tab-seated.webp?v=2" type="image/webp">
-          <img src="assets/tab-seated.png?v=2" alt="Tab Butler, owner and operator of Tab&rsquo;s Professional Transportation, seated and smiling" width="700" height="1679" loading="lazy">
-        </picture>
-        <figcaption class="about-name"><b>Tab Butler</b><span>Owner</span></figcaption>
-        <span class="about-chip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>DBE certified</span>
+        <svg class="about-art" viewBox="0 0 100 132" role="img" aria-label="Tab Butler, owner and operator of Tab&rsquo;s Professional Transportation, smiling">
+          <defs>
+            <radialGradient id="about-arch-fill" cx="50%" cy="38%" r="70%">
+              <stop offset="0" stop-color="oklch(36% 0.035 78)"/>
+              <stop offset="1" stop-color="oklch(15% 0.008 62)"/>
+            </radialGradient>
+            <linearGradient id="about-sill-fill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="oklch(87% 0.095 88)"/>
+              <stop offset="0.5" stop-color="oklch(80% 0.108 86)"/>
+              <stop offset="1" stop-color="oklch(72% 0.11 84)"/>
+            </linearGradient>
+            <!-- Her lap and the hip where the sofa was fade into the arch's shadow, so she reads as seated, not floating. -->
+            <linearGradient id="about-fade-down" gradientUnits="userSpaceOnUse" x1="0" y1="123" x2="0" y2="128">
+              <stop offset="0" stop-color="#000" stop-opacity="0"/>
+              <stop offset="1" stop-color="#000"/>
+            </linearGradient>
+            <!-- A narrow oval on the right edge only: it covers the hip and stays clear of her forearm. -->
+            <radialGradient id="about-fade-hip" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="1" gradientTransform="translate(90 126) scale(12 30)">
+              <stop offset="0.45" stop-color="#000"/>
+              <stop offset="1" stop-color="#000" stop-opacity="0"/>
+            </radialGradient>
+            <mask id="about-fade" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="132">
+              <rect width="100" height="132" fill="#fff"/>
+              <rect y="123" width="100" height="9" fill="url(#about-fade-down)"/>
+              <rect x="76" y="94" width="24" height="38" fill="url(#about-fade-hip)"/>
+            </mask>
+            <!-- Below the shoulders she stays inside the arch; above it she is free to break out. -->
+            <clipPath id="about-clip"><path d="M0 0H100V96H0Z M12 96V126Q12 128 14 128H86Q88 128 88 126V96Z"/></clipPath>
+          </defs>
+          <path class="about-route" d="M6 128V74A44 44 0 0 1 94 74V128" pathLength="1"/>
+          <circle class="about-stop about-stop--depart" cx="6" cy="128" r="2.2"/>
+          <circle class="about-stop about-stop--arrive" cx="94" cy="128" r="2.2"/>
+          <path class="about-arch" d="M12 128V74A38 38 0 0 1 88 74V128Z"/>
+          <path class="about-arch-ring" d="M15 128V74A35 35 0 0 1 85 74V128"/>
+          <g class="about-tab" clip-path="url(#about-clip)">
+            <image href="assets/tab-portrait.webp?v=5" x="12" y="4" width="76" height="124" mask="url(#about-fade)"/>
+          </g>
+          <rect class="about-sill" x="9" y="126.6" width="82" height="2.4" rx="1.2"/>
+          <circle class="about-car" r="1.6">
+            <animateMotion id="about-ride" dur="2.4s" begin="indefinite" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines="0.45 0 0.2 1" path="M6 128V74A44 44 0 0 1 94 74V128"/>
+          </circle>
+        </svg>
       </figure>
       <div class="about-copy">
         <p class="over">About</p>
@@ -451,7 +483,7 @@
     <div class="wrap write">
       <div class="write-copy">
         <h3 class="write-title">Rode with TPT?</h3>
-        <p class="write-note">Tell us how your ride went. Add your reservation number or the email you booked with, and your review carries a verified badge.</p>
+        <p class="write-note">We&rsquo;d love to hear how your ride went. A quick Google review helps other travelers in the Aiken area and beyond find reliable, professional transportation.</p>
         <a class="write-google" id="google-review" href="https://search.google.com/local/writereview?placeid=ChIJM4MOAXtT-IgRnFsz1b1kzlA" target="_blank" rel="noopener">
           <span class="write-google-mark" aria-hidden="true">G</span>
           <span><b>Leave a Google review</b>Opens Google in a new tab</span>
@@ -477,16 +509,6 @@
         <div class="field">
           <label for="rv-text">Your review</label>
           <textarea id="rv-text" name="text" rows="4" maxlength="1200" required></textarea>
-        </div>
-        <div class="row">
-          <div class="field">
-            <label for="rv-email">Email <span class="opt">for the badge, never shown</span></label>
-            <input id="rv-email" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" maxlength="120">
-          </div>
-          <div class="field">
-            <label for="rv-ref">Reservation number <span class="opt">optional</span></label>
-            <input id="rv-ref" name="ref" type="text" inputmode="text" autocapitalize="characters" spellcheck="false" placeholder="TPT-1042" maxlength="20">
-          </div>
         </div>
         <!-- Spam trap: hidden from people, bots fill it in -->
         <div class="hp" aria-hidden="true">
@@ -671,7 +693,7 @@
           <p class="done-ref" id="done-ref" hidden></p>
           <p>TPT will review your reservation request. You will receive an email from <strong>bookings@tptblackcar.com</strong>.</p>
           <p>Thanks for taking the time to request transportation services. We will get back to you shortly.</p>
-          <p class="small">Nothing in your inbox? Check spam, or call <a href="tel:+18649016550">864-901-6550</a>.</p>
+          <p class="small">Nothing in your inbox? Check spam, or call <a class="nowrap" href="tel:+18649016550">864-901-6550</a>.</p>
         </div>
       </div>
     </div>
@@ -711,6 +733,6 @@
 </nav>
 
 <script src="config.js?v=2" defer></script>
-<script src="app.js?v=16" defer></script>
+<script src="app.js?v=17" defer></script>
 </body>
 </html>

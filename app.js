@@ -149,12 +149,14 @@ if (menu && menuBtn) {
   });
 }
 
-// ---- About: the bench draws, Tab settles onto it, once ----
+// ---- About: the route draws around Tab's arch and a gold light rides it, once ----
 const about = $("#about");
 if (about) {
   new IntersectionObserver(([entry], obs) => {
     if (!entry.isIntersecting) return;
     about.classList.add("is-in");
+    const ride = $("#about-ride");
+    if (ride && !matchMedia("(prefers-reduced-motion: reduce)").matches) setTimeout(() => ride.beginElement(), 300);
     obs.disconnect();
   }, { threshold: 0.25 }).observe(about);
 }
