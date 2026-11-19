@@ -1,0 +1,14 @@
+{
+  "name": "TPT Driver",
+  "short_name": "TPT Driver",
+  "description": "Today's TPT Black Car trips for drivers.",
+  "start_url": "/driver.html",
+  "scope": "/driver.html",
+  "display": "standalone",
+  "background_color": "#FBF7F1",
+  "theme_color": "#3B1412",
+  "icons": [
+    { "src": "assets/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

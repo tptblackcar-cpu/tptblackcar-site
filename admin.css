@@ -197,3 +197,103 @@
 .rv-name { margin: var(--space-sm) 0 0; font-family: var(--font-display); font-size: var(--text-lg); font-weight: 500; }
 .rv-text { margin: var(--space-xs) 0 var(--space-md); padding-inline-start: var(--space-md); border-inline-start: 2px solid var(--color-gold-line); font-size: var(--text-md); line-height: var(--leading-body); white-space: pre-wrap; }
 .rv-received { font-size: var(--text-xs); color: var(--color-muted); }
+
+/* ---------- Driver page ---------- */
+
+.drv-main { max-width: 40rem; }
+.drv-intro { margin: 0; font-size: var(--text-sm); color: var(--color-muted); }
+.drv-day {
+  margin: var(--space-md) 0 calc(-1 * var(--space-xs));
+  font-size: var(--text-sm);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+.drv-day:first-child { margin-block-start: 0; }
+.drv-time {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  letter-spacing: var(--tracking-display);
+}
+.drv .res-trip { margin-block-end: var(--space-xs); font-size: var(--text-md); }
+.drv-driver { margin: 0 0 var(--space-md); font-size: var(--text-sm); color: var(--color-ink-2); }
+.drv .res-trip + .drv-driver[hidden] + .res-route { margin-block-start: var(--space-md); }
+.drv-nav {
+  display: inline-block;
+  margin-block-end: var(--space-sm);
+  font-size: var(--text-sm);
+  color: var(--color-accent);
+}
+.drv .res-route p { margin-block-end: 2px; }
+/* Three steps a thumb can hit without looking twice. */
+.drv-steps {
+  display: grid;
+  gap: var(--space-xs);
+  padding-block-start: var(--space-md);
+  border-block-start: var(--rule-hair) solid var(--color-rule);
+}
+.drv-step { min-height: 60px; font-size: var(--text-md); }
+.drv-step.is-stamped:disabled { opacity: 1; color: var(--color-depart); border-color: var(--color-depart); cursor: default; }
+.drv.is-done { opacity: .7; }
+
+/* Tab's desk: how far a trip has got. */
+.res-progress { margin-block-end: var(--space-sm); font-size: var(--text-sm); color: var(--color-depart); }
+
+/* Tab's desk: the driver roster. */
+.dr-name { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 600; }
+.dr .row { margin-block: var(--space-md); }
+.dr-add { margin-block-start: var(--space-lg); }
+.dr-add .row { margin-block: var(--space-md); }
+.dr-title { font-size: var(--text-lg); margin: 0; }
+.drv-me { margin: 0 0 var(--space-md); font-size: var(--text-sm); color: var(--color-muted); }
+/* The driver picker, dressed like the text fields beside it. */
+.res-driver {
+  width: 100%;
+  min-height: 48px;
+  padding: var(--space-sm) var(--space-md);
+  border: var(--rule-hair) solid var(--color-rule-strong);
+  border-radius: var(--radius-inner);
+  background: var(--color-field);
+  color: var(--color-ink);
+  font: inherit;
+}
+.res-driver:focus-visible { outline: 1px solid var(--color-focus); outline-offset: 0; border-color: var(--color-focus); }
+
+/* Driver page: the "rider can see you" banner while a trip is under way. */
+.drv-share {
+  margin-block-end: var(--space-md);
+  padding: var(--space-md);
+  border: var(--rule-hair) solid var(--color-depart);
+  border-radius: var(--radius-card);
+  background: var(--color-paper);
+}
+.drv-share[data-state="error"], .drv-share[data-state="paused"] { border-color: var(--color-error); }
+.drv-share-head { margin: 0 0 var(--space-2xs); font-weight: 600; }
+.drv-share-head::before { content: "● "; color: var(--color-depart); }
+.drv-share[data-state="error"] .drv-share-head::before,
+.drv-share[data-state="paused"] .drv-share-head::before { color: var(--color-error); }
+.drv-share-note { margin: 0; font-size: var(--text-sm); color: var(--color-ink-2); }
+
+/* Rider's tracking page */
+.trk-main { max-width: 44rem; }
+.trk-status h1 { font-size: var(--text-2xl); margin: 0; }
+.trk-status .lead { margin-block: var(--space-xs) var(--space-md); }
+.trk-map-wrap { margin-block-end: var(--space-md); }
+.trk-map {
+  height: min(60vh, 480px);
+  min-height: 300px;
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  /* Leaflet's own tiles and controls are light; keep them that way in dark mode. */
+  color-scheme: light;
+  background: #e8e4dc;
+}
+.trk-updated { margin: var(--space-xs) 0 0; font-size: var(--text-sm); color: var(--color-depart); }
+.trk-updated[data-stale] { color: var(--color-muted); }
+.trk-card .label { font-size: var(--text-xs); color: var(--color-muted); }
+.trk-pickup { margin: 2px 0 var(--space-2xs); font-size: var(--text-md); }
+.trk-when { margin: 0 0 var(--space-md); font-size: var(--text-sm); color: var(--color-ink-2); }
+.trk-actions { display: flex; gap: var(--space-xs); }
+.trk-actions .btn { flex: 1 1 0; }

@@ -16,8 +16,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=32">
-  <link rel="stylesheet" href="admin.css?v=5">
+  <link rel="stylesheet" href="styles.css?v=55">
+  <link rel="stylesheet" href="admin.css?v=7">
 </head>
 <body class="admin">
 
@@ -53,6 +53,7 @@
     <div class="chips desk-tabs" id="tabs" role="group" aria-label="What to work on">
       <label><input type="radio" name="tab" value="trips" checked><span>Reservations</span></label>
       <label><input type="radio" name="tab" value="reviews"><span>Reviews <b id="pending-count">0</b></span></label>
+      <label><input type="radio" name="tab" value="drivers"><span>Drivers</span></label>
     </div>
 
     <div class="desk-pane" id="pane-trips">
@@ -86,6 +87,29 @@
       <p class="desk-note" id="rv-note" role="status" aria-live="polite" hidden></p>
       <div id="rv-list" class="res-list"></div>
       <p class="desk-empty" id="rv-empty" hidden>No reviews here yet.</p>
+    </div>
+
+    <!-- Drivers: who can sign in to the driver page, and who gets trips. -->
+    <div class="desk-pane" id="pane-drivers" hidden>
+      <div class="desk-top">
+        <p class="drv-intro">Each driver signs in at <b>tptblackcar.com/driver.html</b> with their own passcode.</p>
+        <button type="button" class="btn btn-quiet btn-sm" id="dr-refresh">Refresh</button>
+      </div>
+      <p class="desk-note" id="dr-note" role="status" aria-live="polite" hidden></p>
+      <div id="dr-list" class="res-list"></div>
+      <p class="desk-empty" id="dr-empty" hidden>No drivers yet. Until you add one, nothing is assigned and you drive every trip.</p>
+
+      <form class="res dr-add" id="dr-add" data-tone="light">
+        <h2 class="dr-title">Add a driver</h2>
+        <div class="row">
+          <div class="field"><label for="dr-name">Name</label><input id="dr-name" type="text" maxlength="60" required></div>
+          <div class="field"><label for="dr-email">Email <span class="opt">trips are sent here</span></label><input id="dr-email" type="email" maxlength="200"></div>
+          <div class="field"><label for="dr-phone">Phone</label><input id="dr-phone" type="tel" maxlength="40"></div>
+          <div class="field"><label for="dr-pass">Passcode <span class="opt">8 or more characters</span></label><input id="dr-pass" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" minlength="8" required></div>
+        </div>
+        <button type="submit" class="btn btn-action btn-sm" id="dr-add-btn">Add driver</button>
+        <p class="res-msg" id="dr-add-msg" role="alert" hidden></p>
+      </form>
     </div>
   </section>
 
@@ -127,9 +151,14 @@
           <label>Note to rider <span class="opt">optional</span></label>
           <input class="res-note" type="text" placeholder="Car, pickup spot, anything" maxlength="500">
         </div>
+        <div class="field">
+          <label>Driver <span class="opt">emailed the trip once confirmed</span></label>
+          <select class="res-driver"></select>
+        </div>
       </div>
 
       <p class="res-sent" hidden></p>
+      <p class="res-progress" hidden></p>
 
       <div class="res-actions">
         <button type="button" class="btn btn-action btn-sm res-confirm">Confirm &amp; email rider</button>
@@ -165,7 +194,29 @@
   </article>
 </template>
 
+<template id="dr-tpl">
+  <article class="res dr" data-tone="light">
+    <header class="res-head">
+      <div class="res-id">
+        <span class="dr-name"></span>
+        <span class="res-status dr-status"></span>
+      </div>
+      <span class="res-countdown dr-upcoming num"></span>
+    </header>
+    <div class="row">
+      <div class="field"><label>Email</label><input class="dr-email" type="email" maxlength="200"></div>
+      <div class="field"><label>Phone</label><input class="dr-phone" type="tel" maxlength="40"></div>
+      <div class="field"><label>New passcode <span class="opt">leave empty to keep</span></label><input class="dr-pass" type="text" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
+    </div>
+    <div class="res-actions">
+      <button type="button" class="btn btn-quiet btn-sm dr-save">Save</button>
+      <button type="button" class="btn btn-quiet btn-sm dr-toggle"></button>
+    </div>
+    <p class="res-msg" role="alert" hidden></p>
+  </article>
+</template>
+
 <script src="config.js?v=2"></script>
-<script src="admin.js?v=3"></script>
+<script src="admin.js?v=5"></script>
 </body>
 </html>

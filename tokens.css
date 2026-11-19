@@ -43,19 +43,19 @@
   --stop: 8px;
 
   /* The TPT mark's journey: a green departure, a red arrival. Dimmed for the black. */
-  --color-depart: oklch(62% 0.12 152);
-  --color-arrive: oklch(58% 0.15 30);
+  --color-depart: #459b61;
+  --color-arrive: #c35141;
 
   /* Gold: the only colour that raises its voice. */
-  --color-gold: oklch(80% 0.108 86);
-  --color-gold-lift: oklch(87% 0.095 88);
-  --color-gold-press: oklch(72% 0.11 84);
-  --color-gold-ink: oklch(14% 0.014 70);
-  --color-gold-wash: oklch(80% 0.108 86 / 13%);
-  --color-gold-line: oklch(80% 0.108 86 / 34%);
-  --color-red: oklch(52% 0.16 28);
-  --color-white: oklch(99.4% 0.006 80);
-  --color-shadow: oklch(0% 0 0 / 55%);
+  --color-gold: #ddb968;
+  --color-gold-lift: #eed18a;
+  --color-gold-press: #c59e4d;
+  --color-gold-ink: #0d0804;
+  --color-gold-wash: rgba(221, 185, 104, 0.13);
+  --color-gold-line: rgba(221, 185, 104, 0.34);
+  --color-red: #b33830;
+  --color-white: #fffdf9;
+  --color-shadow: rgba(0, 0, 0, 0.55);
 
   --font-display: "Archivo", "Helvetica Neue", Helvetica, Arial, ui-sans-serif, sans-serif;
   --font-body: "Archivo", "Helvetica Neue", Helvetica, Arial, ui-sans-serif, sans-serif;
@@ -63,24 +63,24 @@
 
 /* The single tone. Both attributes resolve here so older markup keeps working. */
 :root, [data-tone="dark"], [data-tone="light"] {
-  --color-paper: oklch(12.4% 0.006 62);
-  --color-paper-2: oklch(16.2% 0.008 66);
-  --color-paper-3: oklch(20.5% 0.009 68);
-  --color-field: oklch(17% 0.008 66);
-  --color-ink: oklch(96.5% 0.008 85);
-  --color-ink-2: oklch(81% 0.012 80);
-  --color-muted: oklch(66% 0.014 76);
-  --color-rule: oklch(100% 0 0 / 9%);
-  --color-rule-strong: oklch(100% 0 0 / 20%);
+  --color-paper: #080605;
+  --color-paper-2: #100d0a;
+  --color-paper-3: #1a1613;
+  --color-field: #120f0c;
+  --color-ink: #f6f3ed;
+  --color-ink-2: #c5c0b8;
+  --color-muted: #979189;
+  --color-rule: rgba(255, 255, 255, 0.09);
+  --color-rule-strong: rgba(255, 255, 255, 0.2);
   --color-accent: var(--color-gold);
   --color-accent-wash: var(--color-gold-wash);
   --color-accent-ink: var(--color-gold-ink);
   --color-focus: var(--color-gold);
-  --color-error: oklch(70% 0.16 30);
-  --color-disabled: oklch(26% 0.008 68);
-  --color-disabled-ink: oklch(58% 0.01 70);
-  --color-chrome: oklch(10% 0.005 62);
-  --color-glass: oklch(100% 0 0 / 6%);
+  --color-error: #f17260;
+  --color-disabled: #272320;
+  --color-disabled-ink: #7e7974;
+  --color-chrome: #040302;
+  --color-glass: rgba(255, 255, 255, 0.06);
   --color-action: var(--color-gold);
   --color-action-lift: var(--color-gold-lift);
   --color-action-press: var(--color-gold-press);

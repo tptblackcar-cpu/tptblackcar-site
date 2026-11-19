@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://script.google.com https://script.googleusercontent.com; form-action 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Driver &middot; TPT Black Car</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#3B1412">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="driver.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=32">
+  <link rel="stylesheet" href="admin.css?v=8">
+</head>
+<body class="admin">
+
+<header class="admin-bar">
+  <div class="admin-bar-in">
+    <a class="admin-brand" href="/">
+      <img src="assets/mark.svg" alt="TPT" width="44" height="25">
+      <span>Driver</span>
+    </a>
+    <button type="button" class="btn btn-quiet btn-sm" id="signout" hidden>Sign out</button>
+  </div>
+</header>
+
+<main class="frame admin-main drv-main">
+
+  <!-- Passcode gate -->
+  <section class="panel admin-gate" id="gate" data-tone="dark" hidden>
+    <h1>Driver sign-in</h1>
+    <p class="lead">Today&rsquo;s trips, and one tap at each step.</p>
+    <form id="gate-form">
+      <div class="field">
+        <label for="passcode">Driver passcode</label>
+        <input id="passcode" name="passcode" type="password" autocomplete="current-password"
+               inputmode="text" autocapitalize="off" spellcheck="false" required>
+      </div>
+      <button type="submit" class="btn btn-action btn-block" id="gate-btn">Sign in</button>
+      <p class="form-error" id="gate-error" role="alert" hidden></p>
+    </form>
+  </section>
+
+  <!-- Trips -->
+  <section id="desk" hidden>
+    <div class="desk-top">
+      <p class="drv-intro" id="me">Your confirmed trips, soonest first.</p>
+      <button type="button" class="btn btn-quiet btn-sm" id="refresh">Refresh</button>
+    </div>
+    <p class="desk-note" id="desk-note" role="status" aria-live="polite" hidden></p>
+    <!-- Shown while a trip is under way: the rider can see this phone on a map. -->
+    <div class="drv-share" id="share" role="status" aria-live="polite" hidden>
+      <p class="drv-share-head" id="share-head"></p>
+      <p class="drv-share-note" id="share-note"></p>
+    </div>
+    <div id="list" class="res-list"></div>
+    <p class="desk-empty" id="empty" hidden>No trips for you in the next two days. Tab emails you when one is yours.</p>
+  </section>
+
+</main>
+
+<template id="day-tpl">
+  <h2 class="drv-day"></h2>
+</template>
+
+<template id="trip-tpl">
+  <article class="res drv" data-tone="light">
+    <header class="res-head">
+      <div class="res-id">
+        <span class="drv-time num"></span>
+        <span class="res-ref num"></span>
+      </div>
+      <span class="res-countdown num"></span>
+    </header>
+
+    <p class="res-trip"></p>
+    <p class="drv-driver" hidden></p>
+
+    <div class="route res-route">
+      <div class="route-stop route-start">
+        <span class="label">Pickup</span>
+        <p class="res-pickup"></p>
+        <a class="drv-nav drv-nav-pickup" href="#" target="_blank" rel="noopener">Directions</a>
+      </div>
+      <div class="route-stop route-end">
+        <span class="label">Drop-off</span>
+        <p class="res-dropoff"></p>
+        <a class="drv-nav drv-nav-dropoff" href="#" target="_blank" rel="noopener">Directions</a>
+      </div>
+    </div>
+
+    <dl class="res-facts"></dl>
+
+    <div class="res-contact">
+      <span class="res-name"></span>
+      <a class="res-tel btn btn-quiet btn-sm" href="#">Call</a>
+      <a class="res-sms btn btn-quiet btn-sm" href="#">Text</a>
+    </div>
+
+    <div class="drv-steps">
+      <button type="button" class="btn btn-block drv-step" data-step="onTheWay">On the way</button>
+      <button type="button" class="btn btn-block drv-step" data-step="arrived">Arrived</button>
+      <button type="button" class="btn btn-block drv-step" data-step="tripDone">Trip done</button>
+    </div>
+    <p class="res-msg" role="alert" hidden></p>
+  </article>
+</template>
+
+<script src="config.js?v=2"></script>
+<script src="driver.js?v=3"></script>
+</body>
+</html>

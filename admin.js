@@ -27,6 +27,8 @@ const signout = $("#signout");
 const TOKEN_KEY = "tpt.admin.token";
 let token = sessionStorage.getItem(TOKEN_KEY) || "";
 let reservations = [];
+// The roster, for each trip's driver picker. Comes back with the list.
+let drivers = [];
 
 /* ---------- transport ---------- */
 
@@ -110,6 +112,7 @@ async function load() {
   try {
     const res = await call("list");
     reservations = res.reservations;
+    drivers = res.drivers || [];
     render();
     note.hidden = true;
   } catch (err) {
@@ -285,8 +288,26 @@ function card(r) {
 
   const quote = $(".res-quote", el);
   const noteInput = $(".res-note", el);
+  const driverInput = $(".res-driver", el);
   quote.value = r.quote || "";
   noteInput.value = r.note || "";
+  // "Auto" leaves it to the script, which picks a free driver on confirming.
+  const choices = [["", drivers.some((d) => d.active) ? "Auto (script picks)" : "Nobody (you drive)"]]
+    .concat(drivers.filter((d) => d.active || d.name === r.driver)
+      .map((d) => [d.name, d.active ? d.name : `${d.name} (off)`]));
+  if (r.driver && !choices.some(([v]) => v === r.driver)) choices.push([r.driver, r.driver]);
+  choices.forEach(([value, label]) => driverInput.append(new Option(label, value)));
+  driverInput.value = r.driver || "";
+
+  // What the driver has tapped so far on the driver page.
+  const progress = [["onTheWay", "On the way"], ["arrived", "Arrived"], ["tripDone", "Done"]]
+    .filter(([key]) => r[key])
+    .map(([key, label]) => `${label} ${fmtReceived(r[key]).replace(/^.*?, /, "")}`);
+  if (progress.length) {
+    const p = $(".res-progress", el);
+    p.textContent = `Driver: ${progress.join(" · ")}`;
+    p.hidden = false;
+  }
 
   const sent = $(".res-sent", el);
   const resend = $(".res-resend", el);
@@ -326,6 +347,7 @@ function card(r) {
         ref: r.ref,
         quote: quote.value,
         note: noteInput.value,
+        driver: driverInput.value,
         ...payload,
       });
       // Swap in the row the server actually holds now, so the card can never
@@ -340,6 +362,9 @@ function card(r) {
   };
 
   confirm.addEventListener("click", () => act({ status: "Confirmed" }, "Confirming and emailing…"));
+  // A new driver is saved, and emailed if the trip is confirmed, straight away.
+  driverInput.addEventListener("change", () =>
+    act({}, driverInput.value ? `Giving it to ${driverInput.value}…` : "Saving…"));
   $(".res-quoted", el).addEventListener("click", () =>
     act({ status: status === "Confirmed" ? status : "Quoted" }, "Saving…"));
   $(".res-decline", el).addEventListener("click", () => {
@@ -383,10 +408,14 @@ let reviews = [];
 
 $$('input[name="tab"]').forEach((r) =>
   r.addEventListener("change", () => {
-    const reviewsOn = r.value === "reviews" && r.checked;
-    $("#pane-trips").hidden = reviewsOn;
-    $("#pane-reviews").hidden = !reviewsOn;
-    if (reviewsOn && !reviews.length) loadReviews();
+    if (!r.checked) return;
+    $("#pane-trips").hidden = r.value !== "trips";
+    $("#pane-reviews").hidden = r.value !== "reviews";
+    $("#pane-drivers").hidden = r.value !== "drivers";
+    if (r.value === "reviews" && !reviews.length) loadReviews();
+    if (r.value === "drivers") loadDrivers();
+    // Back on the trips, the pickers need the roster as it is now.
+    if (r.value === "trips") render();
   })
 );
 
@@ -479,3 +508,105 @@ function reviewCard(r) {
   pend.addEventListener("click", () => decide("Pending", pend));
   return el;
 }
+
+/* ---------- drivers: the roster ----------
+   Who can sign in to the driver page and who the script may give trips to.
+   Passcodes go one way only: Tab sets them here, and nothing ever shows one
+   back, not even to her. */
+
+const drList = $("#dr-list");
+const drNote = $("#dr-note");
+const drEmpty = $("#dr-empty");
+
+async function loadDrivers() {
+  drNote.textContent = "Loading…";
+  drNote.hidden = false;
+  try {
+    const res = await call("driverRoster");
+    drivers = res.drivers || [];
+    renderDrivers();
+    drNote.hidden = true;
+  } catch (err) {
+    if (err.message === "signed out") return;
+    drNote.textContent = friendly(err);
+    drNote.hidden = false;
+  }
+}
+
+$("#dr-refresh").addEventListener("click", loadDrivers);
+
+function renderDrivers() {
+  drList.replaceChildren(...drivers.map(driverCard));
+  drEmpty.hidden = drivers.length > 0;
+}
+
+function driverCard(d) {
+  const el = $("#dr-tpl").content.firstElementChild.cloneNode(true);
+  $(".dr-name", el).textContent = d.name;
+  const pill = $(".dr-status", el);
+  pill.textContent = d.active ? "Active" : "Off";
+  pill.dataset.status = d.active ? "Confirmed" : "Declined";
+  $(".dr-upcoming", el).textContent = d.upcoming ? `${plural(d.upcoming, "trip")} coming up` : "No trips coming up";
+  const email = $(".dr-email", el);
+  const phone = $(".dr-phone", el);
+  const pass = $(".dr-pass", el);
+  email.value = d.email || "";
+  phone.value = d.phone || "";
+
+  const msg = $(".res-msg", el);
+  const say = (text, kind) => { msg.textContent = text; msg.dataset.kind = kind; msg.hidden = !text; };
+
+  const save = async (extra, working) => {
+    el.classList.add("is-busy");
+    say(working, "ok");
+    try {
+      const res = await call("driverSave", { name: d.name, email: email.value, phone: phone.value,
+        passcode: pass.value, ...extra });
+      drivers = res.drivers;
+      renderDrivers();
+    } catch (err) {
+      el.classList.remove("is-busy");
+      if (err.message !== "signed out") say(friendly(err), "error");
+    }
+  };
+
+  $(".dr-save", el).addEventListener("click", () => save({}, "Saving…"));
+  const toggle = $(".dr-toggle", el);
+  toggle.textContent = d.active ? "Switch off" : "Switch on";
+  toggle.addEventListener("click", () => {
+    if (d.active && !window.confirm(`Switch ${d.name} off? They are signed out and get no new trips. ` +
+      `Trips already theirs stay theirs until you move them.`)) return;
+    save({ active: !d.active }, d.active ? "Switching off…" : "Switching on…");
+  });
+  return el;
+}
+
+$("#dr-add").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const btn = $("#dr-add-btn");
+  const msg = $("#dr-add-msg");
+  btn.disabled = true;
+  msg.hidden = true;
+  try {
+    const res = await call("driverSave", {
+      isNew: true,
+      name: $("#dr-name").value,
+      email: $("#dr-email").value,
+      phone: $("#dr-phone").value,
+      passcode: $("#dr-pass").value,
+    });
+    drivers = res.drivers;
+    renderDrivers();
+    msg.textContent = `Added. Give ${$("#dr-name").value.trim()} their passcode; it is not shown again.`;
+    msg.dataset.kind = "ok";
+    msg.hidden = false;
+    e.target.reset();
+  } catch (err) {
+    if (err.message === "signed out") return;
+    msg.textContent = friendly(err);
+    msg.dataset.kind = "error";
+    msg.hidden = false;
+  } finally {
+    btn.disabled = false;
+  }
+});
