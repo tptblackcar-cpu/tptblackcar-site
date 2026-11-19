@@ -1,14 +1,23 @@
 {
-  "name": "TPT Reservations",
-  "short_name": "Reservations",
-  "description": "Owner's desk for TPT Black Car reservations.",
-  "start_url": "/admin.html",
+  "id": "/admin.html",
+  "name": "TPT Desk",
+  "short_name": "TPT Desk",
+  "description": "Tab's desk for TPT Black Car: requests, quotes, trips, reviews and drivers.",
+  "start_url": "/admin.html#today",
   "scope": "/admin.html",
   "display": "standalone",
-  "background_color": "#FBF7F1",
-  "theme_color": "#3B1412",
+  "orientation": "portrait",
+  "background_color": "#080605",
+  "theme_color": "#080605",
+  "categories": ["business", "travel"],
   "icons": [
-    { "src": "assets/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
-    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+    { "src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "assets/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ],
+  "shortcuts": [
+    { "name": "New requests", "url": "/admin.html#trips/New", "icons": [{ "src": "assets/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Schedule", "url": "/admin.html#schedule", "icons": [{ "src": "assets/icon-192.png", "sizes": "192x192" }] }
   ]
 }

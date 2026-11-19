@@ -630,6 +630,16 @@ function validateStep(n) {
     if (!el.checkValidity()) { el.closest(".field")?.classList.add("invalid"); firstBad ||= el; }
   });
 
+  // The date field stops past days; this stops a time already gone today.
+  if (!firstBad && form.date.closest(".step") === step && form.date.value && form.time.value) {
+    const [y, mo, d] = form.date.value.split("-").map(Number);
+    const [h, mi] = form.time.value.split(":").map(Number);
+    if (new Date(y, mo - 1, d, h, mi) <= new Date()) {
+      form.time.closest(".field").classList.add("invalid");
+      return fail("That pickup time has already passed. Please choose a later time.", form.time);
+    }
+  }
+
   if (!firstBad && n === 2 && form.tripType.value === "Round trip") {
     if (`${form.returnDate.value}T${form.returnTime.value}` <= `${form.date.value}T${form.time.value}`) {
       form.returnDate.closest(".field").classList.add("invalid");

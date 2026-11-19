@@ -36,7 +36,7 @@ let isAdmin = false;
 
 const STEPS = [
   { key: "onTheWay", label: "On the way", done: "On the way", ask: "is told you are on the way" },
-  { key: "arrived", label: "Arrived", done: "Arrived", ask: "is told you have arrived" },
+  { key: "arrived", label: "Arrived", done: "Arrived", ask: "is told you have arrived", after: "Your location stops being shared." },
   { key: "tripDone", label: "Trip done", done: "Done", ask: "is thanked and asked for a Google review" },
 ];
 
@@ -312,7 +312,8 @@ function card(r) {
 async function tap(r, step, el, say) {
   const first = r.trip.name.split(/\s+/)[0] || "The rider";
   const told = notify[step.key] ? `\n\n${first} ${step.ask} by email.` : "";
-  if (!window.confirm(`${step.label}: ${r.ref}?${told}`)) return;
+  const after = step.after ? `\n\n${step.after}` : "";
+  if (!window.confirm(`${step.label}: ${r.ref}?${told}${after}`)) return;
 
   el.classList.add("is-busy");
   say("Saving…", "ok");
@@ -329,8 +330,9 @@ async function tap(r, step, el, say) {
 }
 
 /* ---------- live location ----------
-   From "On the way" until "Trip done", this phone's position goes to the
-   script every 15 seconds and the rider watches it on track.html. A web page
+   From "On the way" until "Arrived", this phone's position goes to the
+   script every 15 seconds and the rider watches it on track.html. Never
+   during the ride itself: that would be the rider's position. A web page
    can only do that while it is open on screen, so the screen is kept awake
    and the banner says plainly when sharing has paused. */
 
@@ -349,7 +351,7 @@ const stopped = new Set();
 /** The trips this phone should be sharing for right now. */
 function sharingTrips() {
   return trips.filter((t) =>
-    (t.onTheWay || t.arrived) && !t.tripDone && !stopped.has(t.ref) &&
+    t.onTheWay && !t.arrived && !t.tripDone && !stopped.has(t.ref) &&
     // Signed in as Tab, only the trips nobody else is driving are hers.
     (!isAdmin || !t.driver));
 }
@@ -409,9 +411,11 @@ async function sendFix() {
   if (!live.length || !lastFix) return;
   lastSent = Date.now();
   const { latitude, longitude, accuracy, heading } = lastFix.coords;
+  // How old the reading is, by this phone's own clock. Resent while parked,
+  // it keeps its real age, so the rider's map says "last seen" once GPS is lost.
   for (const t of live) {
     try {
-      await call("driverLocation", { ref: t.ref, lat: latitude, lng: longitude, accuracy, heading });
+      await call("driverLocation", { ref: t.ref, lat: latitude, lng: longitude, accuracy, heading, ageMs: Date.now() - lastFix.timestamp });
     } catch (err) {
       if (err.message === "signed out") return;
       // The script says this trip is no longer this phone's to share.

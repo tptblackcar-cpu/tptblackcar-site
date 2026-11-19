@@ -128,6 +128,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..700&family=Mrs+Saint+Delafield&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css?v=55">
+  <!-- Phones only: the desktop site never loads this. -->
+  <link rel="stylesheet" href="mobile.css?v=1" media="(max-width: 48rem)">
 </head>
 <body>
 
@@ -204,6 +206,12 @@
             <span>Reserve your ride</span>
             <span class="btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
           </a>
+          <!-- Phones only: start the reservation right here. mobile.js shows it below 48rem; wider screens never see it. -->
+          <form class="m-quick" id="m-quick" hidden>
+            <label class="m-quick-row"><span class="m-dot" aria-hidden="true"></span><span class="visually-hidden">Pickup</span><input id="m-pickup" type="text" placeholder="Pickup address" autocomplete="street-address" enterkeyhint="next"></label>
+            <label class="m-quick-row"><span class="m-dot m-dot-end" aria-hidden="true"></span><span class="visually-hidden">Drop-off</span><input id="m-dropoff" type="text" placeholder="Where to?" autocomplete="off" enterkeyhint="go"></label>
+            <button type="submit" class="btn btn-action btn-block">Reserve your ride</button>
+          </form>
         </div>
 
         <!-- Glass card on the photograph: the promise, under a short route line. -->
@@ -733,6 +741,7 @@
 </nav>
 
 <script src="config.js?v=2" defer></script>
-<script src="app.js?v=18" defer></script>
+<script src="app.js?v=19" defer></script>
+<script src="mobile.js?v=1" defer></script>
 </body>
 </html>

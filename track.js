@@ -1,7 +1,9 @@
-// The rider's tracking page. Reached from the "on the way" email, whose link
-// carries the reference and a signature proving the link is theirs. Asks the
-// script every 15 seconds where the car is; the script only answers with a
-// position between the driver's "On the way" and "Trip done" taps.
+// The rider's tracking page. Reached only from the rider's own "on the way"
+// email, whose link carries the tracking number and a signature proving the
+// link is theirs. Asks the script every 15 seconds where the car is; the
+// script only answers with a moving car between the driver's "On the way" and
+// "Arrived" taps, then where it parked, and nothing at all once the trip is
+// over or the link has expired.
 
 // GitHub Pages cannot send a frame-blocking header, so refuse to run inside
 // someone else's page.
@@ -17,6 +19,8 @@ const ref = params.get("ref") || "";
 const t = params.get("t") || "";
 
 const POLL_EVERY = 15000;
+// Nothing more will change on these.
+const FINAL = ["done", "cancelled", "expired"];
 let timer = null;
 let map = null;
 let carDot = null;
@@ -84,8 +88,7 @@ async function refresh() {
   if (!res.ok) return showProblem("We could not open that", res.error || "Please call 864-901-6550.");
   last = res;
   render(res);
-  // Nothing more will change once the trip is over or called off.
-  if (["done", "cancelled"].includes(res.stage)) stop();
+  if (FINAL.includes(res.stage)) stop();
 }
 
 function render(res) {
@@ -101,6 +104,7 @@ function render(res) {
     arrived: [`${driver} is here`, `They are waiting at your pickup.`],
     done: ["Your trip is complete", "Thank you for riding with TPT."],
     cancelled: ["This trip was cancelled", "Booked in error? Call 864-901-6550."],
+    expired: ["This tracking link has expired", "It only works around your pickup. Questions? Call 864-901-6550."],
   };
   const [head, sub] = headlines[res.stage] || headlines.waiting;
   $("#headline").textContent = head;
@@ -112,8 +116,11 @@ function render(res) {
     subline = "Questions on the way? Call or text TPT below.";
   }
   $("#subline").textContent = subline;
-  $("#pickup").textContent = res.pickup;
-  $("#when").textContent = `${fmtDate(res.date)}, ${fmtTime(res.time)}`;
+  $("#ref").textContent = res.ref ? `Tracking number ${res.ref}` : "";
+  // Over, cancelled or expired: the script sends nothing about the trip.
+  $("#card").hidden = !res.pickup;
+  $("#pickup").textContent = res.pickup || "";
+  $("#when").textContent = res.pickup ? `${fmtDate(res.date)}, ${fmtTime(res.time)}` : "";
 
   const showMap = !!res.car && ["onTheWay", "arrived"].includes(res.stage);
   $("#map-wrap").hidden = !showMap && !(res.pickupAt && ["onTheWay", "arrived"].includes(res.stage));
@@ -121,7 +128,11 @@ function render(res) {
   drawMap(res);
 
   const updated = $("#updated");
-  if (!res.car) {
+  if (res.stage === "arrived") {
+    // Nothing is shared after "Arrived": this is where the car stopped.
+    updated.textContent = res.car ? "Where your driver parked." : "";
+    delete updated.dataset.stale;
+  } else if (!res.car) {
     updated.textContent = "Waiting for the car's location…";
     updated.dataset.stale = "true";
   } else if (res.car.ageSeconds > res.staleSeconds) {
@@ -193,5 +204,5 @@ addEventListener("visibilitychange", () => {
 if (!ref || !t) {
   showProblem("That link is incomplete", "Open the link from your email again, or call 864-901-6550.");
 } else {
-  refresh().then(() => { if (last && !["done", "cancelled"].includes(last.stage)) start(); });
+  refresh().then(() => { if (last && !FINAL.includes(last.stage)) start(); });
 }

@@ -2,221 +2,265 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://script.google.com https://script.googleusercontent.com; form-action 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://script.google.com https://script.googleusercontent.com; worker-src 'self'; manifest-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests">
   <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Reservations &middot; TPT Black Car</title>
+  <title>TPT Desk</title>
   <meta name="robots" content="noindex, nofollow">
-  <meta name="theme-color" content="#3B1412">
+  <meta name="theme-color" content="#080605">
+  <meta name="color-scheme" content="dark">
+  <!-- iPhone: open full screen from the Home Screen, with the clock over the black. -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="TPT Desk">
+  <meta name="format-detection" content="telephone=no">
   <link rel="icon" href="/favicon.ico" sizes="48x48">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
   <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="manifest" href="admin.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=55">
-  <link rel="stylesheet" href="admin.css?v=7">
+  <link rel="stylesheet" href="desk.css?v=3">
 </head>
-<body class="admin">
+<body>
 
-<header class="admin-bar">
-  <div class="admin-bar-in">
-    <a class="admin-brand" href="/">
-      <img src="assets/mark.svg" alt="TPT" width="44" height="25">
-      <span>Reservations</span>
-    </a>
-    <button type="button" class="btn btn-quiet btn-sm" id="signout" hidden>Sign out</button>
-  </div>
-</header>
+<svg width="0" height="0" class="sprite" aria-hidden="true">
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M3 13h5l2 3h4l2-3h5"/><path d="M5.5 5h13L21 13v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-6z"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6 6 0 0 1 3.5 5.5"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/></symbol>
+  <symbol id="i-msg" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></symbol>
+  <symbol id="i-chev-r" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+  <symbol id="i-chev-l" viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-plane" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="13" rx="2"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-nav" viewBox="0 0 24 24"><path d="M3 11 21 3l-8 18-2-8z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
+  <symbol id="i-car" viewBox="0 0 24 24"><path d="M4 16v-4l2-5h12l2 5v4zM4 16v3h3v-3M17 16v3h3v-3M4 12h16"/></symbol>
+  <symbol id="i-brief" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5h6v2M3 13h18"/></symbol>
+  <symbol id="i-ring" viewBox="0 0 24 24"><circle cx="12" cy="15" r="6"/><path d="m9 4 3 4 3-4-1.5-1.5h-3z"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/></symbol>
+  <symbol id="i-lily" viewBox="0 0 24 24"><path d="M12 21v-7M12 14c-4 0-6-3-6-7 3 0 5 1.5 6 4 1-2.5 3-4 6-4 0 4-2 7-6 7zM12 11V3"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M4 12 20 4l-6 16-3-7z"/><path d="m11 13 9-9"/></symbol>
+  <symbol id="i-calplus" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M12 13v5M9.5 15.5h5"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 3 2.5 15 0 18M12 3c-2.5 3-2.5 15 0 18"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M10 4H5v16h5M15 8l4 4-4 4M19 12H9"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4h11l-2 4 2 4H5"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/></symbol>
+  <symbol id="i-dots" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M19 12h.01" stroke-width="3.2"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.5-4.5M4 4v3h3M4 13a8 8 0 0 0 14.5 4.5M20 20v-3h-3"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 3v12M8 7l4-4 4 4M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12M8 11l4 4 4-4M5 20h14"/></symbol>
+  <symbol id="i-steer" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2"/><path d="M3.5 10.5 10 12M20.5 10.5 14 12M12 14v7"/></symbol>
+</svg>
 
-<main class="frame admin-main">
+<p class="offline" id="offline" role="status" hidden>No signal. Showing the app, but nothing can be saved until you&rsquo;re back online.</p>
 
-  <!-- Passcode gate -->
-  <section class="panel admin-gate" id="gate" data-tone="dark" hidden>
-    <h1>Owner sign-in</h1>
-    <p class="lead">Reservations, quotes and confirmations.</p>
-    <form id="gate-form">
-      <div class="field">
-        <label for="passcode">Passcode</label>
-        <input id="passcode" name="passcode" type="password" autocomplete="current-password"
-               inputmode="text" autocapitalize="off" spellcheck="false" required>
-      </div>
-      <button type="submit" class="btn btn-action btn-block" id="gate-btn">Sign in</button>
-      <p class="form-error" id="gate-error" role="alert" hidden></p>
-    </form>
+<!-- Sign in -->
+<section class="gate" id="gate" hidden>
+  <img class="gate-mark" src="assets/mark.svg" alt="TPT" width="96" height="55">
+  <h1 id="greeting">Welcome back, Tab</h1>
+  <p class="gate-sub">Your desk for requests, quotes and trips.</p>
+  <form id="gate-form" class="gate-form">
+    <!-- Lets the phone's password manager save the passcode, so next time
+         Face ID or a fingerprint fills it in. -->
+    <input class="vh" type="text" name="username" autocomplete="username" value="Tab" tabindex="-1" aria-hidden="true" readonly>
+    <label class="field">
+      <span class="lbl">Passcode</span>
+      <input class="inp" id="passcode" name="password" type="password" autocomplete="current-password"
+             autocapitalize="off" spellcheck="false" required>
+    </label>
+    <label class="check">
+      <input type="checkbox" id="keep" checked>
+      <span>Keep me signed in on this phone</span>
+    </label>
+    <button type="submit" class="btn gold lg block" id="gate-btn">Sign in</button>
+    <p class="form-error" id="gate-error" role="alert" hidden></p>
+    <p class="gate-tip">When your phone offers to save the passcode, say yes. Next time Face ID or your fingerprint fills it in.</p>
+  </form>
+</section>
+
+<!-- The five tabs -->
+<main class="views" id="views" hidden>
+  <p class="ptr" id="ptr" aria-hidden="true"><svg class="i"><use href="#i-refresh"/></svg></p>
+
+  <section class="view" id="view-today" data-view="today" hidden>
+    <header class="top">
+      <div><p class="top-sub" id="today-date"></p><h1>Today</h1></div>
+      <button type="button" class="ico-btn" data-refresh aria-label="Refresh"><svg class="i"><use href="#i-refresh"/></svg></button>
+    </header>
+    <div class="install" id="install" hidden>
+      <img src="assets/icon-192.png" alt="" width="44" height="44">
+      <p id="install-text">Put TPT Desk on your Home Screen, so it opens like an app.</p>
+      <button type="button" class="btn sm gold" id="install-btn" hidden>Install</button>
+      <button type="button" class="ico-btn sm" id="install-close" aria-label="Not now"><svg class="i"><use href="#i-x"/></svg></button>
+    </div>
+    <p class="note" id="note" role="status" aria-live="polite" hidden></p>
+    <div id="next"></div>
+    <h2 class="sec">Needs you</h2>
+    <div class="todo" id="todo"></div>
+    <div id="later"></div>
   </section>
 
-  <!-- The desk -->
-  <section class="admin-desk" id="desk" hidden>
-    <div class="chips desk-tabs" id="tabs" role="group" aria-label="What to work on">
-      <label><input type="radio" name="tab" value="trips" checked><span>Reservations</span></label>
-      <label><input type="radio" name="tab" value="reviews"><span>Reviews <b id="pending-count">0</b></span></label>
-      <label><input type="radio" name="tab" value="drivers"><span>Drivers</span></label>
+  <section class="view" id="view-trips" data-view="trips" hidden>
+    <header class="top">
+      <h1>Trips</h1>
+      <button type="button" class="ico-btn" data-refresh aria-label="Refresh"><svg class="i"><use href="#i-refresh"/></svg></button>
+    </header>
+    <label class="search">
+      <svg class="i"><use href="#i-search"/></svg>
+      <input id="search" type="search" placeholder="Name, place or TPT number" autocomplete="off" enterkeyhint="search">
+    </label>
+    <div class="seg" id="trip-seg" role="tablist" aria-label="Which trips">
+      <button type="button" role="tab" data-filter="New">New <b data-count="New"></b></button>
+      <button type="button" role="tab" data-filter="Quoted">Quoted <b data-count="Quoted"></b></button>
+      <button type="button" role="tab" data-filter="Upcoming">Upcoming <b data-count="Upcoming"></b></button>
+      <button type="button" role="tab" data-filter="All">All</button>
     </div>
-
-    <div class="desk-pane" id="pane-trips">
-    <div class="desk-top">
-      <div class="chips" id="filters" role="group" aria-label="Filter reservations">
-        <label><input type="radio" name="filter" value="Upcoming" checked><span>Upcoming <b data-count="Upcoming">0</b></span></label>
-        <label><input type="radio" name="filter" value="New"><span>New <b data-count="New">0</b></span></label>
-        <label><input type="radio" name="filter" value="Quoted"><span>Quoted <b data-count="Quoted">0</b></span></label>
-        <label><input type="radio" name="filter" value="Confirmed"><span>Confirmed <b data-count="Confirmed">0</b></span></label>
-        <label><input type="radio" name="filter" value="All"><span>All <b data-count="All">0</b></span></label>
-      </div>
-      <button type="button" class="btn btn-quiet btn-sm" id="refresh">Refresh</button>
-    </div>
-
-    <p class="desk-note" id="desk-note" role="status" aria-live="polite" hidden></p>
-    <div id="list" class="res-list"></div>
-    <p class="desk-empty" id="empty" hidden>Nothing here yet.</p>
-    </div>
-
-    <!-- Reviews: nothing a rider writes reaches the website until it is approved here. -->
-    <div class="desk-pane" id="pane-reviews" hidden>
-      <div class="desk-top">
-        <div class="chips" id="rv-filters" role="group" aria-label="Filter reviews">
-          <label><input type="radio" name="rvfilter" value="Pending" checked><span>Waiting <b data-rvcount="Pending">0</b></span></label>
-          <label><input type="radio" name="rvfilter" value="Approved"><span>On the site <b data-rvcount="Approved">0</b></span></label>
-          <label><input type="radio" name="rvfilter" value="Hidden"><span>Hidden <b data-rvcount="Hidden">0</b></span></label>
-          <label><input type="radio" name="rvfilter" value="All"><span>All <b data-rvcount="All">0</b></span></label>
-        </div>
-        <button type="button" class="btn btn-quiet btn-sm" id="rv-refresh">Refresh</button>
-      </div>
-      <p class="desk-note" id="rv-note" role="status" aria-live="polite" hidden></p>
-      <div id="rv-list" class="res-list"></div>
-      <p class="desk-empty" id="rv-empty" hidden>No reviews here yet.</p>
-    </div>
-
-    <!-- Drivers: who can sign in to the driver page, and who gets trips. -->
-    <div class="desk-pane" id="pane-drivers" hidden>
-      <div class="desk-top">
-        <p class="drv-intro">Each driver signs in at <b>tptblackcar.com/driver.html</b> with their own passcode.</p>
-        <button type="button" class="btn btn-quiet btn-sm" id="dr-refresh">Refresh</button>
-      </div>
-      <p class="desk-note" id="dr-note" role="status" aria-live="polite" hidden></p>
-      <div id="dr-list" class="res-list"></div>
-      <p class="desk-empty" id="dr-empty" hidden>No drivers yet. Until you add one, nothing is assigned and you drive every trip.</p>
-
-      <form class="res dr-add" id="dr-add" data-tone="light">
-        <h2 class="dr-title">Add a driver</h2>
-        <div class="row">
-          <div class="field"><label for="dr-name">Name</label><input id="dr-name" type="text" maxlength="60" required></div>
-          <div class="field"><label for="dr-email">Email <span class="opt">trips are sent here</span></label><input id="dr-email" type="email" maxlength="200"></div>
-          <div class="field"><label for="dr-phone">Phone</label><input id="dr-phone" type="tel" maxlength="40"></div>
-          <div class="field"><label for="dr-pass">Passcode <span class="opt">8 or more characters</span></label><input id="dr-pass" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" minlength="8" required></div>
-        </div>
-        <button type="submit" class="btn btn-action btn-sm" id="dr-add-btn">Add driver</button>
-        <p class="res-msg" id="dr-add-msg" role="alert" hidden></p>
-      </form>
-    </div>
+    <div class="list" id="trip-list"></div>
+    <p class="empty" id="trip-empty" hidden></p>
+    <p class="hint" id="swipe-hint" hidden>Swipe a request left to quote or decline it</p>
   </section>
 
+  <section class="view" id="view-schedule" data-view="schedule" hidden>
+    <header class="top">
+      <div><p class="top-sub" id="sched-month"></p><h1>Schedule</h1></div>
+      <div class="top-acts">
+        <button type="button" class="ico-btn" id="wk-prev" aria-label="Previous week"><svg class="i"><use href="#i-chev-l"/></svg></button>
+        <button type="button" class="ico-btn" id="wk-next" aria-label="Next week"><svg class="i"><use href="#i-chev-r"/></svg></button>
+      </div>
+    </header>
+    <div class="week" id="week" role="tablist" aria-label="Days"></div>
+    <div class="legend" id="legend"></div>
+    <h2 class="sec" id="day-title"></h2>
+    <div id="agenda"></div>
+  </section>
+
+  <section class="view" id="view-reviews" data-view="reviews" hidden>
+    <header class="top">
+      <h1>Reviews</h1>
+      <a class="ico-btn" href="/#reviews" target="_blank" rel="noopener" aria-label="See reviews on the website"><svg class="i"><use href="#i-globe"/></svg></a>
+    </header>
+    <div class="seg" id="rv-seg" role="tablist" aria-label="Which reviews">
+      <button type="button" role="tab" data-rv="Pending">Waiting <b data-rvcount="Pending"></b></button>
+      <button type="button" role="tab" data-rv="Approved">On the site</button>
+      <button type="button" role="tab" data-rv="Hidden">Hidden</button>
+    </div>
+    <div id="rv-body"></div>
+  </section>
+
+  <section class="view" id="view-drivers" data-view="drivers" hidden>
+    <header class="top"><h1>Drivers</h1></header>
+    <div id="dr-list"></div>
+    <p class="hint left">Drivers sign in at <b>tptblackcar.com/driver.html</b> with their own passcode.</p>
+    <div class="rows">
+      <button type="button" class="row" id="row-install" hidden><svg class="i"><use href="#i-download"/></svg><span>Install the app</span><svg class="i chev"><use href="#i-chev-r"/></svg></button>
+      <a class="row" href="/" target="_blank" rel="noopener"><svg class="i"><use href="#i-globe"/></svg><span>Open the website</span><svg class="i chev"><use href="#i-chev-r"/></svg></a>
+      <a class="row" href="/driver.html" target="_blank" rel="noopener"><svg class="i"><use href="#i-steer"/></svg><span>Open the driver page</span><svg class="i chev"><use href="#i-chev-r"/></svg></a>
+      <button type="button" class="row" id="signout"><svg class="i"><use href="#i-out"/></svg><span>Sign out</span></button>
+    </div>
+    <button type="button" class="fab" id="dr-add"><svg class="i"><use href="#i-plus"/></svg>Add driver</button>
+  </section>
 </main>
 
-<template id="res-tpl">
-  <article class="res" data-tone="light">
-    <header class="res-head">
-      <div class="res-id">
-        <span class="res-ref num"></span>
-        <span class="res-status"></span>
-      </div>
-      <span class="res-countdown num"></span>
-    </header>
+<!-- One trip, full screen over the tabs -->
+<section class="detail" id="detail" hidden aria-labelledby="d-when"></section>
 
-    <p class="res-trip"></p>
+<nav class="tabbar" id="tabbar" aria-label="Sections" hidden>
+  <a href="#today" data-tab="today"><svg class="i"><use href="#i-home"/></svg><span>Today</span></a>
+  <a href="#trips" data-tab="trips"><svg class="i"><use href="#i-inbox"/></svg><span>Trips</span><b class="badge" data-badge="trips" hidden></b></a>
+  <a href="#schedule" data-tab="schedule"><svg class="i"><use href="#i-cal"/></svg><span>Schedule</span></a>
+  <a href="#reviews" data-tab="reviews"><svg class="i"><use href="#i-star"/></svg><span>Reviews</span><b class="badge" data-badge="reviews" hidden></b></a>
+  <a href="#drivers" data-tab="drivers"><svg class="i"><use href="#i-users"/></svg><span>Drivers</span></a>
+</nav>
 
-    <div class="route res-route">
-      <div class="route-stop route-start"><span class="label">Pickup</span><p class="res-pickup"></p></div>
-      <div class="route-stop route-end"><span class="label">Drop-off</span><p class="res-dropoff"></p></div>
+<!-- Quote, confirm, edit: one sheet for all three -->
+<dialog class="sheet" id="quote-sheet" aria-labelledby="q-title">
+  <form method="dialog" id="quote-form">
+    <span class="grab" aria-hidden="true"></span>
+    <h2 id="q-title"></h2>
+    <p class="sheet-sub" id="q-sub"></p>
+
+    <div class="amt" id="q-amt-wrap">
+      <span class="cur">$</span>
+      <input id="q-amt" class="amt-in num" type="text" inputmode="decimal" placeholder="0" autocomplete="off" aria-label="Price in dollars">
+    </div>
+    <div class="seg small" id="q-unit" role="radiogroup" aria-label="Price is">
+      <button type="button" data-unit="flat">Flat</button>
+      <button type="button" data-unit="hour">Per hour</button>
+      <button type="button" data-unit="other">Type it</button>
+    </div>
+    <label class="field" id="q-other-wrap" hidden>
+      <span class="lbl">Quote, as the rider will read it</span>
+      <input class="inp" id="q-other" type="text" maxlength="200" placeholder="e.g. $145 flat, tolls included">
+    </label>
+    <div class="presets" id="q-presets"></div>
+
+    <label class="field">
+      <span class="lbl">Note to rider <i>optional</i></span>
+      <input class="inp" id="q-note" type="text" maxlength="500" placeholder="Car, pickup spot, anything">
+    </label>
+    <div class="chips" id="q-notes"></div>
+
+    <div id="q-driver-wrap">
+      <span class="lbl">Driver</span>
+      <div class="drv-picks" id="q-drivers"></div>
     </div>
 
-    <dl class="res-facts"></dl>
+    <p class="form-error" id="q-error" role="alert" hidden></p>
+    <div class="sheet-acts" id="q-acts"></div>
+  </form>
+</dialog>
 
-    <div class="res-contact">
-      <span class="res-name"></span>
-      <a class="res-tel btn btn-quiet btn-sm" href="#">Call</a>
-      <a class="res-sms btn btn-quiet btn-sm" href="#">Text</a>
-      <a class="res-mail btn btn-quiet btn-sm" href="#">Email</a>
+<!-- Add or edit a driver -->
+<dialog class="sheet" id="driver-sheet" aria-labelledby="dr-title">
+  <form id="driver-form">
+    <span class="grab" aria-hidden="true"></span>
+    <h2 id="dr-title"></h2>
+    <p class="sheet-sub" id="dr-sub"></p>
+    <label class="field" id="dr-name-wrap"><span class="lbl">Name</span><input class="inp" id="dr-name" type="text" maxlength="60" autocomplete="off"></label>
+    <label class="field"><span class="lbl">Email <i>trips are sent here</i></span><input class="inp" id="dr-email" type="email" maxlength="200" autocomplete="off"></label>
+    <label class="field"><span class="lbl">Phone</span><input class="inp" id="dr-phone" type="tel" maxlength="40" autocomplete="off"></label>
+    <label class="field"><span class="lbl" id="dr-pass-lbl">Passcode</span><input class="inp" id="dr-pass" type="text" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+    <p class="form-error" id="dr-error" role="alert" hidden></p>
+    <div class="sheet-acts">
+      <button type="button" class="btn" data-close>Cancel</button>
+      <button type="submit" class="btn gold" id="dr-save">Save</button>
     </div>
+    <button type="button" class="btn danger dr-delete" id="dr-delete" hidden>Delete driver</button>
+  </form>
+</dialog>
 
-    <div class="res-work">
-      <div class="row">
-        <div class="field">
-          <label>Quote <span class="opt">goes in the email</span></label>
-          <input class="res-quote" type="text" inputmode="text" placeholder="e.g. $145 flat" maxlength="200">
-        </div>
-        <div class="field">
-          <label>Note to rider <span class="opt">optional</span></label>
-          <input class="res-note" type="text" placeholder="Car, pickup spot, anything" maxlength="500">
-        </div>
-        <div class="field">
-          <label>Driver <span class="opt">emailed the trip once confirmed</span></label>
-          <select class="res-driver"></select>
-        </div>
-      </div>
+<!-- More actions for a trip -->
+<dialog class="sheet menu" id="more-sheet" aria-label="More for this trip">
+  <span class="grab" aria-hidden="true"></span>
+  <div class="menu-list" id="more-list"></div>
+  <button type="button" class="btn block" data-close>Close</button>
+</dialog>
 
-      <p class="res-sent" hidden></p>
-      <p class="res-progress" hidden></p>
+<!-- Are you sure? -->
+<dialog class="sheet ask" id="ask-sheet" aria-labelledby="ask-title">
+  <span class="grab" aria-hidden="true"></span>
+  <h2 id="ask-title"></h2>
+  <p class="sheet-sub" id="ask-text"></p>
+  <div class="sheet-acts">
+    <button type="button" class="btn" id="ask-no">Not now</button>
+    <button type="button" class="btn gold" id="ask-yes"></button>
+  </div>
+</dialog>
 
-      <div class="res-actions">
-        <button type="button" class="btn btn-action btn-sm res-confirm">Confirm &amp; email rider</button>
-        <button type="button" class="btn btn-quiet btn-sm res-quoted">Save quote</button>
-        <button type="button" class="btn btn-quiet btn-sm res-decline">Decline</button>
-        <button type="button" class="btn btn-quiet btn-sm res-cancel">Cancel trip</button>
-        <button type="button" class="btn btn-quiet btn-sm res-resend" hidden>Resend email</button>
-      </div>
-      <p class="res-msg" role="alert" hidden></p>
-    </div>
-  </article>
-</template>
-
-<template id="rv-tpl">
-  <article class="res rv" data-tone="light">
-    <header class="res-head">
-      <div class="res-id">
-        <span class="rv-stars num"></span>
-        <span class="res-status rv-status"></span>
-        <span class="rv-verified" hidden>Verified ride</span>
-      </div>
-      <span class="rv-received num"></span>
-    </header>
-    <p class="rv-name"></p>
-    <blockquote class="rv-text"></blockquote>
-    <dl class="res-facts rv-facts"></dl>
-    <div class="res-actions">
-      <button type="button" class="btn btn-action btn-sm rv-approve">Show on the website</button>
-      <button type="button" class="btn btn-quiet btn-sm rv-hide">Hide</button>
-      <button type="button" class="btn btn-quiet btn-sm rv-pend" hidden>Back to waiting</button>
-    </div>
-    <p class="res-msg rv-msg" role="alert" hidden></p>
-  </article>
-</template>
-
-<template id="dr-tpl">
-  <article class="res dr" data-tone="light">
-    <header class="res-head">
-      <div class="res-id">
-        <span class="dr-name"></span>
-        <span class="res-status dr-status"></span>
-      </div>
-      <span class="res-countdown dr-upcoming num"></span>
-    </header>
-    <div class="row">
-      <div class="field"><label>Email</label><input class="dr-email" type="email" maxlength="200"></div>
-      <div class="field"><label>Phone</label><input class="dr-phone" type="tel" maxlength="40"></div>
-      <div class="field"><label>New passcode <span class="opt">leave empty to keep</span></label><input class="dr-pass" type="text" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
-    </div>
-    <div class="res-actions">
-      <button type="button" class="btn btn-quiet btn-sm dr-save">Save</button>
-      <button type="button" class="btn btn-quiet btn-sm dr-toggle"></button>
-    </div>
-    <p class="res-msg" role="alert" hidden></p>
-  </article>
-</template>
+<p class="toast" id="toast" role="status" aria-live="polite" hidden></p>
 
 <script src="config.js?v=2"></script>
-<script src="admin.js?v=5"></script>
+<script src="desk.js?v=4"></script>
 </body>
 </html>
