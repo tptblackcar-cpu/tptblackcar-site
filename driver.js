@@ -33,6 +33,9 @@ try { token = localStorage.getItem(TOKEN_KEY) || ""; } catch { /* private mode *
 let trips = [];
 let notify = {};
 let isAdmin = false;
+// The name on trips Tab keeps for herself.
+let selfName = "Tab";
+const isMe = (name) => !!name && name.toLowerCase() === selfName.toLowerCase();
 
 const STEPS = [
   { key: "onTheWay", label: "On the way", done: "On the way", ask: "is told you are on the way" },
@@ -43,7 +46,7 @@ const STEPS = [
 /* ---------- transport ---------- */
 
 async function call(action, payload = {}) {
-  if (!BOOKING_ENDPOINT) throw new Error("No endpoint is configured. Paste the Apps Script URL into config.js.");
+  if (!BOOKING_ENDPOINT) throw new Error("The app isn't connected to the booking system yet.");
   const res = await fetch(BOOKING_ENDPOINT, {
     method: "POST",
     // text/plain keeps this a simple request, which Apps Script can answer
@@ -133,6 +136,7 @@ async function load() {
     trips = res.trips || [];
     notify = res.notify || {};
     isAdmin = !!res.admin;
+    if (res.self) selfName = res.self;
     // Tab, signed in with her desk passcode, sees every driver's trips.
     $("#me").textContent = res.admin
       ? "Every driver's confirmed trips, soonest first."
@@ -257,7 +261,7 @@ function card(r) {
   $(".res-trip", el).textContent = t.service;
   if (r.driver) {
     const who = $(".drv-driver", el);
-    who.textContent = `Driver: ${r.driver}`;
+    who.textContent = isAdmin && isMe(r.driver) ? "Driver: You" : `Driver: ${r.driver}`;
     who.hidden = false;
   }
   $(".res-pickup", el).textContent = t.pickup;
@@ -353,7 +357,7 @@ function sharingTrips() {
   return trips.filter((t) =>
     t.onTheWay && !t.arrived && !t.tripDone && !stopped.has(t.ref) &&
     // Signed in as Tab, only the trips nobody else is driving are hers.
-    (!isAdmin || !t.driver));
+    (!isAdmin || !t.driver || isMe(t.driver)));
 }
 
 function updateSharing() {

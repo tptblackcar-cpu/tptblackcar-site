@@ -504,3 +504,22 @@ dialog.sheet::backdrop { background: rgba(0, 0, 0, .62); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* ---------- fleet map (Drivers tab) ---------- */
+.fleet { margin: 0 0 22px; }
+.fleet-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+.fleet-head h2 { font-size: 17px; font-weight: 600; }
+.fleet-upd { font-size: 12.5px; color: var(--color-muted); }
+.fleet-map { height: 300px; border-radius: 16px; overflow: hidden; border: 1px solid var(--color-rule-strong); background: var(--color-paper-3); }
+.fleet-map[hidden] { display: none; }
+.fleet-row { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 0; border: 0; border-bottom: 1px solid var(--color-rule); border-radius: 0; text-align: left; font: inherit; color: inherit; background: none; }
+.fleet-row > span:nth-child(2) { flex: 1; min-width: 0; }
+.fleet-row .chev { color: var(--color-muted); }
+.fleet-row:disabled { cursor: default; }
+.fleet-dot { flex: none; width: 12px; height: 12px; border-radius: 50%; background: var(--c); box-shadow: 0 0 0 3px rgba(255, 255, 255, .12); }
+.fleet-row.idle .fleet-dot { background: transparent; box-shadow: inset 0 0 0 2px var(--color-rule-strong); }
+.fleet-row b { display: block; font-size: 15px; font-weight: 600; }
+.fleet-row small { display: block; font-size: 12.5px; color: var(--color-muted); }
+.fleet-row small.live { color: var(--color-depart); }
+.fleet-tip.leaflet-tooltip { background: var(--color-chrome); color: var(--color-ink); border: 1px solid var(--color-rule-strong); border-radius: 8px; font: 600 12px/1.2 inherit; padding: 4px 7px; box-shadow: none; }
+.fleet-tip.leaflet-tooltip-top::before { border-top-color: var(--color-chrome); }

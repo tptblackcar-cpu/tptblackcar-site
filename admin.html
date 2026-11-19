@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://script.google.com https://script.googleusercontent.com; worker-src 'self'; manifest-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://tile.openstreetmap.org; connect-src 'self' https://script.google.com https://script.googleusercontent.com; worker-src 'self'; manifest-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests">
   <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>TPT Desk</title>
@@ -22,7 +22,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="desk.css?v=3">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"
+        integrity="sha384-c6Rcwz4e4CITMbu/NBmnNS8yN2sC3cUElMEMfP3vqqKFp7GOYaaBBCqmaWBjmkjb" crossorigin="anonymous">
+  <link rel="stylesheet" href="desk.css?v=5">
 </head>
 <body>
 
@@ -160,6 +162,13 @@
 
   <section class="view" id="view-drivers" data-view="drivers" hidden>
     <header class="top"><h1>Drivers</h1></header>
+    <!-- Where every car under way is, live -->
+    <section class="fleet" aria-labelledby="fleet-h">
+      <div class="fleet-head"><h2 id="fleet-h">Where the cars are</h2><span class="fleet-upd" id="fleet-upd" role="status"></span></div>
+      <div class="fleet-map" id="fleet-map" role="img" aria-label="Map of the cars on their way to a pickup"></div>
+      <div id="fleet-list"></div>
+      <p class="hint left">A car shows from its driver's <b>On the way</b> tap until it reaches the pickup. During the ride its location is never shared.</p>
+    </section>
     <div id="dr-list"></div>
     <p class="hint left">Drivers sign in at <b>tptblackcar.com/driver.html</b> with their own passcode.</p>
     <div class="rows">
@@ -261,6 +270,8 @@
 <p class="toast" id="toast" role="status" aria-live="polite" hidden></p>
 
 <script src="config.js?v=2"></script>
-<script src="desk.js?v=4"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"
+        integrity="sha384-NElt3Op+9NBMCYaef5HxeJmU4Xeard/Lku8ek6hoPTvYkQPh3zLIrJP7KiRocsxO" crossorigin="anonymous"></script>
+<script src="desk.js?v=6"></script>
 </body>
 </html>

@@ -59,7 +59,7 @@ let loading = null;
 /* ---------- transport ---------- */
 
 async function call(action, payload = {}) {
-  if (!BOOKING_ENDPOINT) throw new Error("No endpoint is configured. Paste the Apps Script URL into config.js.");
+  if (!BOOKING_ENDPOINT) throw new Error("The app isn't connected to the booking system yet.");
   const res = await fetch(BOOKING_ENDPOINT, {
     method: "POST",
     // text/plain keeps this a simple request, which Apps Script can answer
@@ -227,12 +227,16 @@ const serviceShort = (s) => String(s || "Trip").replace(/ (Service|Function|Car 
 
 const activeDrivers = () => drivers.filter((d) => d.active);
 const driverOf = (name) => drivers.find((d) => d.name === name);
-/** Tab drives a confirmed trip nobody else has been given. */
-const tabDrives = (r) => !r.driver;
+// The name the script writes when Tab keeps a trip for herself ("Me").
+let selfName = "Tab";
+const isMe = (name) => !!name && name.toLowerCase() === selfName.toLowerCase();
+/** Tab drives a trip she kept for herself, or one nobody else has been given. */
+const tabDrives = (r) => !r.driver || isMe(r.driver);
+const drivingLine = (r) => tabDrives(r) ? "You're driving" : `${r.driver} driving`;
 
 const DRIVER_COLORS = ["#6fa8dc", "#b48ee0", "#5fc0b0", "#e0a35f", "#d97aa0"];
 function driverColor(name) {
-  if (!name) return "var(--color-gold)";
+  if (!name || isMe(name)) return "var(--color-gold)";
   const i = drivers.findIndex((d) => d.name === name);
   return DRIVER_COLORS[(i < 0 ? 0 : i) % DRIVER_COLORS.length];
 }
@@ -275,6 +279,7 @@ function endSession(message) {
   reviews = [];
   drivers = [];
   stopSharing();
+  stopFleet();
   setBadge(0);
   showGate(message);
 }
@@ -320,6 +325,7 @@ function loadAll({ quiet = false } = {}) {
       if (list.status === "fulfilled") {
         reservations = list.value.reservations || [];
         drivers = list.value.drivers || [];
+        if (list.value.self) selfName = list.value.self;
         loadedAt = Date.now();
         $("#note").hidden = true;
       } else if (list.reason.message !== "signed out") {
@@ -353,6 +359,8 @@ function renderAll() {
   renderSchedule();
   renderReviews();
   renderDrivers();
+  // The fleet names its cars from the trips, which may have just arrived.
+  if (fleet && currentTab === "drivers") drawFleet();
   if (openRef) renderDetail();
 }
 
@@ -407,6 +415,7 @@ function route() {
     else a.removeAttribute("aria-current");
   });
   if (tab === "trips") renderTrips();
+  if (tab === "drivers") startFleet(); else stopFleet();
 }
 addEventListener("hashchange", route);
 
@@ -455,7 +464,7 @@ function renderToday() {
       later.push(h("button", { type: "button", class: "later-row", onclick: () => openTrip(r.ref) },
         h("span", { class: "later-tm num", text: when ? clock(when) : fmtTime(r.trip.time) }),
         h("span", { class: "later-w" }, `${serviceShort(r.trip.service)} · ${r.trip.name}`,
-          h("small", { text: r.driver ? `${r.driver} driving` : r.trip.pickup })),
+          h("small", { text: r.driver ? drivingLine(r) : r.trip.pickup })),
         icon("chev-r")));
     });
   }
@@ -482,7 +491,7 @@ function nextCard(r) {
     h("p", { class: "next-when num", text: when ? clock(when) : fmtTime(t.time) }),
     h("p", { class: "next-in", text: `${when && when.toDateString() !== new Date().toDateString() ? fmtDate(t.date) + " · " : ""}${live ? "pickup " : ""}${countdown(when)} · ${t.name}` }),
     routeBlock(t, false),
-    r.driver ? h("p", { class: "next-by", text: `${r.driver} is driving` }) : null,
+    r.driver && !isMe(r.driver) ? h("p", { class: "next-by", text: `${r.driver} is driving` }) : null,
     h("div", { class: "next-acts" },
       h("a", { class: "btn", href: `tel:${tel(t.phone)}` }, icon("phone"), "Call"),
       tabDrives(r) && step && canStart(r)
@@ -563,7 +572,7 @@ function tripCard(r) {
       h("span", null, icon("user"), t.passengers || "1"),
       t.luggage && t.luggage !== "0" ? h("span", null, icon("bag"), t.luggage) : null,
       t.tripType === "Round trip" ? h("span", { text: "Round trip" }) : null,
-      h("span", { class: "nm", text: r.driver && isConfirmed(r) ? `${t.name} · ${r.driver}` : t.name })));
+      h("span", { class: "nm", text: r.driver && isConfirmed(r) ? `${t.name} · ${isMe(r.driver) ? "You" : r.driver}` : t.name })));
   const wrap = h("article", { class: "req" });
   if (s === "New" || s === "Quoted") {
     wrap.append(h("div", { class: "req-under" },
@@ -671,7 +680,7 @@ function renderDetail() {
   if (r.note) kids.push(h("p", { class: "d-line" }, "Note to rider: ", h("b", { text: r.note })));
   if (isConfirmed(r) || r.driver) {
     const d = driverOf(r.driver);
-    kids.push(h("p", { class: "d-line" }, "Driver: ", h("b", { text: r.driver || "You" }),
+    kids.push(h("p", { class: "d-line" }, "Driver: ", h("b", { text: tabDrives(r) ? "You" : r.driver }),
       d && d.phone ? h("a", { href: `tel:${tel(d.phone)}`, style: "margin-left:8px;color:var(--color-gold)" }, "Call") : null));
   }
   if (r.confirmedSent) kids.push(h("p", { class: "d-line ok", text: `Rider emailed ${r.confirmedSent}.` }));
@@ -889,16 +898,18 @@ function openQuote(r) {
   $("#q-notes").replaceChildren(...pastNotes().map((n) => h("button", { type: "button", class: "chip", "aria-pressed": String(qNote.value === n),
     onclick: (e) => { qNote.value = n; $$("#q-notes .chip").forEach((c) => c.setAttribute("aria-pressed", String(c === e.currentTarget))); } }, n)));
 
-  // "Auto" leaves it to the script, which picks a free driver on confirming.
-  qDriver = r.driver || "";
+  // "Auto" leaves it to the script, which picks a free driver on confirming;
+  // "Me" keeps the trip Tab's, and the script never hands it to anyone.
+  qDriver = isMe(r.driver) ? selfName : r.driver || "";
   const team = drivers.filter((d) => d.active || d.name === r.driver);
   $("#q-driver-wrap").hidden = !team.length;
   const pick = (name, label, sub, busy) => h("button", { type: "button", class: "drv-pick", "aria-pressed": String(qDriver === name),
     onclick: (e) => { qDriver = name; $$("#q-drivers .drv-pick").forEach((b) => b.setAttribute("aria-pressed", String(b === e.currentTarget))); } },
-    h("span", { class: `avatar sm${name ? "" : " gold"}`, text: name ? initials(name) : "A" }), label,
+    h("span", { class: `avatar sm${name && !isMe(name) ? "" : " gold"}`, text: name ? initials(name) : "A" }), label,
     h("small", { class: busy ? "busy" : null, text: sub }));
   $("#q-drivers").replaceChildren(
-    pick("", "Auto", "script picks"),
+    pick("", "Auto", "system picks"),
+    (() => { const clash = busyNear(r, selfName); return pick(selfName, "Me", clash ? `busy ${fmtTime(clash.trip.time)}` : "you drive", !!clash); })(),
     ...team.map((d) => {
       const clash = busyNear(r, d.name);
       return pick(d.name, firstName(d.name), !d.active ? "switched off" : clash ? `busy ${fmtTime(clash.trip.time)}` : "free", !d.active || !!clash);
@@ -1009,7 +1020,7 @@ function renderSchedule() {
   $("#day-title").textContent = selectedDay === today ? "Today" : sel.toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" });
 
   const trips = live.filter((r) => r.trip.date === selectedDay).sort((a, b) => pickupAt(a.trip) - pickupAt(b.trip));
-  const names = [...new Set(trips.filter(isConfirmed).map((r) => r.driver || ""))];
+  const names = [...new Set(trips.filter(isConfirmed).map((r) => tabDrives(r) ? "" : r.driver))];
   $("#legend").replaceChildren(...names.map((n) => h("span", { style: `--c:${driverColor(n)}`, text: n || "You" })));
 
   $("#agenda").replaceChildren(...(trips.length ? trips.map((r) => {
@@ -1022,7 +1033,7 @@ function renderSchedule() {
       h("button", { type: "button", class: `ag-card${r.tripDone ? " off" : ""}`, style: `--c:${conf ? driverColor(r.driver) : "var(--color-rule-strong)"}`, onclick: () => openTrip(r.ref) },
         h("b", null, h("span", { text: `${serviceShort(r.trip.service)} · ${r.trip.name}` }), conf ? null : h("span", { class: "pill", "data-s": statusOf(r), text: statusOf(r) })),
         h("span", { text: `${r.trip.pickup} → ${r.trip.dropoff}` }),
-        conf ? h("span", { text: r.driver ? `${r.driver} driving` : "You're driving" }) : null,
+        conf ? h("span", { text: drivingLine(r) }) : null,
         clash ? h("span", { class: "ag-warn" }, icon("flag"), `Close to ${fmtTime(clash.trip.time)}, same driver`) : null));
   }) : [h("p", { class: "empty", text: "No trips this day." })]));
 }
@@ -1189,6 +1200,133 @@ $("#dr-delete").addEventListener("click", async () => {
     if (err.message !== "signed out") toast(friendly(err), "error");
   }
 });
+
+/* ---------- fleet map ----------
+   Tab's view of every car under way, on the Drivers tab, refreshed every 15
+   seconds while it is on screen. A car is placed only between its driver's
+   "On the way" and "Arrived" taps, then briefly where it parked; during the
+   ride the trip is listed but its position is never shared. */
+
+const FLEET_EVERY = 15000;
+const AIKEN = [33.5604, -81.7196];
+let fleet = null;
+let fleetMap = null;
+let fleetLayer = null;
+let fleetTimer = null;
+// Once Tab pans or zooms, stop moving the map out from under her.
+let fleetMoved = false;
+
+function startFleet() {
+  if (fleetTimer) return;
+  refreshFleet();
+  fleetTimer = setInterval(() => { if (!document.hidden) refreshFleet(); }, FLEET_EVERY);
+}
+function stopFleet() {
+  clearInterval(fleetTimer);
+  fleetTimer = null;
+}
+
+async function refreshFleet() {
+  try {
+    fleet = await call("fleet");
+  } catch (err) {
+    if (err.message !== "signed out") $("#fleet-upd").textContent = "Can't reach the system. Retrying…";
+    return;
+  }
+  drawFleet();
+}
+
+const agoText = (s) => s < 10 ? "just now" : s < 60 ? `${s}s ago` : `${Math.round(s / 60)} min ago`;
+function milesBetween(a, b) {
+  const rad = (x) => (x * Math.PI) / 180;
+  const h = Math.sin(rad(b.lat - a.lat) / 2) ** 2 + Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(rad(b.lng - a.lng) / 2) ** 2;
+  return 3958.8 * 2 * Math.asin(Math.sqrt(h));
+}
+// Leaflet draws in SVG attributes, which cannot read CSS variables.
+function solidColor(name) {
+  const c = driverColor(name);
+  const m = /^var\((--[\w-]+)\)$/.exec(c);
+  return m ? getComputedStyle(document.documentElement).getPropertyValue(m[1]).trim() || "#ddb968" : c;
+}
+
+function fleetStatus(c, r) {
+  const rider = r ? firstName(r.trip.name) : "the rider";
+  if (c.stage === "arrived") {
+    return c.at ? { text: `At ${rider}'s pickup`, live: true } : { text: `On the ride with ${rider} · location not shared` };
+  }
+  if (!c.at) return { text: "On the way · no location yet. Is the driver page open?" };
+  if (c.at.ageSeconds > fleet.staleSeconds) return { text: `On the way · last seen ${agoText(c.at.ageSeconds)}` };
+  const away = c.pickupAt ? ` · ${milesBetween(c.at, c.pickupAt).toFixed(1)} mi from pickup` : "";
+  return { text: `On the way to ${rider}${away} · ${agoText(c.at.ageSeconds)}`, live: true };
+}
+
+function drawFleet() {
+  const cars = (fleet && fleet.cars) || [];
+  const busy = new Set(cars.map((c) => (isMe(c.driver) ? selfName : c.driver).toLowerCase()));
+  const nextFor = (name) => reservations
+    .filter((r) => isConfirmed(r) && !r.onTheWay && !r.tripDone && (isMe(name) ? tabDrives(r) : r.driver === name) && pickupAt(r.trip) > Date.now())
+    .sort((a, b) => pickupAt(a.trip) - pickupAt(b.trip))[0];
+  const idle = [{ name: selfName }, ...activeDrivers()].filter((d) => !busy.has(d.name.toLowerCase()));
+
+  $("#fleet-list").replaceChildren(
+    ...cars.map((c) => {
+      const r = reservations.find((x) => x.ref === c.ref);
+      const st = fleetStatus(c, r);
+      const who = isMe(c.driver) ? "You" : c.driver;
+      return h("button", { type: "button", class: "fleet-row", style: `--c:${driverColor(isMe(c.driver) ? "" : c.driver)}`, onclick: () => openTrip(c.ref) },
+        h("span", { class: "fleet-dot" }),
+        h("span", null, h("b", { text: r ? `${who} · ${r.trip.name}, ${fmtTime(r.trip.time)}` : `${who} · ${c.ref}` }),
+          h("small", { class: st.live ? "live" : null, text: st.text })),
+        icon("chev-r"));
+    }),
+    ...idle.map((d) => {
+      const n = nextFor(d.name);
+      const when = n && pickupAt(n.trip);
+      return h("button", { type: "button", class: "fleet-row idle", disabled: !n, onclick: () => n && openTrip(n.ref) },
+        h("span", { class: "fleet-dot" }),
+        h("span", null, h("b", { text: isMe(d.name) ? "You" : d.name }),
+          h("small", { text: n ? `Not on a trip · next ${when.toDateString() === new Date().toDateString() ? "" : fmtDate(n.trip.date) + " "}${clock(when)}` : "Not on a trip" })));
+    }));
+  const placed = cars.filter((c) => c.at).length;
+  $("#fleet-upd").textContent = placed ? `${plural(placed, "car")} on the map · ${clock(new Date())}`
+    : cars.length ? "No car is sharing its location right now" : "No cars on the way right now";
+
+  const box = $("#fleet-map");
+  if (!window.L) { box.hidden = true; return; }
+  if (!fleetMap) {
+    fleetMap = L.map(box, { zoomControl: true, attributionControl: true }).setView(AIKEN, 11);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    }).addTo(fleetMap);
+    fleetMap.on("dragstart", () => { fleetMoved = true; });
+    ["wheel", "touchstart"].forEach((type) => box.addEventListener(type, () => { fleetMoved = true; }, { passive: true }));
+    fleetLayer = L.layerGroup().addTo(fleetMap);
+  }
+  // Drawn while the tab was hidden, the map has no size yet.
+  fleetMap.invalidateSize();
+  fleetLayer.clearLayers();
+  const points = [];
+  cars.filter((c) => c.at).forEach((c) => {
+    const color = solidColor(isMe(c.driver) ? "" : c.driver);
+    const at = [c.at.lat, c.at.lng];
+    points.push(at);
+    if (c.pickupAt) {
+      const p = [c.pickupAt.lat, c.pickupAt.lng];
+      points.push(p);
+      L.polyline([at, p], { color, weight: 2, dashArray: "4 6", opacity: 0.8, interactive: false }).addTo(fleetLayer);
+      L.circleMarker(p, { radius: 6, color, weight: 2, fillColor: "#fff", fillOpacity: 1, interactive: false }).addTo(fleetLayer);
+    }
+    const stale = c.stage === "onTheWay" && c.at.ageSeconds > fleet.staleSeconds;
+    L.circleMarker(at, { radius: 10, color: "#fff", weight: 3, fillColor: color, fillOpacity: stale ? 0.45 : 1 })
+      .bindTooltip(isMe(c.driver) ? "You" : firstName(c.driver), { permanent: true, direction: "top", offset: [0, -10], className: "fleet-tip" })
+      .on("click", () => openTrip(c.ref))
+      .addTo(fleetLayer);
+  });
+  if (fleetMoved || !points.length) return;
+  if (points.length === 1) fleetMap.setView(points[0], 14);
+  else fleetMap.fitBounds(points, { padding: [36, 36], maxZoom: 15 });
+}
 
 /* ---------- live location ----------
    On a trip Tab drives herself, from "Start trip" until "I've arrived", this
