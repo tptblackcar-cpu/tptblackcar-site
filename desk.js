@@ -194,7 +194,8 @@ function ago(v) {
 
 function statusOf(r) {
   const s = String(r.status || "New").trim();
-  return s || "New";
+  // Quoted was a priced-but-unsent step, since dropped: those rows still need confirming.
+  return !s || /^quoted$/i.test(s) ? "New" : s;
 }
 const isOff = (r) => /^(cancelled|declined)$/i.test(statusOf(r));
 const isConfirmed = (r) => statusOf(r).toLowerCase() === "confirmed";
@@ -217,6 +218,15 @@ function isUpcoming(r) {
   const until = when.getTime() + (isConfirmed(r) ? LATE_GRACE_MS : 0);
   return until > Date.now();
 }
+
+/** Done with: the trip happened, its time went by, or it was called off. These
+    sit in the Past tab for the record and can no longer be changed. */
+function isPast(r) {
+  if (isOff(r) || r.tripDone) return true;
+  return !!pickupAt(r.trip) && !isUpcoming(r);
+}
+/** Still waiting on Tab: not confirmed yet, and not past. */
+const isRequest = (r) => !isConfirmed(r) && !isPast(r);
 
 const SERVICE_ICON = [
   [/airport/i, "plane"], [/corporate/i, "brief"], [/wedding/i, "ring"],
@@ -365,7 +375,7 @@ function renderAll() {
 }
 
 function renderBadges() {
-  const fresh = reservations.filter((r) => statusOf(r) === "New").length;
+  const fresh = reservations.filter(isRequest).length;
   const waiting = reviews.filter((r) => r.status === "Pending").length;
   const set = (k, n) => { const b = $(`[data-badge="${k}"]`); b.textContent = n; b.hidden = !n; };
   set("trips", fresh);
@@ -406,7 +416,7 @@ function route() {
   openRef = "";
   $("#detail").hidden = true;
   const tab = TABS.includes(name) ? name : "today";
-  if (tab === "trips" && arg) tripFilter = arg;
+  if (tab === "trips" && ["New", "Upcoming", "Past"].includes(arg)) tripFilter = arg;
   if (tab !== currentTab) scrollTo(0, 0);
   currentTab = tab;
   TABS.forEach((t) => { $(`#view-${t}`).hidden = t !== tab; });
@@ -442,12 +452,10 @@ function renderToday() {
     h("p", { text: reservations.length ? "No confirmed trips coming up." : "No trips yet." }),
     h("a", { class: "btn sm", href: "#trips/Upcoming" }, "See all trips")));
 
-  const fresh = reservations.filter((r) => statusOf(r) === "New").length;
-  const quoted = reservations.filter((r) => statusOf(r) === "Quoted" && isUpcoming(r)).length;
+  const fresh = reservations.filter(isRequest).length;
   const pending = reviews.filter((r) => r.status === "Pending").length;
   const rows = [];
-  if (fresh) rows.push(todoRow("hot", fresh, fresh === 1 ? "New request" : "New requests", "Waiting for a quote", "#trips/New"));
-  if (quoted) rows.push(todoRow("", quoted, quoted === 1 ? "Quote out" : "Quotes out", "Priced, not sent. Tell the rider, then Confirm & email", "#trips/Quoted"));
+  if (fresh) rows.push(todoRow("hot", fresh, fresh === 1 ? "New request" : "New requests", "Waiting to be confirmed", "#trips/New"));
   if (pending) rows.push(todoRow("", pending, pending === 1 ? "Review to approve" : "Reviews to approve", "", "#reviews"));
   if (!rows.length) rows.push(todoRow("ok", icon("check"), "All caught up", "Nothing waiting on you", ""));
   $("#todo").replaceChildren(...rows);
@@ -521,11 +529,10 @@ $$("#trip-seg button").forEach((b) => b.addEventListener("click", () => {
 }));
 
 function renderTrips() {
-  const counts = { New: 0, Quoted: 0, Upcoming: 0 };
+  const counts = { New: 0, Upcoming: 0 };
   reservations.forEach((r) => {
     const s = statusOf(r);
-    if (s === "New") counts.New++;
-    if (s === "Quoted") counts.Quoted++;
+    if (isRequest(r)) counts.New++;
     if (isConfirmed(r) && isUpcoming(r)) counts.Upcoming++;
   });
   $$("[data-count]").forEach((b) => { b.textContent = counts[b.dataset.count] || ""; });
@@ -533,11 +540,11 @@ function renderTrips() {
 
   const q = search.value.trim().toLowerCase();
   let shown =
-    tripFilter === "New" ? reservations.filter((r) => statusOf(r) === "New")
-    : tripFilter === "Quoted" ? reservations.filter((r) => statusOf(r) === "Quoted")
+    tripFilter === "New" ? reservations.filter(isRequest)
     : tripFilter === "Upcoming" ? reservations.filter((r) => isConfirmed(r) && isUpcoming(r))
         .sort((a, b) => pickupAt(a.trip) - pickupAt(b.trip))
-    : reservations;
+    // Most recent first, so last week's trips are at the top.
+    : reservations.filter(isPast).sort((a, b) => (pickupAt(b.trip) || 0) - (pickupAt(a.trip) || 0));
   if (q) {
     shown = reservations.filter((r) => [r.ref, r.trip.name, r.trip.pickup, r.trip.dropoff, r.trip.service, r.trip.email, r.trip.phone, r.driver]
       .some((v) => String(v || "").toLowerCase().includes(q)));
@@ -547,8 +554,8 @@ function renderTrips() {
   const empty = $("#trip-empty");
   empty.hidden = shown.length > 0;
   empty.textContent = q ? "Nothing matches that." : !reservations.length ? "No reservations yet."
-    : { New: "No new requests. All caught up.", Quoted: "No quotes waiting.", Upcoming: "No trips coming up.", All: "Nothing here." }[tripFilter];
-  $("#swipe-hint").hidden = !shown.some((r) => statusOf(r) === "New");
+    : { New: "No new requests. All caught up.", Upcoming: "No trips coming up.", Past: "No past trips yet." }[tripFilter];
+  $("#swipe-hint").hidden = !shown.some((r) => statusOf(r) === "New" && !isPast(r));
 }
 
 function tripCard(r) {
@@ -574,19 +581,18 @@ function tripCard(r) {
       t.tripType === "Round trip" ? h("span", { text: "Round trip" }) : null,
       h("span", { class: "nm", text: r.driver && isConfirmed(r) ? `${t.name} · ${isMe(r.driver) ? "You" : r.driver}` : t.name })));
   const wrap = h("article", { class: "req" });
-  if (s === "New" || s === "Quoted") {
+  if (s === "New" && !isPast(r)) {
     wrap.append(h("div", { class: "req-under" },
-      h("button", { type: "button", class: "d", onclick: () => decline(r) }, icon("x"), "Decline"),
-      h("button", { type: "button", class: "q", onclick: () => openQuote(r) }, icon("send"), "Quote")));
+      h("button", { type: "button", class: "q", onclick: () => openQuote(r) }, icon("send"), "Confirm")));
     swipeable(wrap, face);
   }
   wrap.append(face);
   return wrap;
 }
 
-/** Drag a card left to show its two actions underneath. */
+/** Drag a card left to show the Confirm action underneath. */
 function swipeable(wrap, face) {
-  const OPEN = -144;
+  const OPEN = -72;
   let x0 = 0, y0 = 0, dx = 0, base = 0, dragging = false, decided = false;
   face.addEventListener("pointerdown", (e) => {
     if (e.pointerType === "mouse") return;
@@ -685,6 +691,7 @@ function renderDetail() {
   }
   if (r.confirmedSent) kids.push(h("p", { class: "d-line ok", text: `Rider emailed ${r.confirmedSent}.` }));
   if (s === "Cancelled") kids.push(h("p", { class: "d-line", text: r.cancelledAt ? `Cancelled ${r.cancelledAt}.` : "Cancelled." }));
+  if (isPast(r)) kids.push(h("p", { class: "d-line", text: "Past trip, kept for the record. It can't be changed." }));
 
   pane.replaceChildren(h("div", { class: "d-scroll" }, h("div", { class: "d-in" }, kids)), actionBar(r));
 }
@@ -694,15 +701,12 @@ const fact = (ic, text, label) => h("div", { class: "fact" }, icon(ic), h("div",
 
 /** The bar at the bottom always holds the next step. */
 function actionBar(r) {
+  if (isPast(r)) return h("span", { hidden: true });
   const s = statusOf(r);
   const btns = [];
   let hint = "";
   if (s === "New") {
-    btns.push(h("button", { type: "button", class: "btn shrink", onclick: () => decline(r) }, "Decline"));
-    btns.push(h("button", { type: "button", class: "btn gold", onclick: () => openQuote(r) }, icon("send"), "Quote this trip"));
-  } else if (s === "Quoted") {
-    btns.push(h("button", { type: "button", class: "btn shrink", onclick: () => openQuote(r) }, "Edit quote"));
-    btns.push(h("button", { type: "button", class: "btn gold", onclick: () => openQuote(r) }, "Confirm & email"));
+    btns.push(h("button", { type: "button", class: "btn gold", onclick: () => openQuote(r) }, icon("send"), "Confirm this trip"));
   } else if (isConfirmed(r) && !r.tripDone && tabDrives(r) && canStart(r)) {
     // An unsent confirmation must not hide Start trip, nor Start trip hide the email.
     if (!r.confirmedSent) btns.push(h("button", { type: "button", class: "btn shrink", onclick: () => openQuote(r) }, "Email rider"));
@@ -722,11 +726,10 @@ function actionBar(r) {
 function moreActions(r) {
   const s = statusOf(r);
   const out = [];
-  if (s === "Cancelled" || s === "Declined") return out;
+  if (isPast(r)) return out;
   if (isConfirmed(r)) out.push(["edit", "Change quote, note or driver", () => openQuote(r)]);
   if (r.confirmedSent) out.push(["send", "Send the confirmation again", () => resend(r)]);
-  if (s === "New" || s === "Quoted") out.push(["x", "Decline", () => decline(r), true]);
-  // Nothing promised yet on a new request, so it is declined, not cancelled.
+  // Nothing promised yet on a new request, so there is nothing to cancel.
   if (!(s === "New" && !r.confirmedSent)) out.push(["x", "Cancel trip and email rider", () => cancelTrip(r), true]);
   return out;
 }
@@ -764,11 +767,6 @@ async function update(r, payload, working) {
     if (err.message !== "signed out") toast(friendly(err), "error");
     throw err;
   }
-}
-
-async function decline(r) {
-  if (!await ask({ title: `Decline ${r.ref}?`, text: `${r.trip.name} is not emailed. Tell them yourself if you want to.`, yes: "Decline", danger: true })) return;
-  await update(r, { status: "Declined" }, "Saving…").then(() => toast("Declined.")).catch(() => {});
 }
 
 async function cancelTrip(r) {
@@ -876,10 +874,11 @@ function busyNear(r, name) {
 }
 
 function openQuote(r) {
+  if (isPast(r)) return;
   qTrip = r;
   const s = statusOf(r);
   const t = r.trip;
-  $("#q-title").textContent = s === "New" ? `Quote for ${firstName(t.name)}` : isConfirmed(r) ? `Edit ${r.ref}` : `Confirm ${firstName(t.name)}'s trip`;
+  $("#q-title").textContent = isConfirmed(r) && r.confirmedSent ? `Edit ${r.ref}` : `Confirm ${firstName(t.name)}'s trip`;
   $("#q-sub").textContent = `${serviceShort(t.service)}${t.tripType === "Round trip" ? ", round trip" : ""} · ${fmtDate(t.date)}, ${fmtTime(t.time)} · ${plural(Number(t.passengers) || 1, "passenger")}`;
   $("#q-error").hidden = true;
 
@@ -916,11 +915,10 @@ function openQuote(r) {
     }));
 
   const acts = [];
+  acts.push(h("button", { type: "button", class: "btn", value: "close", onclick: () => qSheet.close() }, "Cancel"));
   if (isConfirmed(r) && r.confirmedSent) {
-    acts.push(h("button", { type: "button", class: "btn", value: "close", onclick: () => qSheet.close() }, "Cancel"));
     acts.push(h("button", { type: "button", class: "btn gold", onclick: (e) => saveQuote({ status: "Confirmed" }, e.currentTarget, "Saved.") }, "Save changes"));
   } else {
-    acts.push(h("button", { type: "button", class: "btn", onclick: (e) => saveQuote({ status: isConfirmed(r) ? "Confirmed" : "Quoted" }, e.currentTarget, "Quote saved. The rider has not been emailed.") }, "Save quote"));
     acts.push(h("button", { type: "button", class: "btn gold", onclick: (e) => saveQuote({ status: "Confirmed" }, e.currentTarget, `Confirmed. ${firstName(t.name)} has been emailed.`) }, "Confirm & email"));
   }
   $("#q-acts").replaceChildren(...acts);

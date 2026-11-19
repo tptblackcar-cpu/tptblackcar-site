@@ -24,7 +24,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"
         integrity="sha384-c6Rcwz4e4CITMbu/NBmnNS8yN2sC3cUElMEMfP3vqqKFp7GOYaaBBCqmaWBjmkjb" crossorigin="anonymous">
-  <link rel="stylesheet" href="desk.css?v=5">
+  <link rel="stylesheet" href="desk.css?v=6">
 </head>
 <body>
 
@@ -124,13 +124,12 @@
     </label>
     <div class="seg" id="trip-seg" role="tablist" aria-label="Which trips">
       <button type="button" role="tab" data-filter="New">New <b data-count="New"></b></button>
-      <button type="button" role="tab" data-filter="Quoted">Quoted <b data-count="Quoted"></b></button>
       <button type="button" role="tab" data-filter="Upcoming">Upcoming <b data-count="Upcoming"></b></button>
-      <button type="button" role="tab" data-filter="All">All</button>
+      <button type="button" role="tab" data-filter="Past">Past</button>
     </div>
     <div class="list" id="trip-list"></div>
     <p class="empty" id="trip-empty" hidden></p>
-    <p class="hint" id="swipe-hint" hidden>Swipe a request left to quote or decline it</p>
+    <p class="hint" id="swipe-hint" hidden>Swipe a request left to confirm it</p>
   </section>
 
   <section class="view" id="view-schedule" data-view="schedule" hidden>
@@ -272,6 +271,6 @@
 <script src="config.js?v=2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"
         integrity="sha384-NElt3Op+9NBMCYaef5HxeJmU4Xeard/Lku8ek6hoPTvYkQPh3zLIrJP7KiRocsxO" crossorigin="anonymous"></script>
-<script src="desk.js?v=7"></script>
+<script src="desk.js?v=10"></script>
 </body>
 </html>

@@ -314,7 +314,6 @@ svg.i.i-fill { fill: currentColor; stroke: none; }
 .req-under { position: absolute; inset: 0; z-index: 1; display: flex; justify-content: flex-end; }
 .req-under button { width: 72px; border: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; font-weight: 600; }
 .req-under .q { background: var(--color-gold); color: var(--color-gold-ink); }
-.req-under .d { background: #5b231c; color: #f6c9c0; }
 
 /* ---------- trip detail ---------- */
 
