@@ -1297,6 +1297,9 @@ function drawFleet() {
     fleetMap = L.map(box, { zoomControl: true, attributionControl: true }).setView(AIKEN, 11);
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 19,
+      // OpenStreetMap refuses tiles without a Referer. The page itself sends
+      // none, so the tracking link never leaks; tiles get the site's name only.
+      referrerPolicy: "strict-origin",
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(fleetMap);
     fleetMap.on("dragstart", () => { fleetMoved = true; });

@@ -5,11 +5,11 @@
 
 // Each ?v= here must match admin.html exactly, or the desk will not open offline.
 // Bump CACHE whenever they change.
-const CACHE = "tpt-desk-v6";
+const CACHE = "tpt-desk-v7";
 const SHELL = [
   "/admin.html",
   "/desk.css?v=5",
-  "/desk.js?v=6",
+  "/desk.js?v=7",
   "/tokens.css?v=13",
   "/config.js?v=2",
   "/assets/mark.svg",

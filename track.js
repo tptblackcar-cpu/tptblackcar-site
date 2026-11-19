@@ -153,6 +153,9 @@ function drawMap(res) {
     map = L.map("map", { zoomControl: true, attributionControl: true });
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 19,
+      // OpenStreetMap refuses tiles without a Referer. The page itself sends
+      // none, so the tracking link never leaks; tiles get the site's name only.
+      referrerPolicy: "strict-origin",
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map);
     // Only a person's hand counts: fitBounds itself fires zoom events.
